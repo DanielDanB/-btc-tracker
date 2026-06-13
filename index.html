@@ -208,6 +208,11 @@
       transition: all 0.2s ease;
     }
     .refresh-btn:active { background: rgba(247,147,26,0.25); transform: scale(0.97); }
+    .refresh-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
     .refresh-btn.loading svg { animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -301,19 +306,19 @@
 
     <div class="stats-row">
       <div class="stat-item">
-        <div class="stat-label">24h High</div>
+        <div class="stat-label" id="label1">7D ZMĚNA</div>
         <div class="stat-value" id="high24">…</div>
       </div>
       <div class="stat-item">
-        <div class="stat-label">24h Low</div>
+        <div class="stat-label" id="label2">1H ZMĚNA</div>
         <div class="stat-value" id="low24">…</div>
       </div>
       <div class="stat-item">
-        <div class="stat-label">Tržní cap</div>
+        <div class="stat-label">TRŽNÍ CAP</div>
         <div class="stat-value" id="marketCap">…</div>
       </div>
       <div class="stat-item">
-        <div class="stat-label">Objem 24h</div>
+        <div class="stat-label">OBJEM 24H</div>
         <div class="stat-value" id="volume24">…</div>
       </div>
     </div>
@@ -332,9 +337,7 @@
 </div>
 
 <script>
-  // CoinLore API - bez rate limitu, bez API klíče
   const API_BTC = 'https://api.coinlore.net/api/ticker/?id=90';
-  // EUR/CZK kurz z frankfurter.app (free, no key)
   const API_FX  = 'https://api.frankfurter.app/latest?from=USD&to=CZK';
 
   function fmt(n, dec = 0) {
@@ -354,11 +357,14 @@
   async function fetchPrice() {
     const btn   = document.getElementById('refreshBtn');
     const errEl = document.getElementById('errorMsg');
+
+    // Zabránit dvojímu kliknutí
+    if (btn.disabled) return;
+    btn.disabled = true;
     btn.classList.add('loading');
     errEl.style.display = 'none';
 
     try {
-      // Načíst BTC data a USD/CZK kurz paralelně
       const [r1, r2] = await Promise.all([
         fetch(API_BTC),
         fetch(API_FX)
@@ -375,8 +381,8 @@
       const change = parseFloat(btc.percent_change_24h);
       const cap    = parseFloat(btc.market_cap_usd);
       const vol    = parseFloat(btc.volume24);
-      const high   = parseFloat(btc.price_usd) * 1; // CoinLore nemá high/low
-      const low    = parseFloat(btc.price_usd) * 1;
+      const ch7d   = parseFloat(btc.percent_change_7d);
+      const ch1h   = parseFloat(btc.percent_change_1h);
 
       // USD
       const usdEl = document.getElementById('usdVal');
@@ -388,7 +394,7 @@
       czkEl.textContent = fmt(czk);
       czkEl.classList.remove('skeleton');
 
-      // Změna 24h
+      // Změna 24h badge
       const badge = document.getElementById('changeBadge');
       badge.className = 'change-badge ' + (change >= 0 ? 'positive' : 'negative');
       badge.innerHTML = `
@@ -398,14 +404,10 @@
         ${change >= 0 ? '+' : ''}${change.toFixed(2)}% za 24h`;
 
       // Statistiky
-      document.getElementById('high24').textContent    = '+' + parseFloat(btc.percent_change_7d).toFixed(2) + '% (7d)';
-      document.getElementById('low24').textContent     = parseFloat(btc.percent_change_1h).toFixed(2) + '% (1h)';
+      document.getElementById('high24').textContent    = (ch7d >= 0 ? '+' : '') + ch7d.toFixed(2) + '%';
+      document.getElementById('low24').textContent     = (ch1h >= 0 ? '+' : '') + ch1h.toFixed(2) + '%';
       document.getElementById('marketCap').textContent = '$' + fmtLarge(cap);
       document.getElementById('volume24').textContent  = '$' + fmtLarge(vol);
-
-      // Přejmenovat labely
-      document.querySelectorAll('.stat-label')[0].textContent = '7D ZMĚNA';
-      document.querySelectorAll('.stat-label')[1].textContent = '1H ZMĚNA';
 
       const now = new Date();
       document.getElementById('lastUpdate').textContent =
@@ -416,8 +418,9 @@
     } catch(e) {
       errEl.textContent = '⚠ Nepodařilo se načíst data. Zkuste to znovu.';
       errEl.style.display = 'block';
-      document.getElementById('lastUpdate').textContent = 'Chyba: ' + e.message;
+      document.getElementById('lastUpdate').textContent = 'Chyba při načítání.';
     } finally {
+      btn.disabled = false;
       btn.classList.remove('loading');
     }
   }
