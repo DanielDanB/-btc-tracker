@@ -113,29 +113,15 @@
     .chart-change.up{color:var(--green)}
     .chart-change.dn{color:var(--red)}
     .periods{display:flex;gap:4px;background:rgba(255,255,255,0.05);border-radius:12px;padding:3px}
-    .period{
-      padding:5px 10px;border-radius:9px;font-size:12px;font-weight:600;
-      cursor:pointer;color:rgba(255,255,255,.45);transition:all .2s;
-      -webkit-tap-highlight-color:transparent;border:none;background:none;font-family:inherit;
-    }
+    .period{padding:5px 10px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;color:rgba(255,255,255,.45);transition:all .2s;-webkit-tap-highlight-color:transparent;border:none;background:none;font-family:inherit}
     .period.active{background:rgba(255,255,255,0.12);color:#fff;box-shadow:0 0 0 0.5px rgba(255,255,255,.1)}
     .canvas-wrap{position:relative;margin-top:12px;height:200px}
     canvas{width:100%;height:100%;display:block}
-    .tooltip{
-      position:absolute;top:0;pointer-events:none;
-      background:rgba(20,20,35,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-      border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;
-      padding:6px 10px;font-size:11px;font-weight:600;white-space:nowrap;
-      transform:translateX(-50%);display:none;
-    }
+    .tooltip{position:absolute;top:0;pointer-events:none;background:rgba(20,20,35,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:6px 10px;font-size:11px;font-weight:600;white-space:nowrap;transform:translateX(-50%);display:none}
     .chart-loading{height:200px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px}
     .ts{text-align:center;font-size:11px;color:rgba(255,255,255,.2);margin-top:14px}
     .src{text-align:center;font-size:10px;color:rgba(255,255,255,.15);margin-top:3px;letter-spacing:.3px}
-    .sk{
-      background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 75%);
-      background-size:200% 100%;animation:sh 1.4s ease-in-out infinite;
-      border-radius:10px;color:transparent!important;user-select:none;display:inline-block;
-    }
+    .sk{background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 75%);background-size:200% 100%;animation:sh 1.4s ease-in-out infinite;border-radius:10px;color:transparent!important;user-select:none;display:inline-block}
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
   </style>
 </head>
@@ -222,33 +208,27 @@ const $=id=>document.getElementById(id);
 const fmt=(n,d=0)=>new Intl.NumberFormat('cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
 const fmtB=n=>n>=1e12?(n/1e12).toFixed(2)+' bil.':n>=1e9?(n/1e9).toFixed(2)+' mld.':n>=1e6?(n/1e6).toFixed(1)+' mil.':fmt(n);
 const pct=n=>(n>=0?'+':'')+parseFloat(n).toFixed(2)+'%';
-const P=u=>'https://corsproxy.io/?url='+encodeURIComponent(u)+'&_='+Date.now();
 
-let currentUSD=0, currentCZK=0, fxRate=1;
-let chartMode='usd', chartDays='1', chartData=[];
+let currentUSD=0,currentCZK=0,fxRate=1;
+let chartMode='usd',chartDays='1',chartData=[];
 
-/* ── Kraken: aktuální cena (reálný čas) ── */
+/* ── Přímý fetch bez proxy — stejně jako první funkční verze ── */
 async function loadPrice(){
   try{
-    // Kraken ticker — reálný čas, žádná cache
     const [r1,r2]=await Promise.all([
-      fetch(P('https://api.kraken.com/0/public/Ticker?pair=XBTUSD')),
-      fetch(P('https://api.frankfurter.app/latest?from=USD&to=CZK'))
+      fetch('https://api.coinlore.net/api/ticker/?id=90'),
+      fetch('https://api.frankfurter.app/latest?from=USD&to=CZK')
     ]);
-    const k=await r1.json();
+    const coins=await r1.json();
     const fx=await r2.json();
 
-    if(k.error&&k.error.length) throw new Error(k.error[0]);
-
-    const t=k.result['XXBTZUSD'];
+    const b=coins[0];
     fxRate=fx.rates.CZK;
-    currentUSD=parseFloat(t.c[0]);   // last trade price
+    currentUSD=parseFloat(b.price_usd);
     currentCZK=currentUSD*fxRate;
-    const ch=parseFloat(t.P[1]);     // 24h % change
-    const hi=parseFloat(t.h[1]);
-    const lo=parseFloat(t.l[1]);
-    const vol=parseFloat(t.v[1])*currentUSD;
-    const trades=parseInt(t.t[1]);
+    const ch=parseFloat(b.percent_change_24h);
+    const hi=currentUSD*(1+Math.abs(ch)/100);
+    const lo=currentUSD*(1-Math.abs(ch)/100);
 
     const uel=$('usd'),cel=$('czk'),bad=$('badge');
     uel.className='';uel.style='';uel.textContent=fmt(currentUSD);
@@ -258,21 +238,21 @@ async function loadPrice(){
 
     $('s1').textContent='$'+fmt(hi);
     $('s2').textContent='$'+fmt(lo);
-    $('s3').textContent='$'+fmtB(currentUSD*19700000); // approx market cap
-    $('s4').textContent='$'+fmtB(vol);
+    $('s3').textContent='$'+fmtB(parseFloat(b.market_cap_usd));
+    $('s4').textContent='$'+fmtB(parseFloat(b.volume24));
 
     const now=new Date();
     $('ts').textContent='Aktualizováno: '+now.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    $('src').textContent='Zdroj: Kraken · reálný čas';
+    $('src').textContent='Zdroj: CoinLore';
   }catch(e){
-    $('ts').textContent='Chyba načítání. Zkuste otevřít znovu.';
+    $('ts').textContent='Chyba načítání.';
     console.error(e);
   }
 }
 
-/* ── Graf: historická data z CoinGecko (jediné zdarma) ── */
+/* ── Graf přes CoinGecko (historická data) ── */
 function openChart(mode){
-  chartMode=mode; chartDays='1';
+  chartMode=mode;chartDays='1';
   $('priceView').style.display='none';
   $('chartView').classList.add('show');
   document.querySelectorAll('.period').forEach((b,i)=>b.classList.toggle('active',i===0));
@@ -298,13 +278,13 @@ async function loadChart(){
   try{
     const interval=chartDays==='1'?'hourly':'daily';
     const url=`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartDays}&interval=${interval}`;
-    const r=await fetch(P(url));
+    const r=await fetch(url);
     if(!r.ok) throw new Error('HTTP '+r.status);
     const data=await r.json();
     chartData=data.prices.map(p=>({t:p[0],v:chartMode==='czk'?p[1]*fxRate:p[1]}));
     const mn=Math.min(...chartData.map(d=>d.v));
     const mx=Math.max(...chartData.map(d=>d.v));
-    const first=chartData[0].v, last=chartData[chartData.length-1].v;
+    const first=chartData[0].v,last=chartData[chartData.length-1].v;
     const chg=((last-first)/first)*100;
     const isUp=chg>=0;
     $('chartChange').textContent=pct(chg)+' · '+({1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok'}[chartDays]);
@@ -312,8 +292,7 @@ async function loadChart(){
     drawChart(isUp,mn,mx);
     $('chartLoading').style.display='none';
     $('chartCanvas').style.display='block';
-    const now=new Date();
-    $('chartTs').textContent='Graf: CoinGecko · '+now.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
+    $('chartTs').textContent='Graf: CoinGecko · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
   }catch(e){
     $('chartLoading').innerHTML='<span style="color:var(--red)">⚠ Chyba načítání grafu</span>';
     console.error(e);
@@ -324,87 +303,67 @@ function drawChart(isUp,mn,mx){
   const canvas=$('chartCanvas');
   const wrap=$('canvasWrap');
   const dpr=window.devicePixelRatio||1;
-  const W=wrap.clientWidth, H=200;
-  canvas.width=W*dpr; canvas.height=H*dpr;
-  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  const W=wrap.clientWidth,H=200;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
   const ctx=canvas.getContext('2d');
   ctx.scale(dpr,dpr);
   const pad={t:10,r:10,b:28,l:0};
-  const w=W-pad.l-pad.r, h=H-pad.t-pad.b;
-  const n=chartData.length, range=mx-mn||1;
+  const w=W-pad.l-pad.r,h=H-pad.t-pad.b;
+  const n=chartData.length,range=mx-mn||1;
   const xOf=i=>pad.l+(i/(n-1))*w;
   const yOf=v=>pad.t+h-(((v-mn)/range)*h);
   const color=isUp?'48,209,88':'255,69,58';
-
-  // Gradient fill
   const gr=ctx.createLinearGradient(0,pad.t,0,pad.t+h);
   gr.addColorStop(0,`rgba(${color},0.22)`);
   gr.addColorStop(1,`rgba(${color},0)`);
   ctx.beginPath();
   ctx.moveTo(xOf(0),yOf(chartData[0].v));
-  for(let i=1;i<n;i++){
-    const cpx=(xOf(i-1)+xOf(i))/2;
-    ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v));
-  }
+  for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}
   ctx.lineTo(xOf(n-1),H-pad.b);ctx.lineTo(xOf(0),H-pad.b);ctx.closePath();
   ctx.fillStyle=gr;ctx.fill();
-
-  // Čára
   ctx.beginPath();
   ctx.moveTo(xOf(0),yOf(chartData[0].v));
-  for(let i=1;i<n;i++){
-    const cpx=(xOf(i-1)+xOf(i))/2;
-    ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v));
-  }
+  for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}
   ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=2;ctx.stroke();
-
-  // Časové popisky
   ctx.fillStyle='rgba(255,255,255,0.22)';
   ctx.font='500 10px Inter,-apple-system,sans-serif';
   ctx.textAlign='center';
   [0,1,2,3].forEach(i=>{
     const idx=Math.round(i*(n-1)/3);
     const d=new Date(chartData[idx].t);
-    const lbl=chartDays==='1'?d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'}):
-              chartDays==='7'?d.toLocaleDateString('cs-CZ',{weekday:'short'}):
-              chartDays==='30'?d.toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric'}):
-              d.toLocaleDateString('cs-CZ',{month:'short',year:'2-digit'});
+    const lbl=chartDays==='1'?d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'}):chartDays==='7'?d.toLocaleDateString('cs-CZ',{weekday:'short'}):chartDays==='30'?d.toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric'}):d.toLocaleDateString('cs-CZ',{month:'short',year:'2-digit'});
     ctx.fillText(lbl,xOf(idx),H-pad.b+14);
   });
-
-  setupTooltip(canvas,W,H,pad,w,xOf,yOf,color,n);
+  setupTooltip(canvas,pad,w,xOf,yOf,n);
 }
 
-function setupTooltip(canvas,W,H,pad,w,xOf,yOf,color,n){
+function setupTooltip(canvas,pad,w,xOf,yOf,n){
   const tip=$('tooltip');
   function show(cx){
     const rect=canvas.getBoundingClientRect();
     const x=cx-rect.left;
     const idx=Math.max(0,Math.min(n-1,Math.round(((x-pad.l)/w)*(n-1))));
     const pt=chartData[idx];if(!pt)return;
-    const sym=chartMode==='czk'?' Kč':'', pre=chartMode==='usd'?'$':'';
+    const sym=chartMode==='czk'?' Kč':'',pre=chartMode==='usd'?'$':'';
     tip.textContent=pre+fmt(pt.v)+sym;
-    tip.style.display='block';
-    tip.style.left=xOf(idx)+'px';
-    tip.style.top=(yOf(pt.v)-34)+'px';
+    tip.style.display='block';tip.style.left=xOf(idx)+'px';tip.style.top=(yOf(pt.v)-34)+'px';
     $('chartPrice').textContent=pre+fmt(pt.v)+sym;
   }
   function hide(){
     tip.style.display='none';
     const last=chartData[n-1];
-    if(last) $('chartPrice').textContent=(chartMode==='usd'?'$':'')+fmt(last.v)+(chartMode==='czk'?' Kč':'');
+    if(last)$('chartPrice').textContent=(chartMode==='usd'?'$':'')+fmt(last.v)+(chartMode==='czk'?' Kč':'');
   }
   canvas.ontouchstart=e=>{e.preventDefault();show(e.touches[0].clientX)};
-  canvas.ontouchmove =e=>{e.preventDefault();show(e.touches[0].clientX)};
-  canvas.ontouchend  =()=>setTimeout(hide,1500);
-  canvas.onmousemove =e=>show(e.clientX);
+  canvas.ontouchmove=e=>{e.preventDefault();show(e.touches[0].clientX)};
+  canvas.ontouchend=()=>setTimeout(hide,1500);
+  canvas.onmousemove=e=>show(e.clientX);
   canvas.onmouseleave=()=>hide();
 }
 
-// Spustit
 loadPrice();
-// Kraken aktualizace každých 15 sekund
-setInterval(loadPrice,15000);
+setInterval(loadPrice,60000);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadPrice();});
 </script>
 </body>
