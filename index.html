@@ -8,248 +8,233 @@
   <meta name="apple-mobile-web-app-title" content="BTC Tracker"/>
   <meta name="theme-color" content="#0a0a0f"/>
   <title>Bitcoin Tracker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0a0a0f; --card: #1a1a27; --border: rgba(255,255,255,0.06);
-      --accent: #f7931a; --accent-glow: rgba(247,147,26,0.25);
-      --green: #00d084; --red: #ff4d4d; --text: #f0f0f8;
-      --muted: #6b6b8a; --subtle: #2a2a3d;
-      --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom);
-      --safe-left: env(safe-area-inset-left); --safe-right: env(safe-area-inset-right);
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0a0f;--card:#141420;--border:rgba(255,255,255,0.07);
+      --accent:#f7931a;--adim:rgba(247,147,26,0.15);--aglow:rgba(247,147,26,0.2);
+      --green:#22c55e;--gdim:rgba(34,197,94,0.12);
+      --red:#ef4444;--rdim:rgba(239,68,68,0.12);
+      --text:#f1f1f5;--muted:#64647a;--sub:#1e1e2e;
+      --st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom);
+      --sl:env(safe-area-inset-left);--sr:env(safe-area-inset-right);
     }
-    html { height: -webkit-fill-available; }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg); color: var(--text);
-      min-height: 100vh; min-height: -webkit-fill-available;
-      display: flex; flex-direction: column; align-items: center;
-      padding: calc(var(--safe-top) + 24px) calc(var(--safe-right) + 20px) calc(var(--safe-bottom) + 24px) calc(var(--safe-left) + 20px);
-      -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; overflow-x: hidden;
+    html{height:-webkit-fill-available}
+    body{
+      font-family:'Inter',-apple-system,sans-serif;
+      background:var(--bg);color:var(--text);
+      min-height:100vh;min-height:-webkit-fill-available;
+      display:flex;flex-direction:column;align-items:center;
+      padding:calc(var(--st) + 28px) calc(var(--sr) + 20px) calc(var(--sb) + 28px) calc(var(--sl) + 20px);
+      -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow-x:hidden;
     }
-    body::before {
-      content: ''; position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(247,147,26,0.09) 0%, transparent 70%);
-      pointer-events: none; z-index: 0;
+    body::before{
+      content:'';position:fixed;top:-250px;left:50%;transform:translateX(-50%);
+      width:700px;height:700px;
+      background:radial-gradient(circle,rgba(247,147,26,0.07) 0%,transparent 65%);
+      pointer-events:none;z-index:0;
     }
-    .wrapper { position: relative; z-index: 1; width: 100%; max-width: 420px; margin: 0 auto; }
-    .header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; padding-top: 8px; }
-    .btc-icon {
-      width: 52px; height: 52px;
-      background: linear-gradient(135deg, #f7931a, #e8820c);
-      border-radius: 16px; display: flex; align-items: center; justify-content: center;
-      font-size: 28px; box-shadow: 0 0 28px var(--accent-glow); flex-shrink: 0;
+    .w{position:relative;z-index:1;width:100%;max-width:400px;margin:0 auto}
+    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+    .hl{display:flex;align-items:center;gap:12px}
+    .icon{
+      width:46px;height:46px;
+      background:linear-gradient(135deg,#f7931a,#f5a623);
+      border-radius:14px;display:flex;align-items:center;justify-content:center;
+      font-size:24px;font-weight:800;color:#fff;flex-shrink:0;
+      box-shadow:0 0 20px var(--aglow),0 4px 12px rgba(247,147,26,0.3);
     }
-    .header-text h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
-    .header-text p  { font-size: 13px; color: var(--muted); margin-top: 3px; }
-    .price-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 28px; padding: 28px 24px; margin-bottom: 14px;
-      position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent;
+    .ht h1{font-size:18px;font-weight:700;letter-spacing:-.2px}
+    .ht p{font-size:12px;color:var(--muted);margin-top:1px}
+    .live{
+      display:flex;align-items:center;gap:5px;
+      font-size:11px;font-weight:600;color:var(--green);
+      background:var(--gdim);padding:5px 10px;border-radius:99px;
     }
-    .price-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(247,147,26,0.4), transparent);
+    .live::before{
+      content:'';width:6px;height:6px;background:var(--green);
+      border-radius:50%;animation:pulse 2s ease-in-out infinite;
     }
-    .card-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
-    .price-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
-    .price-usd { font-size: 44px; font-weight: 800; letter-spacing: -2px; line-height: 1; display: flex; align-items: baseline; gap: 4px; }
-    .price-usd .currency { font-size: 22px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
-    .czk-block {
-      margin-top: 18px; background: var(--subtle); border-radius: 16px;
-      padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
+    .card{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:24px;padding:24px 22px 22px;margin-bottom:12px;
+      position:relative;overflow:hidden;
     }
-    .czk-label { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); }
-    .czk-value { font-size: 22px; font-weight: 700; display: flex; align-items: baseline; gap: 4px; }
-    .czk-value .czk-unit { font-size: 14px; font-weight: 500; color: var(--muted); }
-    .change-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 14px; font-weight: 600; padding: 6px 14px; border-radius: 50px; margin-top: 16px; }
-    .change-badge.positive { background: rgba(0,208,132,0.12); color: var(--green); }
-    .change-badge.negative { background: rgba(255,77,77,0.12); color: var(--red); }
-    .change-badge svg { width: 14px; height: 14px; }
-    .divider { height: 1px; background: var(--border); margin: 22px 0; }
-    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .stat-item { background: var(--subtle); border-radius: 16px; padding: 14px; }
-    .stat-label { font-size: 11px; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-    .stat-value { font-size: 15px; font-weight: 600; }
-    .refresh-btn {
-      display: flex; align-items: center; justify-content: center; gap: 9px;
-      width: 100%; min-height: 56px; padding: 14px;
-      background: linear-gradient(135deg, rgba(247,147,26,0.15), rgba(247,147,26,0.05));
-      border: 1px solid rgba(247,147,26,0.2); border-radius: 18px;
-      color: var(--accent); font-size: 15px; font-weight: 600;
-      cursor: pointer; font-family: inherit;
-      -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: all 0.2s ease;
+    .card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(247,147,26,.5),transparent);
     }
-    .refresh-btn:active { background: rgba(247,147,26,0.25); transform: scale(0.97); }
-    .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .refresh-btn.loading svg { animation: spin 0.8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .last-update { text-align: center; font-size: 12px; color: var(--muted); margin-top: 14px; padding-bottom: 4px; }
-    .skeleton {
-      background: linear-gradient(90deg, var(--subtle) 25%, var(--card) 50%, var(--subtle) 75%);
-      background-size: 200% 100%; animation: shimmer 1.2s infinite;
-      border-radius: 8px; color: transparent !important; user-select: none;
+    .ptag{font-size:10px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+    .pusd{font-size:42px;font-weight:800;letter-spacing:-2.5px;line-height:1;display:flex;align-items:baseline;gap:5px}
+    .pusd .sym{font-size:20px;font-weight:500;color:var(--muted);letter-spacing:0}
+    .czk-row{
+      display:flex;align-items:center;justify-content:space-between;
+      background:var(--sub);border-radius:14px;padding:13px 16px;margin-top:14px;
     }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-    .error-msg {
-      text-align: center; color: var(--red); font-size: 13px;
-      margin-top: 10px; display: none; padding: 10px;
-      background: rgba(255,77,77,0.08); border-radius: 12px;
+    .czk-row .cl{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+    .czk-row .ca{font-size:20px;font-weight:700;display:flex;align-items:baseline;gap:4px}
+    .czk-row .cs{font-size:13px;font-weight:500;color:var(--muted)}
+    .badge{
+      display:inline-flex;align-items:center;gap:5px;
+      font-size:13px;font-weight:600;padding:6px 13px;border-radius:99px;margin-top:14px;
     }
-    .live-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--green); font-weight: 500; }
-    .live-dot::before {
-      content: ''; width: 7px; height: 7px; background: var(--green);
-      border-radius: 50%; animation: pulse 1.8s ease-in-out infinite;
+    .badge.up{background:var(--gdim);color:var(--green)}
+    .badge.dn{background:var(--rdim);color:var(--red)}
+    .badge svg{width:13px;height:13px}
+    .div{height:1px;background:var(--border);margin:18px 0}
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .stat{background:var(--sub);border-radius:14px;padding:13px}
+    .slabel{font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+    .sval{font-size:14px;font-weight:700}
+    .btn{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      width:100%;min-height:54px;padding:14px;
+      background:var(--adim);border:1px solid rgba(247,147,26,.25);
+      border-radius:16px;color:var(--accent);
+      font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;
+      -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:all .15s;
     }
-    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.75); } }
+    .btn:active{transform:scale(.97);background:rgba(247,147,26,.25)}
+    .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .btn.loading svg{animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .err{
+      display:none;background:var(--rdim);border:1px solid rgba(239,68,68,.2);
+      border-radius:12px;padding:11px 14px;font-size:13px;color:var(--red);
+      margin-top:10px;text-align:center;
+    }
+    .ts{text-align:center;font-size:11px;color:var(--muted);margin-top:12px}
+    .src{text-align:center;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:.5px}
+    .sk{
+      background:linear-gradient(90deg,var(--sub) 25%,var(--card) 50%,var(--sub) 75%);
+      background-size:200% 100%;animation:sh 1.3s ease-in-out infinite;
+      border-radius:8px;color:transparent!important;user-select:none;display:inline-block;
+    }
+    @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
   </style>
 </head>
 <body>
-<div class="wrapper">
+<div class="w">
   <div class="header">
-    <div class="btc-icon">₿</div>
-    <div class="header-text">
-      <h1>Bitcoin Tracker</h1>
-      <p>Aktuální cena v reálném čase</p>
+    <div class="hl">
+      <div class="icon">₿</div>
+      <div class="ht"><h1>Bitcoin Tracker</h1><p>Aktuální cena v reálném čase</p></div>
+    </div>
+    <div class="live">Živě</div>
+  </div>
+
+  <div class="card">
+    <div class="ptag">USD</div>
+    <div class="pusd">
+      <span class="sym">$</span>
+      <span id="usd" class="sk" style="width:200px;height:42px"> </span>
+    </div>
+    <div class="czk-row">
+      <span class="cl">CZK</span>
+      <div class="ca">
+        <span id="czk" class="sk" style="width:140px;height:22px"> </span>
+        <span class="cs">Kč</span>
+      </div>
+    </div>
+    <div id="badge" class="badge up sk" style="width:130px;height:30px"> </div>
+    <div class="div"></div>
+    <div class="stats">
+      <div class="stat"><div class="slabel">24H HIGH</div><div class="sval" id="s1">…</div></div>
+      <div class="stat"><div class="slabel">24H LOW</div><div class="sval" id="s2">…</div></div>
+      <div class="stat"><div class="slabel">TRŽNÍ CAP</div><div class="sval" id="s3">…</div></div>
+      <div class="stat"><div class="slabel">OBJEM 24H</div><div class="sval" id="s4">…</div></div>
     </div>
   </div>
 
-  <div class="price-card">
-    <div class="card-top-row">
-      <div class="price-label">Aktuální cena</div>
-      <div class="live-dot">Živě</div>
-    </div>
-    <div class="price-label" style="margin-bottom:8px;">USD</div>
-    <div class="price-usd">
-      <span class="currency">$</span>
-      <span id="usdVal" class="skeleton">──────</span>
-    </div>
-    <div class="czk-block">
-      <span class="czk-label">CZK</span>
-      <div class="czk-value">
-        <span id="czkVal" class="skeleton">──────</span>
-        <span class="czk-unit">Kč</span>
-      </div>
-    </div>
-    <div id="changeBadge" class="change-badge positive skeleton" style="min-width:120px;min-height:32px;"> </div>
-    <div class="divider"></div>
-    <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-label">24H HIGH</div>
-        <div class="stat-value" id="stat1">…</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">24H LOW</div>
-        <div class="stat-value" id="stat2">…</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">OBJEM 24H</div>
-        <div class="stat-value" id="stat3">…</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">POČET OBCH.</div>
-        <div class="stat-value" id="stat4">…</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="error-msg" id="errorMsg"></div>
-
-  <button class="refresh-btn" id="refreshBtn" onclick="fetchPrice()">
+  <div class="err" id="err"></div>
+  <button class="btn" id="btn" onclick="load()">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18">
       <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
     </svg>
     Obnovit cenu
   </button>
-  <div class="last-update" id="lastUpdate">Načítám data…</div>
+  <div class="ts" id="ts">Načítám data…</div>
+  <div class="src" id="src"></div>
 </div>
 
 <script>
-  const API_KRAKEN = 'https://api.kraken.com/0/public/Ticker?pair=XBTUSD';
-  const API_FX     = 'https://api.frankfurter.app/latest?from=USD&to=CZK';
+const $=id=>document.getElementById(id);
+const fmt=(n,d=0)=>new Intl.NumberFormat('cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
+const fmtB=n=>n>=1e12?(n/1e12).toFixed(2)+' bil.':n>=1e9?(n/1e9).toFixed(2)+' mld.':n>=1e6?(n/1e6).toFixed(1)+' mil.':fmt(n);
+const pct=n=>(n>=0?'+':'')+parseFloat(n).toFixed(2)+'%';
+// allorigins raw — vrací přímo JSON bez wrapperu
+const proxy=url=>`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
 
-  function fmt(n, dec = 0) {
-    return new Intl.NumberFormat('cs-CZ', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(n);
+async function load(){
+  const btn=$('btn'),err=$('err');
+  if(btn.disabled)return;
+  btn.disabled=true;btn.classList.add('loading');err.style.display='none';
+  try{
+    // FX kurz
+    const fx=await fetch(proxy('https://api.frankfurter.app/latest?from=USD&to=CZK'));
+    const fxj=await fx.json();
+    const rate=fxj.rates.CZK;
+
+    // Bitcoin data — zkusíme postupně
+    let d=null,src='';
+    // 1. CoinGecko
+    try{
+      const r=await fetch(proxy('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin&sparkline=false'),{signal:AbortSignal.timeout(8000)});
+      const j=await r.json();
+      const b=j[0];
+      d={usd:b.current_price,czk:b.current_price*rate,ch:b.price_change_percentage_24h,hi:b.high_24h,lo:b.low_24h,cap:b.market_cap,vol:b.total_volume};
+      src='CoinGecko';
+    }catch(e){}
+
+    // 2. Kraken
+    if(!d)try{
+      const r=await fetch(proxy('https://api.kraken.com/0/public/Ticker?pair=XBTUSD'),{signal:AbortSignal.timeout(8000)});
+      const j=await r.json();
+      const t=j.result['XXBTZUSD'];
+      const usd=parseFloat(t.c[0]);
+      d={usd,czk:usd*rate,ch:parseFloat(t.P[1]),hi:parseFloat(t.h[1]),lo:parseFloat(t.l[1]),cap:usd*19700000,vol:parseFloat(t.v[1])*usd};
+      src='Kraken';
+    }catch(e){}
+
+    // 3. CoinLore
+    if(!d)try{
+      const r=await fetch(proxy('https://api.coinlore.net/api/ticker/?id=90'),{signal:AbortSignal.timeout(8000)});
+      const j=await r.json();
+      const b=j[0];const usd=parseFloat(b.price_usd);
+      d={usd,czk:usd*rate,ch:parseFloat(b.percent_change_24h),hi:usd*1.01,lo:usd*0.99,cap:parseFloat(b.market_cap_usd),vol:parseFloat(b.volume24)};
+      src='CoinLore';
+    }catch(e){}
+
+    if(!d)throw new Error('Všechna API selhala');
+
+    // Render
+    const uel=$('usd'),cel=$('czk'),bad=$('badge');
+    uel.className='';uel.textContent=fmt(d.usd);
+    cel.className='';cel.textContent=fmt(d.czk);
+    bad.className='badge '+(d.ch>=0?'up':'dn');
+    bad.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${d.ch>=0?'M5 15l7-7 7 7':'M19 9l-7 7-7-7'}"/></svg>${pct(d.ch)} za 24h`;
+    $('s1').textContent='$'+fmt(d.hi);
+    $('s2').textContent='$'+fmt(d.lo);
+    $('s3').textContent='$'+fmtB(d.cap);
+    $('s4').textContent='$'+fmtB(d.vol);
+    const now=new Date();
+    $('ts').textContent='Aktualizováno: '+now.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    $('src').textContent='Zdroj: '+src;
+  }catch(e){
+    err.textContent='⚠ Nepodařilo se načíst data. Zkuste to znovu.';
+    err.style.display='block';
+    $('ts').textContent='Chyba při načítání.';
+    console.error(e);
+  }finally{
+    btn.disabled=false;btn.classList.remove('loading');
   }
-  function fmtLarge(n) {
-    if (n >= 1e12) return (n/1e12).toFixed(2) + ' bil.';
-    if (n >= 1e9)  return (n/1e9).toFixed(2) + ' mld.';
-    if (n >= 1e6)  return (n/1e6).toFixed(1) + ' mil.';
-    return fmt(n);
-  }
-  function pct(n) { return (n >= 0 ? '+' : '') + parseFloat(n).toFixed(2) + '%'; }
+}
 
-  async function fetchPrice() {
-    const btn   = document.getElementById('refreshBtn');
-    const errEl = document.getElementById('errorMsg');
-    if (btn.disabled) return;
-    btn.disabled = true;
-    btn.classList.add('loading');
-    errEl.style.display = 'none';
-
-    try {
-      const [r1, r2] = await Promise.all([
-        fetch(API_KRAKEN),
-        fetch(API_FX)
-      ]);
-      if (!r1.ok || !r2.ok) throw new Error('Chyba API');
-
-      const data   = await r1.json();
-      const fx     = await r2.json();
-
-      if (data.error && data.error.length > 0) throw new Error(data.error[0]);
-
-      const ticker = data.result['XXBTZUSD'];
-      const usd    = parseFloat(ticker.c[0]);
-      const czk    = usd * fx.rates.CZK;
-      const change = parseFloat(ticker.P[1]);
-      const high   = parseFloat(ticker.h[1]);
-      const low    = parseFloat(ticker.l[1]);
-      const vol    = parseFloat(ticker.v[1]) * usd;
-      const trades = parseInt(ticker.t[1]);
-
-      const usdEl = document.getElementById('usdVal');
-      usdEl.textContent = fmt(usd);
-      usdEl.classList.remove('skeleton');
-
-      const czkEl = document.getElementById('czkVal');
-      czkEl.textContent = fmt(czk);
-      czkEl.classList.remove('skeleton');
-
-      const badge = document.getElementById('changeBadge');
-      badge.className = 'change-badge ' + (change >= 0 ? 'positive' : 'negative');
-      badge.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="${change >= 0 ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'}"/>
-        </svg>
-        ${pct(change)} za 24h`;
-
-      document.getElementById('stat1').textContent = '$' + fmt(high);
-      document.getElementById('stat2').textContent = '$' + fmt(low);
-      document.getElementById('stat3').textContent = '$' + fmtLarge(vol);
-      document.getElementById('stat4').textContent = fmt(trades) + ' obch.';
-
-      const now = new Date();
-      document.getElementById('lastUpdate').textContent =
-        'Aktualizováno: ' + now.toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-    } catch(e) {
-      errEl.textContent = '⚠ Nepodařilo se načíst data. Zkontrolujte připojení.';
-      errEl.style.display = 'block';
-      document.getElementById('lastUpdate').textContent = 'Chyba při načítání.';
-    } finally {
-      btn.disabled = false;
-      btn.classList.remove('loading');
-    }
-  }
-
-  fetchPrice();
-  setInterval(fetchPrice, 90000);
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') fetchPrice();
-  });
+load();
+setInterval(load,90000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load();});
 </script>
 </body>
 </html>
