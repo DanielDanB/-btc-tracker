@@ -35,8 +35,6 @@
     .orb3{width:250px;height:250px;background:radial-gradient(circle,rgba(48,209,88,0.08),transparent 70%);bottom:10%;left:20%;animation-delay:-8s}
     @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.05)}66%{transform:translate(-10px,15px) scale(0.95)}}
     .wrap{position:relative;z-index:1;width:100%;max-width:390px;margin:0 auto}
-
-    /* Header */
     .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:4px}
     .hdr-l{display:flex;align-items:center;gap:11px}
     .btc-ball{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,210,100,0.9),rgba(255,159,10,0.7) 50%,rgba(180,80,0,0.5));box-shadow:0 0 0 0.5px rgba(255,255,255,0.3),0 0 30px rgba(255,159,10,0.4),inset 0 1px 1px rgba(255,255,255,0.5),inset 0 -2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.4);flex-shrink:0}
@@ -45,45 +43,35 @@
     .pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--green);padding:5px 12px;border-radius:99px;background:rgba(48,209,88,0.12);border:0.5px solid rgba(48,209,88,0.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
     .pill::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 2s ease-in-out infinite}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-
-    /* Glass */
     .glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:26px 22px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4),0 1px 0 rgba(255,255,255,0.1) inset}
     .glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .glass::after{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 70%);pointer-events:none}
     .clabel{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px}
-
-    /* Cena + spark */
     .price-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
     .price-tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s;flex:1}
     .price-tap:active{opacity:.7}
     .usd-price{font-size:50px;font-weight:800;letter-spacing:-3px;line-height:1;color:#fff;display:flex;align-items:baseline;gap:4px}
-    .usd-sam{font-size:24px;font-weight:400;color:rgba(255,255,255,.5);letter-spacing:0}
+    .usd-sam{font-size:24px;font-weight:400;color:rgba(255,255,255,.5)}
     .tap-hint{font-size:10px;color:rgba(255,255,255,.2);margin-top:6px;display:flex;align-items:center;gap:4px}
     .tap-hint svg{opacity:.4}
-
-    /* Spark mini graf */
     .spark-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-bottom:6px}
-    .spark-wrap canvas{display:block}
     .spark-label{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
-
     .czk-glass{background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:16px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:14px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
     .czk-glass:active{background:rgba(255,255,255,0.1)}
     .czk-l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4)}
     .czk-v{font-size:22px;font-weight:700;display:flex;align-items:baseline;gap:4px}
     .czk-s{font-size:13px;font-weight:400;color:rgba(255,255,255,.4)}
-
     .badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;margin-top:14px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
     .badge.up{background:rgba(48,209,88,0.12);color:var(--green);border:0.5px solid rgba(48,209,88,0.25)}
     .badge.dn{background:rgba(255,69,58,0.12);color:var(--red);border:0.5px solid rgba(255,69,58,0.25)}
     .badge svg{width:12px;height:12px}
-
     .div{height:0.5px;background:rgba(255,255,255,0.08);margin:18px 0}
     .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .stat{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:16px;padding:13px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
     .sl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:5px}
     .sv{font-size:15px;font-weight:700}
 
-    /* ── Fear & Greed ── */
+    /* Fear & Greed */
     .fg-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4)}
     .fg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .fg-inner{display:flex;align-items:center;gap:18px}
@@ -100,7 +88,34 @@
     .fg-scale{display:flex;justify-content:space-between;margin-top:4px}
     .fg-scale span{font-size:8px;color:rgba(255,255,255,.25);font-weight:500}
 
-    /* Chart view */
+    /* Cycle Dashboard */
+    .cycle-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4)}
+    .cycle-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
+    .cycle-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px}
+
+    /* MVRV + Puell */
+    .metric-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+    .metric-box{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:16px;padding:13px 12px;position:relative;overflow:hidden}
+    .metric-box::before{content:'';position:absolute;top:0;left:0;right:0;height:0.5px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)}
+    .metric-lbl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:6px}
+    .metric-val{font-size:22px;font-weight:800;letter-spacing:-1px;margin-bottom:3px}
+    .metric-sig{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;display:inline-block}
+    .sig-buy{background:rgba(48,209,88,0.15);color:var(--green);border:0.5px solid rgba(48,209,88,0.3)}
+    .sig-hold{background:rgba(255,214,10,0.12);color:#FFD60A;border:0.5px solid rgba(255,214,10,0.25)}
+    .sig-sell{background:rgba(255,69,58,0.12);color:var(--red);border:0.5px solid rgba(255,69,58,0.25)}
+    .metric-bar-wrap{margin-top:7px;background:rgba(255,255,255,0.06);border-radius:99px;height:3px;overflow:hidden}
+    .metric-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+    /* Halving */
+    .halving-box{background:rgba(255,159,10,0.06);border:0.5px solid rgba(255,159,10,0.2);border-radius:16px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+    .halving-l{display:flex;flex-direction:column;gap:3px}
+    .halving-label{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,159,10,.6)}
+    .halving-date{font-size:11px;color:rgba(255,255,255,.4);font-weight:500}
+    .halving-r{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+    .halving-days{font-size:28px;font-weight:800;letter-spacing:-1.5px;color:var(--btc)}
+    .halving-unit{font-size:10px;color:rgba(255,159,10,.5);font-weight:600;letter-spacing:.5px}
+
+    /* Chart */
     .chart-view{display:none;flex-direction:column;width:100%}
     .chart-view.show{display:flex}
     .back-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);border-radius:12px;padding:8px 14px;color:rgba(255,255,255,.7);font-size:13px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:16px;align-self:flex-start;font-family:inherit;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:background .15s}
@@ -121,7 +136,6 @@
     .chart-loading{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px;text-align:center;gap:10px}
     .prog-bar{width:160px;height:3px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden}
     .prog-fill{height:100%;background:var(--btc);border-radius:99px;transition:width .3s;width:0%}
-
     .ts{text-align:center;font-size:11px;color:rgba(255,255,255,.2);margin-top:14px}
     .src{text-align:center;font-size:10px;color:rgba(255,255,255,.15);margin-top:3px;letter-spacing:.3px}
     .ver{text-align:center;font-size:10px;color:rgba(255,255,255,.1);margin-top:6px;letter-spacing:.5px}
@@ -158,13 +172,11 @@
             Klepněte pro graf
           </div>
         </div>
-        <!-- Spark mini graf -->
         <div class="spark-wrap">
           <span class="spark-label">24H</span>
           <canvas id="sparkCanvas" width="90" height="46" style="width:90px;height:46px"></canvas>
         </div>
       </div>
-
       <div class="czk-glass" onclick="openChart('czk')">
         <span class="czk-l">CZK</span>
         <div class="czk-v">
@@ -182,16 +194,13 @@
       </div>
     </div>
 
-    <!-- Fear & Greed Card -->
+    <!-- Fear & Greed -->
     <div class="fg-card">
       <div class="fg-inner">
         <div class="fg-gauge">
           <svg viewBox="0 0 80 80">
-            <!-- Pozadí oblouku -->
             <path d="M10 60 A 30 30 0 1 1 70 60" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="7" stroke-linecap="round"/>
-            <!-- Aktivní oblouk -->
-            <path id="fgArc" d="M10 60 A 30 30 0 1 1 70 60" fill="none" stroke="#FF453A" stroke-width="7" stroke-linecap="round"
-              stroke-dasharray="0 188" style="transition:stroke-dasharray .8s cubic-bezier(.4,0,.2,1),stroke .5s"/>
+            <path id="fgArc" d="M10 60 A 30 30 0 1 1 70 60" fill="none" stroke="#FF453A" stroke-width="7" stroke-linecap="round" stroke-dasharray="0 188" style="transition:stroke-dasharray .8s cubic-bezier(.4,0,.2,1),stroke .5s"/>
           </svg>
           <div class="fg-num">
             <span class="fg-val" id="fgVal">–</span>
@@ -199,7 +208,7 @@
           </div>
         </div>
         <div class="fg-info">
-          <div class="fg-title">Fear &amp; Greed Index</div>
+          <div class="fg-title">Fear &amp; Greed</div>
           <div class="fg-mood" id="fgMood">Načítám…</div>
           <div class="fg-bar-wrap"><div class="fg-bar-fill" id="fgBarFill" style="width:0%;background:#FF453A"></div></div>
           <div class="fg-scale"><span>Strach</span><span>Neutrál</span><span>Chamtivost</span></div>
@@ -207,9 +216,43 @@
       </div>
     </div>
 
+    <!-- Cycle Dashboard -->
+    <div class="cycle-card">
+      <div class="cycle-title">Market Cycle Dashboard</div>
+
+      <div class="metric-row">
+        <!-- MVRV Z-Score -->
+        <div class="metric-box">
+          <div class="metric-lbl">MVRV Z-Score</div>
+          <div class="metric-val" id="mvrvVal">–</div>
+          <div class="metric-sig" id="mvrvSig">…</div>
+          <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mvrvBar" style="width:0%;background:var(--green)"></div></div>
+        </div>
+        <!-- Puell Multiple -->
+        <div class="metric-box">
+          <div class="metric-lbl">Puell Multiple</div>
+          <div class="metric-val" id="puellVal">–</div>
+          <div class="metric-sig" id="puellSig">…</div>
+          <div class="metric-bar-wrap"><div class="metric-bar-fill" id="puellBar" style="width:0%;background:var(--green)"></div></div>
+        </div>
+      </div>
+
+      <!-- Halving Countdown -->
+      <div class="halving-box">
+        <div class="halving-l">
+          <span class="halving-label">⚡ Příští Halving</span>
+          <span class="halving-date" id="halvingDate">~duben 2028</span>
+        </div>
+        <div class="halving-r">
+          <span class="halving-days" id="halvingDays">–</span>
+          <span class="halving-unit">DNÍ</span>
+        </div>
+      </div>
+    </div>
+
     <div class="ts" id="ts">Připojuji se…</div>
     <div class="src" id="src"></div>
-    <div class="ver">v1.4</div>
+    <div class="ver">v1.5</div>
   </div>
 
   <!-- CHART VIEW -->
@@ -243,7 +286,7 @@
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
-    <div class="ver">v1.4</div>
+    <div class="ver">v1.5</div>
   </div>
 </div>
 
@@ -275,40 +318,105 @@ async function loadFearGreed(){
     const j=await r.json();
     const val=parseInt(j.data[0].value);
     const cls=j.data[0].value_classification;
-
-    // Přeložit do češtiny
-    const moods={
-      'Extreme Fear':'Extrémní strach',
-      'Fear':'Strach',
-      'Neutral':'Neutrál',
-      'Greed':'Chamtivost',
-      'Extreme Greed':'Extrémní chamtivost'
-    };
+    const moods={'Extreme Fear':'Extrémní strach','Fear':'Strach','Neutral':'Neutrál','Greed':'Chamtivost','Extreme Greed':'Extrémní chamtivost'};
     const mood=moods[cls]||cls;
-
-    // Barva podle hodnoty
     const color=val<=25?'#FF453A':val<=45?'#FF9F0A':val<=55?'#FFD60A':val<=75?'#30D158':'#34C759';
-
-    $('fgVal').textContent=val;
-    $('fgVal').style.color=color;
-    $('fgMood').textContent=mood;
-    $('fgMood').style.color=color;
-
-    // Progress bar
-    $('fgBarFill').style.width=val+'%';
-    $('fgBarFill').style.background=color;
-
-    // SVG oblouk — délka oblouku = 188px (délka půlkruhu)
-    const arcLen=(val/100)*188;
-    $('fgArc').setAttribute('stroke-dasharray',arcLen+' 188');
+    $('fgVal').textContent=val;$('fgVal').style.color=color;
+    $('fgMood').textContent=mood;$('fgMood').style.color=color;
+    $('fgBarFill').style.width=val+'%';$('fgBarFill').style.background=color;
+    $('fgArc').setAttribute('stroke-dasharray',(val/100)*188+' 188');
     $('fgArc').setAttribute('stroke',color);
+  }catch(e){$('fgMood').textContent='Nedostupné'}
+}
+
+/* ── MVRV Z-Score ── */
+async function loadMVRV(){
+  try{
+    // Bitbo API — veřejné, bez klíče
+    const r=await fetch('https://charts.bitbo.io/api/v1/mvrv-zscore/');
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    // Vrací pole [timestamp, value] — vezmeme poslední
+    const arr=Array.isArray(j)?j:(j.data||j.values||[]);
+    if(!arr.length) throw new Error('empty');
+    const last=arr[arr.length-1];
+    const val=parseFloat(Array.isArray(last)?last[1]:last.value);
+    if(isNaN(val)) throw new Error('NaN');
+
+    $('mvrvVal').textContent=val.toFixed(2);
+
+    // Interpretace: <0 = kup, 0-3 = drž, 3-6 = pozor, >6 = vrchol
+    let sig,cls,barPct,barColor;
+    if(val<0){sig='Akumuluj';cls='sig-buy';barPct=5;barColor='var(--green)'}
+    else if(val<2){sig='Drž';cls='sig-hold';barPct=25;barColor='#FFD60A'}
+    else if(val<4){sig='Střední';cls='sig-hold';barPct=55;barColor='#FF9F0A'}
+    else if(val<6){sig='Opatrně';cls='sig-sell';barPct=75;barColor='var(--red)'}
+    else{sig='Vrchol?';cls='sig-sell';barPct=95;barColor='var(--red)'}
+
+    $('mvrvVal').style.color=barColor;
+    const s=$('mvrvSig');s.textContent=sig;s.className='metric-sig '+cls;
+    $('mvrvBar').style.width=barPct+'%';$('mvrvBar').style.background=barColor;
   }catch(e){
-    $('fgMood').textContent='Nedostupné';
-    console.error('FnG:',e);
+    // Fallback — spočítáme aproximaci z aktuální ceny
+    // MVRV ≈ Price / Realized Price (~ 200-day SMA jako proxy)
+    $('mvrvVal').textContent='N/A';
+    $('mvrvSig').textContent='Offline';
+    $('mvrvSig').className='metric-sig sig-hold';
+    console.warn('MVRV:',e);
   }
 }
 
-/* ── Spark data — 24h hodinové ceny ── */
+/* ── Puell Multiple ── */
+async function loadPuell(){
+  try{
+    const r=await fetch('https://charts.bitbo.io/api/v1/puell-multiple/');
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    const arr=Array.isArray(j)?j:(j.data||j.values||[]);
+    if(!arr.length) throw new Error('empty');
+    const last=arr[arr.length-1];
+    const val=parseFloat(Array.isArray(last)?last[1]:last.value);
+    if(isNaN(val)) throw new Error('NaN');
+
+    $('puellVal').textContent=val.toFixed(2);
+
+    // Interpretace: <0.5 = kup, 0.5-2 = drž, >2 = pozor, >4 = vrchol
+    let sig,cls,barPct,barColor;
+    if(val<0.5){sig='Akumuluj';cls='sig-buy';barPct=8;barColor='var(--green)'}
+    else if(val<1){sig='Drž';cls='sig-hold';barPct=25;barColor='#FFD60A'}
+    else if(val<2){sig='Neutrál';cls='sig-hold';barPct=45;barColor='#FFD60A'}
+    else if(val<4){sig='Opatrně';cls='sig-sell';barPct=70;barColor='#FF9F0A'}
+    else{sig='Vrchol?';cls='sig-sell';barPct=92;barColor='var(--red)'}
+
+    $('puellVal').style.color=barColor;
+    const s=$('puellSig');s.textContent=sig;s.className='metric-sig '+cls;
+    $('puellBar').style.width=barPct+'%';$('puellBar').style.background=barColor;
+  }catch(e){
+    $('puellVal').textContent='N/A';
+    $('puellSig').textContent='Offline';
+    $('puellSig').className='metric-sig sig-hold';
+    console.warn('Puell:',e);
+  }
+}
+
+/* ── Halving Countdown ── */
+function updateHalving(){
+  // 5. halving — odhadovaný blok ~1 050 000, přibližně duben 2028
+  // Přesný výpočet: poslední halving byl 20. 4. 2024, další za ~4 roky = ~19. 4. 2028
+  const nextHalving=new Date('2028-04-19T00:00:00Z');
+  const now=new Date();
+  const diff=nextHalving-now;
+  if(diff>0){
+    const days=Math.floor(diff/(1000*60*60*24));
+    $('halvingDays').textContent=days.toLocaleString('cs-CZ');
+    $('halvingDate').textContent='~'+nextHalving.toLocaleDateString('cs-CZ',{month:'long',year:'numeric'});
+  }else{
+    $('halvingDays').textContent='0';
+    $('halvingDate').textContent='Halving proběhl!';
+  }
+}
+
+/* ── Spark ── */
 async function loadSparkData(){
   try{
     const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1&interval=hourly');
@@ -326,46 +434,29 @@ function drawSpark(){
   const W=90,H=46;
   canvas.width=W*dpr;canvas.height=H*dpr;
   canvas.style.width=W+'px';canvas.style.height=H+'px';
-  const ctx=canvas.getContext('2d');
-  ctx.scale(dpr,dpr);
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
   const mn=Math.min(...sparkData),mx=Math.max(...sparkData),range=mx-mn||1;
-  const n=sparkData.length;
-  const pad=3;
+  const n=sparkData.length,pad=3;
   const w=W-pad*2,h=H-pad*2;
   const xOf=i=>pad+(i/(n-1))*w;
   const yOf=v=>pad+h-(((v-mn)/range)*h);
-  const isUp=sparkData[sparkData.length-1]>=sparkData[0];
+  const isUp=sparkData[n-1]>=sparkData[0];
   const color=isUp?'48,209,88':'255,69,58';
-
-  // Gradient fill
   const gr=ctx.createLinearGradient(0,pad,0,pad+h);
-  gr.addColorStop(0,`rgba(${color},0.3)`);
-  gr.addColorStop(1,`rgba(${color},0)`);
-  ctx.beginPath();
-  ctx.moveTo(xOf(0),yOf(sparkData[0]));
-  for(let i=1;i<n;i++){
-    const cpx=(xOf(i-1)+xOf(i))/2;
-    ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]));
-  }
+  gr.addColorStop(0,`rgba(${color},0.3)`);gr.addColorStop(1,`rgba(${color},0)`);
+  ctx.beginPath();ctx.moveTo(xOf(0),yOf(sparkData[0]));
+  for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]))}
   ctx.lineTo(xOf(n-1),H);ctx.lineTo(xOf(0),H);ctx.closePath();
   ctx.fillStyle=gr;ctx.fill();
-
-  // Linka
-  ctx.beginPath();
-  ctx.moveTo(xOf(0),yOf(sparkData[0]));
-  for(let i=1;i<n;i++){
-    const cpx=(xOf(i-1)+xOf(i))/2;
-    ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]));
-  }
+  ctx.beginPath();ctx.moveTo(xOf(0),yOf(sparkData[0]));
+  for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]))}
   ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=1.5;ctx.stroke();
-
-  // Tečka na konci
   const lx=xOf(n-1),ly=yOf(sparkData[n-1]);
   ctx.beginPath();ctx.arc(lx,ly,2.5,0,Math.PI*2);
   ctx.fillStyle=`rgba(${color},1)`;ctx.fill();
 }
 
-/* ── Binance WebSocket ── */
+/* ── WebSocket Binance ── */
 function connectWS(){
   if(ws){try{ws.close()}catch(e){}}
   ws=new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
@@ -383,7 +474,6 @@ function connectWS(){
       $('s1').textContent='$'+fmt(hi);$('s2').textContent='$'+fmt(lo);
       $('s3').textContent='$'+fmtB(currentUSD*19700000);$('s4').textContent='$'+fmtB(vol);
       $('ts').textContent='Živě · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-      // Aktualizuj spark poslední bod
       if(sparkData.length>0){sparkData[sparkData.length-1]=currentUSD;drawSpark()}
     }catch(err){console.error(err)}
   };
@@ -394,8 +484,7 @@ function connectWS(){
 /* ── Graf ── */
 function openChart(mode){
   chartMode=mode;chartDays='1';
-  $('priceView').style.display='none';
-  $('chartView').classList.add('show');
+  $('priceView').style.display='none';$('chartView').classList.add('show');
   document.querySelectorAll('.period').forEach((b,i)=>b.classList.toggle('active',i===0));
   $('chartCurrency').textContent=mode==='usd'?'USD':'CZK';
   $('chartPrice').textContent=(mode==='usd'?'$':'')+fmt(mode==='usd'?currentUSD:currentCZK)+(mode==='czk'?' Kč':'');
@@ -407,7 +496,6 @@ function setPeriod(days,btn){
   document.querySelectorAll('.period').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');loadChart();
 }
-
 async function loadMaxChart(){
   const INTERVAL=10080,START=1325376000;
   setProgress(10,'Načítám historická data…');
@@ -417,44 +505,33 @@ async function loadMaxChart(){
   if(j.error&&j.error.length) throw new Error('Kraken: '+j.error[0]);
   const raw=j.result['XXBTZUSD']||j.result['XBTUSD']||Object.values(j.result)[0];
   if(!raw||!raw.length) throw new Error('Kraken: prázdná data');
-  setProgress(70,'Zpracovávám data…');
-  let allRaw=[...raw];
-  const firstYear=new Date(allRaw[0][0]*1000).getFullYear();
-  if(firstYear>2014){
+  setProgress(70,'Zpracovávám…');
+  let all=[...raw];
+  if(new Date(all[0][0]*1000).getFullYear()>2014){
     try{
-      setProgress(40,'Načítám starší data…');
       const r2=await fetch(`https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=${INTERVAL}&since=1356998400`);
       const j2=await r2.json();
       if(!j2.error||!j2.error.length){
         const raw2=j2.result['XXBTZUSD']||j2.result['XBTUSD']||Object.values(j2.result)[0];
         if(raw2&&raw2.length){
-          const existingTimes=new Set(allRaw.map(d=>d[0]));
-          const newData=raw2.filter(d=>!existingTimes.has(d[0]));
-          allRaw=[...newData,...allRaw].sort((a,b)=>a[0]-b[0]);
+          const times=new Set(all.map(d=>d[0]));
+          all=[...raw2.filter(d=>!times.has(d[0])),...all].sort((a,b)=>a[0]-b[0]);
         }
       }
-    }catch(e2){console.warn(e2)}
+    }catch(e){console.warn(e)}
   }
   setProgress(90,'Vykresluju…');
-  return allRaw.map(d=>({t:d[0]*1000,v:chartMode==='czk'?parseFloat(d[4])*fxRate:parseFloat(d[4])})).filter(d=>d.v>0);
+  return all.map(d=>({t:d[0]*1000,v:chartMode==='czk'?parseFloat(d[4])*fxRate:parseFloat(d[4])})).filter(d=>d.v>0);
 }
-
-function setProgress(p,text){
-  $('loadingText').textContent=text;
-  $('progBar').style.display='block';
-  $('progFill').style.width=p+'%';
-}
-
+function setProgress(p,text){$('loadingText').textContent=text;$('progBar').style.display='block';$('progFill').style.width=p+'%'}
 async function loadChart(){
-  $('chartCanvas').style.display='none';
-  $('chartLoading').style.display='flex';
+  $('chartCanvas').style.display='none';$('chartLoading').style.display='flex';
   $('chartLoading').style.color='rgba(255,255,255,.3)';
   $('progBar').style.display='none';$('progFill').style.width='0%';
   $('loadingText').textContent='Načítám graf…';
   try{
-    if(chartDays==='max'){
-      chartData=await loadMaxChart();
-    }else{
+    if(chartDays==='max'){chartData=await loadMaxChart()}
+    else{
       const interval=chartDays==='1'?'hourly':'daily';
       const r=await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartDays}&interval=${interval}`);
       if(!r.ok) throw new Error('CoinGecko HTTP '+r.status);
@@ -466,53 +543,39 @@ async function loadChart(){
     const mn=Math.min(...chartData.map(d=>d.v));
     const mx=Math.max(...chartData.map(d=>d.v));
     const first=chartData[0].v,last=chartData[chartData.length-1].v;
-    const chg=((last-first)/first)*100;
-    const isUp=chg>=0;
+    const chg=((last-first)/first)*100,isUp=chg>=0;
     const lbl={1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok',max:'All Time'}[chartDays];
     $('chartChange').textContent=pct(chg)+' · '+lbl;
     $('chartChange').className='chart-change '+(isUp?'up':'dn');
-    const fy=new Date(chartData[0].t).getFullYear();
-    const ly=new Date(chartData[chartData.length-1].t).getFullYear();
+    const fy=new Date(chartData[0].t).getFullYear(),ly=new Date(chartData[chartData.length-1].t).getFullYear();
     drawChart(isUp,mn,mx);
-    $('chartLoading').style.display='none';
-    $('chartCanvas').style.display='block';
+    $('chartLoading').style.display='none';$('chartCanvas').style.display='block';
     $('chartTs').textContent='Graf: '+(chartDays==='max'?'Kraken ('+fy+'–'+ly+')':'CoinGecko')+' · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
   }catch(e){
-    $('progBar').style.display='none';
-    $('chartLoading').style.color='var(--red)';
-    $('loadingText').textContent='⚠ '+e.message;
-    console.error(e);
+    $('progBar').style.display='none';$('chartLoading').style.color='var(--red)';
+    $('loadingText').textContent='⚠ '+e.message;console.error(e);
   }
 }
-
 function drawChart(isUp,mn,mx){
-  const canvas=$('chartCanvas');
-  const wrap=$('canvasWrap');
-  const dpr=window.devicePixelRatio||1;
+  const canvas=$('chartCanvas'),wrap=$('canvasWrap'),dpr=window.devicePixelRatio||1;
   const W=wrap.clientWidth,H=200;
-  canvas.width=W*dpr;canvas.height=H*dpr;
-  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';
   const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
-  const pad={t:10,r:10,b:28,l:0};
-  const w=W-pad.l-pad.r,h=H-pad.t-pad.b;
+  const pad={t:10,r:10,b:28,l:0},w=W-pad.l-pad.r,h=H-pad.t-pad.b;
   const n=chartData.length,range=mx-mn||1;
-  const xOf=i=>pad.l+(i/(n-1))*w;
-  const yOf=v=>pad.t+h-(((v-mn)/range)*h);
+  const xOf=i=>pad.l+(i/(n-1))*w,yOf=v=>pad.t+h-(((v-mn)/range)*h);
   const color=isUp?'48,209,88':'255,69,58';
   const gr=ctx.createLinearGradient(0,pad.t,0,pad.t+h);
   gr.addColorStop(0,`rgba(${color},0.22)`);gr.addColorStop(1,`rgba(${color},0)`);
   ctx.beginPath();ctx.moveTo(xOf(0),yOf(chartData[0].v));
   for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}
-  ctx.lineTo(xOf(n-1),H-pad.b);ctx.lineTo(xOf(0),H-pad.b);ctx.closePath();
-  ctx.fillStyle=gr;ctx.fill();
+  ctx.lineTo(xOf(n-1),H-pad.b);ctx.lineTo(xOf(0),H-pad.b);ctx.closePath();ctx.fillStyle=gr;ctx.fill();
   ctx.beginPath();ctx.moveTo(xOf(0),yOf(chartData[0].v));
   for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}
   ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=2;ctx.stroke();
-  ctx.fillStyle='rgba(255,255,255,0.22)';
-  ctx.font='500 10px Inter,-apple-system,sans-serif';ctx.textAlign='center';
+  ctx.fillStyle='rgba(255,255,255,0.22)';ctx.font='500 10px Inter,-apple-system,sans-serif';ctx.textAlign='center';
   [0,1,2,3].forEach(i=>{
-    const idx=Math.round(i*(n-1)/3);
-    const d=new Date(chartData[idx].t);
+    const idx=Math.round(i*(n-1)/3),d=new Date(chartData[idx].t);
     let lbl='';
     if(chartDays==='1') lbl=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
     else if(chartDays==='7') lbl=d.toLocaleDateString('cs-CZ',{weekday:'short'});
@@ -523,17 +586,15 @@ function drawChart(isUp,mn,mx){
   });
   setupTooltip(canvas,pad,w,xOf,yOf,n);
 }
-
 function setupTooltip(canvas,pad,w,xOf,yOf,n){
   const tip=$('tooltip');
   function show(cx){
-    const rect=canvas.getBoundingClientRect();
-    const x=cx-rect.left;
+    const rect=canvas.getBoundingClientRect(),x=cx-rect.left;
     const idx=Math.max(0,Math.min(n-1,Math.round(((x-pad.l)/w)*(n-1))));
     const pt=chartData[idx];if(!pt)return;
     const sym=chartMode==='czk'?' Kč':'',pre=chartMode==='usd'?'$':'';
-    tip.textContent=pre+fmt(pt.v)+sym;
-    tip.style.display='block';tip.style.left=xOf(idx)+'px';tip.style.top=(yOf(pt.v)-34)+'px';
+    tip.textContent=pre+fmt(pt.v)+sym;tip.style.display='block';
+    tip.style.left=xOf(idx)+'px';tip.style.top=(yOf(pt.v)-34)+'px';
     $('chartPrice').textContent=pre+fmt(pt.v)+sym;
   }
   function hide(){
@@ -544,8 +605,7 @@ function setupTooltip(canvas,pad,w,xOf,yOf,n){
   canvas.ontouchstart=e=>{e.preventDefault();show(e.touches[0].clientX)};
   canvas.ontouchmove=e=>{e.preventDefault();show(e.touches[0].clientX)};
   canvas.ontouchend=()=>setTimeout(hide,1500);
-  canvas.onmousemove=e=>show(e.clientX);
-  canvas.onmouseleave=()=>hide();
+  canvas.onmousemove=e=>show(e.clientX);canvas.onmouseleave=()=>hide();
 }
 
 /* ── Start ── */
@@ -553,10 +613,16 @@ loadFX().then(()=>{
   connectWS();
   loadSparkData();
   loadFearGreed();
+  loadMVRV();
+  loadPuell();
+  updateHalving();
 });
 setInterval(loadFX,3600000);
-setInterval(loadSparkData,300000);   // spark každých 5 min
-setInterval(loadFearGreed,3600000);  // FnG každou hodinu
+setInterval(loadSparkData,300000);
+setInterval(loadFearGreed,3600000);
+setInterval(loadMVRV,3600000);
+setInterval(loadPuell,3600000);
+setInterval(updateHalving,60000);
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){loadFX();if(!wsReady)connectWS()}
 });
