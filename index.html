@@ -5,156 +5,274 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="BTC Tracker"/>
-  <meta name="theme-color" content="#0a0a0f"/>
-  <title>Bitcoin Tracker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <meta name="apple-mobile-web-app-title" content="BTC"/>
+  <meta name="theme-color" content="#000000"/>
+  <title>Bitcoin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
     :root{
-      --bg:#0a0a0f;--card:#141420;--border:rgba(255,255,255,0.07);
-      --accent:#f7931a;--adim:rgba(247,147,26,0.15);--aglow:rgba(247,147,26,0.2);
-      --green:#22c55e;--gdim:rgba(34,197,94,0.12);
-      --red:#ef4444;--rdim:rgba(239,68,68,0.12);
-      --text:#f1f1f5;--muted:#64647a;--sub:#1e1e2e;
-      --st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom);
-      --sl:env(safe-area-inset-left);--sr:env(safe-area-inset-right);
+      --st:env(safe-area-inset-top);
+      --sb:env(safe-area-inset-bottom);
+      --sl:env(safe-area-inset-left);
+      --sr:env(safe-area-inset-right);
+      --btc:#FF9F0A;
+      --green:#30D158;
+      --red:#FF453A;
     }
+
     html{height:-webkit-fill-available}
+
     body{
       font-family:'Inter',-apple-system,sans-serif;
-      background:var(--bg);color:var(--text);
       min-height:100vh;min-height:-webkit-fill-available;
       display:flex;flex-direction:column;align-items:center;
-      padding:calc(var(--st) + 28px) calc(var(--sr) + 20px) calc(var(--sb) + 28px) calc(var(--sl) + 20px);
-      -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow-x:hidden;
+      padding:calc(var(--st) + 20px) calc(var(--sr) + 18px) calc(var(--sb) + 20px) calc(var(--sl) + 18px);
+      -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;
+      overflow-x:hidden;position:relative;
+      /* iOS 26 gradient background */
+      background: radial-gradient(ellipse at 20% 10%, #1a0a2e 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 20%, #0d1f3c 0%, transparent 50%),
+                  radial-gradient(ellipse at 50% 80%, #1a1a0a 0%, transparent 60%),
+                  #050508;
+      color:#fff;
     }
-    body::before{
-      content:'';position:fixed;top:-250px;left:50%;transform:translateX(-50%);
-      width:700px;height:700px;
-      background:radial-gradient(circle,rgba(247,147,26,0.07) 0%,transparent 65%);
-      pointer-events:none;z-index:0;
+
+    /* Liquid orbs v pozadí */
+    .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:drift 12s ease-in-out infinite}
+    .orb1{width:350px;height:350px;background:radial-gradient(circle,rgba(255,159,10,0.18),transparent 70%);top:-80px;left:-80px;animation-delay:0s}
+    .orb2{width:300px;height:300px;background:radial-gradient(circle,rgba(10,132,255,0.12),transparent 70%);top:30%;right:-60px;animation-delay:-4s}
+    .orb3{width:250px;height:250px;background:radial-gradient(circle,rgba(48,209,88,0.08),transparent 70%);bottom:10%;left:20%;animation-delay:-8s}
+    @keyframes drift{
+      0%,100%{transform:translate(0,0) scale(1)}
+      33%{transform:translate(15px,-20px) scale(1.05)}
+      66%{transform:translate(-10px,15px) scale(0.95)}
     }
-    .w{position:relative;z-index:1;width:100%;max-width:400px;margin:0 auto}
-    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-    .hl{display:flex;align-items:center;gap:12px}
-    .icon{
-      width:46px;height:46px;
-      background:linear-gradient(135deg,#f7931a,#f5a623);
-      border-radius:14px;display:flex;align-items:center;justify-content:center;
-      font-size:24px;font-weight:800;color:#fff;flex-shrink:0;
-      box-shadow:0 0 20px var(--aglow),0 4px 12px rgba(247,147,26,0.3);
+
+    .wrap{position:relative;z-index:1;width:100%;max-width:390px;margin:0 auto}
+
+    /* ── Header ── */
+    .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:4px}
+    .hdr-l{display:flex;align-items:center;gap:11px}
+
+    /* Liquid glass icon */
+    .btc-ball{
+      width:48px;height:48px;border-radius:50%;
+      background:radial-gradient(circle at 35% 35%, rgba(255,210,100,0.9), rgba(255,159,10,0.7) 50%, rgba(180,80,0,0.5));
+      box-shadow:
+        0 0 0 0.5px rgba(255,255,255,0.3),
+        0 0 30px rgba(255,159,10,0.4),
+        inset 0 1px 1px rgba(255,255,255,0.5),
+        inset 0 -2px 6px rgba(0,0,0,0.3);
+      display:flex;align-items:center;justify-content:center;
+      font-size:22px;font-weight:900;color:#fff;
+      text-shadow:0 1px 3px rgba(0,0,0,0.4);
+      flex-shrink:0;
     }
-    .ht h1{font-size:18px;font-weight:700;letter-spacing:-.2px}
-    .ht p{font-size:12px;color:var(--muted);margin-top:1px}
-    .live{
+    .hdr-t h1{font-size:17px;font-weight:700;letter-spacing:-.3px;color:#fff}
+    .hdr-t p{font-size:11px;color:rgba(255,255,255,0.45);margin-top:1px;font-weight:400}
+
+    /* Live pill — liquid glass */
+    .pill{
       display:flex;align-items:center;gap:5px;
-      font-size:11px;font-weight:600;color:var(--green);
-      background:var(--gdim);padding:5px 10px;border-radius:99px;
+      font-size:11px;font-weight:600;color:var(--green);letter-spacing:.2px;
+      padding:5px 12px;border-radius:99px;
+      background:rgba(48,209,88,0.12);
+      border:0.5px solid rgba(48,209,88,0.3);
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
     }
-    .live::before{
-      content:'';width:6px;height:6px;background:var(--green);
-      border-radius:50%;animation:pulse 2s ease-in-out infinite;
+    .pill::before{
+      content:'';width:5px;height:5px;background:var(--green);
+      border-radius:50%;animation:blink 2s ease-in-out infinite;
     }
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
-    .card{
-      background:var(--card);border:1px solid var(--border);
-      border-radius:24px;padding:24px 22px 22px;margin-bottom:12px;
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+    /* ── Main liquid glass card ── */
+    .glass{
+      background:rgba(255,255,255,0.06);
+      backdrop-filter:blur(40px) saturate(180%);
+      -webkit-backdrop-filter:blur(40px) saturate(180%);
+      border:0.5px solid rgba(255,255,255,0.15);
+      border-radius:28px;
+      padding:26px 22px 22px;
+      margin-bottom:12px;
       position:relative;overflow:hidden;
+      box-shadow:
+        0 0 0 0.5px rgba(255,255,255,0.05) inset,
+        0 20px 60px rgba(0,0,0,0.4),
+        0 1px 0 rgba(255,255,255,0.1) inset;
     }
-    .card::before{
+    /* Shimmer highlight na vrchu karty */
+    .glass::before{
       content:'';position:absolute;top:0;left:0;right:0;height:1px;
-      background:linear-gradient(90deg,transparent,rgba(247,147,26,.5),transparent);
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);
     }
-    .ptag{font-size:10px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-    .pusd{font-size:42px;font-weight:800;letter-spacing:-2.5px;line-height:1;display:flex;align-items:baseline;gap:5px}
-    .pusd .sym{font-size:20px;font-weight:500;color:var(--muted);letter-spacing:0}
-    .czk-row{
-      display:flex;align-items:center;justify-content:space-between;
-      background:var(--sub);border-radius:14px;padding:13px 16px;margin-top:14px;
+    /* Liquid light reflex */
+    .glass::after{
+      content:'';position:absolute;top:-60px;left:-60px;
+      width:200px;height:200px;border-radius:50%;
+      background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 70%);
+      pointer-events:none;
     }
-    .czk-row .cl{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
-    .czk-row .ca{font-size:20px;font-weight:700;display:flex;align-items:baseline;gap:4px}
-    .czk-row .cs{font-size:13px;font-weight:500;color:var(--muted)}
+
+    .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+    .clabel{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4)}
+
+    /* Cena USD — velká */
+    .usd-row{margin-bottom:6px}
+    .usd-price{
+      font-size:54px;font-weight:800;letter-spacing:-3px;line-height:1;
+      color:#fff;display:flex;align-items:baseline;gap:4px;
+    }
+    .usd-sym{font-size:26px;font-weight:400;color:rgba(255,255,255,.5);letter-spacing:0}
+
+    /* CZK blok — menší glass */
+    .czk-glass{
+      background:rgba(255,255,255,0.05);
+      border:0.5px solid rgba(255,255,255,0.1);
+      border-radius:16px;padding:12px 16px;
+      display:flex;justify-content:space-between;align-items:center;
+      margin-top:14px;
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    }
+    .czk-l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4)}
+    .czk-v{font-size:22px;font-weight:700;color:#fff;display:flex;align-items:baseline;gap:4px}
+    .czk-s{font-size:13px;font-weight:400;color:rgba(255,255,255,.4)}
+
+    /* Badge změny */
     .badge{
       display:inline-flex;align-items:center;gap:5px;
-      font-size:13px;font-weight:600;padding:6px 13px;border-radius:99px;margin-top:14px;
+      font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;
+      margin-top:14px;transition:all .3s;
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
     }
-    .badge.up{background:var(--gdim);color:var(--green)}
-    .badge.dn{background:var(--rdim);color:var(--red)}
-    .badge svg{width:13px;height:13px}
-    .div{height:1px;background:var(--border);margin:18px 0}
-    .stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-    .stat{background:var(--sub);border-radius:14px;padding:13px}
-    .slabel{font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-    .sval{font-size:14px;font-weight:700}
+    .badge.up{
+      background:rgba(48,209,88,0.12);color:var(--green);
+      border:0.5px solid rgba(48,209,88,0.25);
+    }
+    .badge.dn{
+      background:rgba(255,69,58,0.12);color:var(--red);
+      border:0.5px solid rgba(255,69,58,0.25);
+    }
+    .badge svg{width:12px;height:12px}
+
+    .div{height:0.5px;background:rgba(255,255,255,0.08);margin:18px 0}
+
+    /* Stats */
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .stat{
+      background:rgba(255,255,255,0.04);
+      border:0.5px solid rgba(255,255,255,0.08);
+      border-radius:16px;padding:13px;
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    }
+    .sl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:5px}
+    .sv{font-size:15px;font-weight:700;color:#fff}
+
+    /* Refresh button — liquid glass */
     .btn{
       display:flex;align-items:center;justify-content:center;gap:8px;
       width:100%;min-height:54px;padding:14px;
-      background:var(--adim);border:1px solid rgba(247,147,26,.25);
-      border-radius:16px;color:var(--accent);
-      font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;
-      -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:all .15s;
+      background:rgba(255,159,10,0.15);
+      border:0.5px solid rgba(255,159,10,0.3);
+      border-radius:18px;
+      color:var(--btc);font-size:15px;font-weight:600;
+      cursor:pointer;font-family:inherit;
+      -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+      backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+      transition:all .15s;
+      box-shadow:0 0 20px rgba(255,159,10,0.08),inset 0 1px 0 rgba(255,255,255,0.1);
     }
-    .btn:active{transform:scale(.97);background:rgba(247,147,26,.25)}
-    .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .btn:active{transform:scale(.97);background:rgba(255,159,10,0.25)}
+    .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
     .btn.loading svg{animation:spin .7s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
+
     .err{
-      display:none;background:var(--rdim);border:1px solid rgba(239,68,68,.2);
-      border-radius:12px;padding:11px 14px;font-size:13px;color:var(--red);
+      display:none;
+      background:rgba(255,69,58,0.1);
+      border:0.5px solid rgba(255,69,58,0.2);
+      border-radius:12px;padding:11px 14px;
+      font-size:13px;color:var(--red);
       margin-top:10px;text-align:center;
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
     }
-    .ts{text-align:center;font-size:11px;color:var(--muted);margin-top:12px}
-    .src{text-align:center;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:.5px}
+
+    .ts{text-align:center;font-size:11px;color:rgba(255,255,255,.25);margin-top:12px;font-weight:400}
+    .src{text-align:center;font-size:10px;color:rgba(255,255,255,.2);margin-top:3px;letter-spacing:.3px}
+
+    /* Skeleton */
     .sk{
-      background:linear-gradient(90deg,var(--sub) 25%,var(--card) 50%,var(--sub) 75%);
-      background-size:200% 100%;animation:sh 1.3s ease-in-out infinite;
-      border-radius:8px;color:transparent!important;user-select:none;display:inline-block;
+      background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 75%);
+      background-size:200% 100%;animation:sh 1.4s ease-in-out infinite;
+      border-radius:10px;color:transparent!important;user-select:none;display:inline-block;
     }
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
   </style>
 </head>
 <body>
-<div class="w">
-  <div class="header">
-    <div class="hl">
-      <div class="icon">₿</div>
-      <div class="ht"><h1>Bitcoin Tracker</h1><p>Aktuální cena v reálném čase</p></div>
-    </div>
-    <div class="live">Živě</div>
-  </div>
 
-  <div class="card">
-    <div class="ptag">USD</div>
-    <div class="pusd">
-      <span class="sym">$</span>
-      <span id="usd" class="sk" style="width:200px;height:42px"> </span>
-    </div>
-    <div class="czk-row">
-      <span class="cl">CZK</span>
-      <div class="ca">
-        <span id="czk" class="sk" style="width:140px;height:22px"> </span>
-        <span class="cs">Kč</span>
+<!-- Liquid orbs -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="wrap">
+
+  <div class="hdr">
+    <div class="hdr-l">
+      <div class="btc-ball">₿</div>
+      <div class="hdr-t">
+        <h1>Bitcoin</h1>
+        <p>Aktuální cena</p>
       </div>
     </div>
-    <div id="badge" class="badge up sk" style="width:130px;height:30px"> </div>
+    <div class="pill">Živě</div>
+  </div>
+
+  <div class="glass">
+    <div class="top-row">
+      <div class="clabel">Cena</div>
+    </div>
+
+    <div class="usd-row">
+      <div class="clabel" style="margin-bottom:6px">USD</div>
+      <div class="usd-price">
+        <span class="usd-sym">$</span>
+        <span id="usd" class="sk" style="width:220px;height:52px"> </span>
+      </div>
+    </div>
+
+    <div class="czk-glass">
+      <span class="czk-l">CZK</span>
+      <div class="czk-v">
+        <span id="czk" class="sk" style="width:150px;height:24px"> </span>
+        <span class="czk-s">Kč</span>
+      </div>
+    </div>
+
+    <div id="badge" class="badge up sk" style="width:140px;height:32px"> </div>
+
     <div class="div"></div>
+
     <div class="stats">
-      <div class="stat"><div class="slabel">24H HIGH</div><div class="sval" id="s1">…</div></div>
-      <div class="stat"><div class="slabel">24H LOW</div><div class="sval" id="s2">…</div></div>
-      <div class="stat"><div class="slabel">TRŽNÍ CAP</div><div class="sval" id="s3">…</div></div>
-      <div class="stat"><div class="slabel">OBJEM 24H</div><div class="sval" id="s4">…</div></div>
+      <div class="stat"><div class="sl">24H HIGH</div><div class="sv" id="s1">…</div></div>
+      <div class="stat"><div class="sl">24H LOW</div><div class="sv" id="s2">…</div></div>
+      <div class="stat"><div class="sl">TRŽNÍ CAP</div><div class="sv" id="s3">…</div></div>
+      <div class="stat"><div class="sl">OBJEM 24H</div><div class="sv" id="s4">…</div></div>
     </div>
   </div>
 
   <div class="err" id="err"></div>
-  <button class="btn" id="btn" onclick="load()">
+
+  <button class="btn" id="btn" onclick="go()">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18">
       <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
     </svg>
     Obnovit cenu
   </button>
+
   <div class="ts" id="ts">Načítám data…</div>
   <div class="src" id="src"></div>
 </div>
@@ -164,77 +282,63 @@ const $=id=>document.getElementById(id);
 const fmt=(n,d=0)=>new Intl.NumberFormat('cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
 const fmtB=n=>n>=1e12?(n/1e12).toFixed(2)+' bil.':n>=1e9?(n/1e9).toFixed(2)+' mld.':n>=1e6?(n/1e6).toFixed(1)+' mil.':fmt(n);
 const pct=n=>(n>=0?'+':'')+parseFloat(n).toFixed(2)+'%';
-// allorigins raw — vrací přímo JSON bez wrapperu
-const proxy=url=>`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+// corsproxy.io — ověřeno že funguje s CoinGecko na iOS
+const P=u=>'https://corsproxy.io/?url='+encodeURIComponent(u);
 
-async function load(){
+async function go(){
   const btn=$('btn'),err=$('err');
   if(btn.disabled)return;
-  btn.disabled=true;btn.classList.add('loading');err.style.display='none';
+  btn.disabled=true;btn.classList.add('loading');
+  err.style.display='none';
+
   try{
-    // FX kurz
-    const fx=await fetch(proxy('https://api.frankfurter.app/latest?from=USD&to=CZK'));
-    const fxj=await fx.json();
-    const rate=fxj.rates.CZK;
+    // Paralelně: BTC data + CZK kurz
+    const [r1,r2]=await Promise.all([
+      fetch(P('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin&sparkline=false')),
+      fetch(P('https://api.frankfurter.app/latest?from=USD&to=CZK'))
+    ]);
 
-    // Bitcoin data — zkusíme postupně
-    let d=null,src='';
-    // 1. CoinGecko
-    try{
-      const r=await fetch(proxy('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin&sparkline=false'),{signal:AbortSignal.timeout(8000)});
-      const j=await r.json();
-      const b=j[0];
-      d={usd:b.current_price,czk:b.current_price*rate,ch:b.price_change_percentage_24h,hi:b.high_24h,lo:b.low_24h,cap:b.market_cap,vol:b.total_volume};
-      src='CoinGecko';
-    }catch(e){}
+    if(!r1.ok||!r2.ok) throw new Error('HTTP '+r1.status);
 
-    // 2. Kraken
-    if(!d)try{
-      const r=await fetch(proxy('https://api.kraken.com/0/public/Ticker?pair=XBTUSD'),{signal:AbortSignal.timeout(8000)});
-      const j=await r.json();
-      const t=j.result['XXBTZUSD'];
-      const usd=parseFloat(t.c[0]);
-      d={usd,czk:usd*rate,ch:parseFloat(t.P[1]),hi:parseFloat(t.h[1]),lo:parseFloat(t.l[1]),cap:usd*19700000,vol:parseFloat(t.v[1])*usd};
-      src='Kraken';
-    }catch(e){}
+    const coins=await r1.json();
+    const fx=await r2.json();
 
-    // 3. CoinLore
-    if(!d)try{
-      const r=await fetch(proxy('https://api.coinlore.net/api/ticker/?id=90'),{signal:AbortSignal.timeout(8000)});
-      const j=await r.json();
-      const b=j[0];const usd=parseFloat(b.price_usd);
-      d={usd,czk:usd*rate,ch:parseFloat(b.percent_change_24h),hi:usd*1.01,lo:usd*0.99,cap:parseFloat(b.market_cap_usd),vol:parseFloat(b.volume24)};
-      src='CoinLore';
-    }catch(e){}
+    const b=coins[0];
+    const usd=b.current_price;
+    const czk=usd*fx.rates.CZK;
+    const ch=b.price_change_percentage_24h;
 
-    if(!d)throw new Error('Všechna API selhala');
-
-    // Render
+    // Render — odstranit skeleton
     const uel=$('usd'),cel=$('czk'),bad=$('badge');
-    uel.className='';uel.textContent=fmt(d.usd);
-    cel.className='';cel.textContent=fmt(d.czk);
-    bad.className='badge '+(d.ch>=0?'up':'dn');
-    bad.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${d.ch>=0?'M5 15l7-7 7 7':'M19 9l-7 7-7-7'}"/></svg>${pct(d.ch)} za 24h`;
-    $('s1').textContent='$'+fmt(d.hi);
-    $('s2').textContent='$'+fmt(d.lo);
-    $('s3').textContent='$'+fmtB(d.cap);
-    $('s4').textContent='$'+fmtB(d.vol);
+    uel.className='';uel.style='';uel.textContent=fmt(usd);
+    cel.className='';cel.style='';cel.textContent=fmt(czk);
+
+    bad.className='badge '+(ch>=0?'up':'dn');
+    bad.style='';
+    bad.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${ch>=0?'M5 15l7-7 7 7':'M19 9l-7 7-7-7'}"/></svg>${pct(ch)} za 24h`;
+
+    $('s1').textContent='$'+fmt(b.high_24h);
+    $('s2').textContent='$'+fmt(b.low_24h);
+    $('s3').textContent='$'+fmtB(b.market_cap);
+    $('s4').textContent='$'+fmtB(b.total_volume);
+
     const now=new Date();
     $('ts').textContent='Aktualizováno: '+now.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    $('src').textContent='Zdroj: '+src;
+    $('src').textContent='via CoinGecko';
+
   }catch(e){
-    err.textContent='⚠ Nepodařilo se načíst data. Zkuste to znovu.';
+    err.textContent='⚠ Nepodařilo se načíst data. Zkuste Obnovit.';
     err.style.display='block';
-    $('ts').textContent='Chyba při načítání.';
+    $('ts').textContent='Chyba: '+e.message;
     console.error(e);
   }finally{
     btn.disabled=false;btn.classList.remove('loading');
   }
 }
 
-load();
-setInterval(load,90000);
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load();});
+go();
+setInterval(go,90000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')go();});
 </script>
 </body>
 </html>
