@@ -84,7 +84,9 @@
     .canvas-wrap{position:relative;margin-top:12px;height:200px}
     canvas{width:100%;height:100%;display:block}
     .tooltip{position:absolute;top:0;pointer-events:none;background:rgba(20,20,35,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:6px 10px;font-size:11px;font-weight:600;white-space:nowrap;transform:translateX(-50%);display:none}
-    .chart-loading{height:200px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px;text-align:center;padding:0 20px}
+    .chart-loading{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px;text-align:center;gap:10px}
+    .prog-bar{width:160px;height:3px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden}
+    .prog-fill{height:100%;background:var(--btc);border-radius:99px;transition:width .3s;width:0%}
     .ts{text-align:center;font-size:11px;color:rgba(255,255,255,.2);margin-top:14px}
     .src{text-align:center;font-size:10px;color:rgba(255,255,255,.15);margin-top:3px;letter-spacing:.3px}
     .ver{text-align:center;font-size:10px;color:rgba(255,255,255,.1);margin-top:6px;letter-spacing:.5px}
@@ -137,7 +139,7 @@
     </div>
     <div class="ts" id="ts">Připojuji se…</div>
     <div class="src" id="src"></div>
-    <div class="ver">v1.2</div>
+    <div class="ver">v1.3</div>
   </div>
 
   <div class="chart-view" id="chartView">
@@ -161,13 +163,16 @@
         </div>
       </div>
       <div class="canvas-wrap" id="canvasWrap">
-        <div class="chart-loading" id="chartLoading">Načítám graf…</div>
+        <div class="chart-loading" id="chartLoading">
+          <span id="loadingText">Načítám graf…</span>
+          <div class="prog-bar" id="progBar" style="display:none"><div class="prog-fill" id="progFill"></div></div>
+        </div>
         <canvas id="chartCanvas" style="display:none"></canvas>
         <div class="tooltip" id="tooltip"></div>
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
-    <div class="ver">v1.2</div>
+    <div class="ver">v1.3</div>
   </div>
 </div>
 
@@ -187,7 +192,7 @@ async function loadFX(){
     const j=await r.json();
     fxRate=j.rates.CZK;
     $('src').textContent='Kurz ČNB · 1 USD = '+fxRate.toFixed(3)+' Kč';
-  }catch(e){ fxRate=23.5 }
+  }catch(e){fxRate=23.5}
 }
 
 function connectWS(){
@@ -230,32 +235,77 @@ function setPeriod(days,btn){
   loadChart();
 }
 
-/* MAX graf — sestavíme z veřejných historických dat Kraken OHLC */
+/* ── MAX: Kraken OHLC týdenní interval, opakovaně dokud nemáme celou historii ── */
 async function loadMaxChart(){
-  // Kraken OHLC weekly od začátku — 1440 = denní svíčky, 10080 = týdenní
-  const r=await fetch('https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=1440&since=1279324800');
-  if(!r.ok) throw new Error('Kraken '+r.status);
+  // Kraken vrací max 720 svíček na jedno volání
+  // interval 10080 = týdenní (minuty). Od 2013 do dnes = ~680 týdnů → stačí 1 volání
+  // interval 1440  = denní. Od 2013 = ~4700 dní → potřebujeme ~7 volání
+  // Použijeme týdenní = vše v 1 volání, ale začínáme od 2011
+
+  const INTERVAL=10080; // týdenní svíčky
+  const START=1325376000; // 1. 1. 2012 unix timestamp
+
+  setProgress(10,'Načítám historická data…');
+
+  const r=await fetch(`https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=${INTERVAL}&since=${START}`);
+  if(!r.ok) throw new Error('Kraken HTTP '+r.status);
   const j=await r.json();
-  if(j.error&&j.error.length) throw new Error(j.error[0]);
-  const raw=j.result['XXBTZUSD']||j.result['XBTUSD'];
-  // raw = [[time, open, high, low, close, vwap, volume, count]]
-  // Vezmeme každý 7. záznam (denní → týdenní redukce) pro plynulý MAX graf
-  const step=Math.max(1,Math.floor(raw.length/300));
-  return raw.filter((_,i)=>i%step===0).map(d=>({
+  if(j.error&&j.error.length) throw new Error('Kraken: '+j.error[0]);
+
+  const raw=j.result['XXBTZUSD']||j.result['XBTUSD']||Object.values(j.result)[0];
+  if(!raw||!raw.length) throw new Error('Kraken: prázdná data');
+
+  setProgress(70,'Zpracovávám data…');
+
+  // Pokud stále nedostaneme dost — doplníme druhým voláním od nejstaršího dostupného záznamu
+  let allRaw=[...raw];
+
+  // Zkontroluj jestli první záznam je opravdu kolem roku 2013
+  const firstYear=new Date(allRaw[0][0]*1000).getFullYear();
+  if(firstYear>2014){
+    // Zkus starší data druhým voláním
+    try{
+      setProgress(40,'Načítám starší data (2013–2015)…');
+      const r2=await fetch(`https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=${INTERVAL}&since=1356998400`);
+      const j2=await r2.json();
+      if(!j2.error||!j2.error.length){
+        const raw2=j2.result['XXBTZUSD']||j2.result['XBTUSD']||Object.values(j2.result)[0];
+        if(raw2&&raw2.length){
+          // Spoj a odstraň duplicity
+          const existingTimes=new Set(allRaw.map(d=>d[0]));
+          const newData=raw2.filter(d=>!existingTimes.has(d[0]));
+          allRaw=[...newData,...allRaw].sort((a,b)=>a[0]-b[0]);
+        }
+      }
+    }catch(e2){console.warn('Druhé volání selhalo:',e2)}
+  }
+
+  setProgress(90,'Vykresluju graf…');
+
+  return allRaw.map(d=>({
     t:d[0]*1000,
     v:chartMode==='czk'?parseFloat(d[4])*fxRate:parseFloat(d[4])
-  }));
+  })).filter(d=>d.v>0);
+}
+
+function setProgress(pct,text){
+  $('loadingText').textContent=text;
+  $('progBar').style.display='block';
+  $('progFill').style.width=pct+'%';
 }
 
 async function loadChart(){
   $('chartCanvas').style.display='none';
   $('chartLoading').style.display='flex';
   $('chartLoading').style.color='rgba(255,255,255,.3)';
-  $('chartLoading').textContent='Načítám graf…';
+  $('progBar').style.display='none';
+  $('progFill').style.width='0%';
+  $('loadingText').textContent='Načítám graf…';
+
   try{
     if(chartDays==='max'){
       chartData=await loadMaxChart();
-    } else {
+    }else{
       const interval=chartDays==='1'?'hourly':'daily';
       const r=await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartDays}&interval=${interval}`);
       if(!r.ok) throw new Error('CoinGecko HTTP '+r.status);
@@ -274,14 +324,19 @@ async function loadChart(){
     const lbl={1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok',max:'All Time'}[chartDays];
     $('chartChange').textContent=pct(chg)+' · '+lbl;
     $('chartChange').className='chart-change '+(isUp?'up':'dn');
+
+    const firstYear=new Date(chartData[0].t).getFullYear();
+    const lastYear=new Date(chartData[chartData.length-1].t).getFullYear();
+
     drawChart(isUp,mn,mx);
     $('chartLoading').style.display='none';
     $('chartCanvas').style.display='block';
-    const src=chartDays==='max'?'Kraken':'CoinGecko';
+    const src=chartDays==='max'?'Kraken ('+firstYear+'–'+lastYear+')':'CoinGecko';
     $('chartTs').textContent='Graf: '+src+' · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
   }catch(e){
+    $('progBar').style.display='none';
     $('chartLoading').style.color='var(--red)';
-    $('chartLoading').textContent='⚠ Chyba načítání grafu: '+e.message;
+    $('loadingText').textContent='⚠ '+e.message;
     console.error(e);
   }
 }
