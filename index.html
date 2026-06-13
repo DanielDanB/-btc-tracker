@@ -35,8 +35,6 @@
     .orb3{width:250px;height:250px;background:radial-gradient(circle,rgba(48,209,88,0.08),transparent 70%);bottom:10%;left:20%;animation-delay:-8s}
     @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.05)}66%{transform:translate(-10px,15px) scale(0.95)}}
     .wrap{position:relative;z-index:1;width:100%;max-width:390px;margin:0 auto}
-
-    /* Header */
     .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:4px}
     .hdr-l{display:flex;align-items:center;gap:11px}
     .btc-ball{
@@ -56,8 +54,6 @@
     }
     .pill::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 2s ease-in-out infinite}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-
-    /* Glass card */
     .glass{
       background:rgba(255,255,255,0.06);
       backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);
@@ -67,15 +63,11 @@
     }
     .glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .glass::after{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 70%);pointer-events:none}
-
     .clabel{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px}
-
-    /* Cenová oblast — klikatelná */
     .price-tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
     .price-tap:active{opacity:.7}
-    .tap-hint{font-size:10px;color:rgba(255,255,255,.2);margin-top:6px;display:flex;align-items:center;gap:4px;font-weight:400}
+    .tap-hint{font-size:10px;color:rgba(255,255,255,.2);margin-top:6px;display:flex;align-items:center;gap:4px}
     .tap-hint svg{opacity:.4}
-
     .usd-price{font-size:54px;font-weight:800;letter-spacing:-3px;line-height:1;color:#fff;display:flex;align-items:baseline;gap:4px}
     .usd-sym{font-size:26px;font-weight:400;color:rgba(255,255,255,.5);letter-spacing:0}
     .czk-glass{
@@ -88,35 +80,25 @@
     .czk-l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4)}
     .czk-v{font-size:22px;font-weight:700;display:flex;align-items:baseline;gap:4px}
     .czk-s{font-size:13px;font-weight:400;color:rgba(255,255,255,.4)}
-
     .badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;margin-top:14px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
     .badge.up{background:rgba(48,209,88,0.12);color:var(--green);border:0.5px solid rgba(48,209,88,0.25)}
     .badge.dn{background:rgba(255,69,58,0.12);color:var(--red);border:0.5px solid rgba(255,69,58,0.25)}
     .badge svg{width:12px;height:12px}
-
     .div{height:0.5px;background:rgba(255,255,255,0.08);margin:18px 0}
-
     .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .stat{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:16px;padding:13px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
     .sl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:5px}
     .sv{font-size:15px;font-weight:700}
-
-    /* ── GRAF VIEW ── */
     .chart-view{display:none;flex-direction:column;width:100%}
     .chart-view.show{display:flex}
-
     .back-btn{
       display:flex;align-items:center;gap:6px;
       background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);
-      border-radius:12px;padding:8px 14px;
-      color:rgba(255,255,255,.7);font-size:13px;font-weight:500;
-      cursor:pointer;-webkit-tap-highlight-color:transparent;
-      margin-bottom:16px;align-self:flex-start;font-family:inherit;
-      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-      transition:background .15s;
+      border-radius:12px;padding:8px 14px;color:rgba(255,255,255,.7);font-size:13px;font-weight:500;
+      cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:16px;align-self:flex-start;
+      font-family:inherit;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:background .15s;
     }
     .back-btn:active{background:rgba(255,255,255,0.14)}
-
     .chart-glass{
       background:rgba(255,255,255,0.06);
       backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);
@@ -125,14 +107,11 @@
       box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4);
     }
     .chart-glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
-
     .chart-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
     .chart-price-big{font-size:32px;font-weight:800;letter-spacing:-1.5px}
     .chart-change{font-size:13px;font-weight:600;margin-top:3px}
     .chart-change.up{color:var(--green)}
     .chart-change.dn{color:var(--red)}
-
-    /* Period tabs */
     .periods{display:flex;gap:4px;background:rgba(255,255,255,0.05);border-radius:12px;padding:3px}
     .period{
       padding:5px 10px;border-radius:9px;font-size:12px;font-weight:600;
@@ -140,12 +119,8 @@
       -webkit-tap-highlight-color:transparent;border:none;background:none;font-family:inherit;
     }
     .period.active{background:rgba(255,255,255,0.12);color:#fff;box-shadow:0 0 0 0.5px rgba(255,255,255,.1)}
-
-    /* Canvas wrapper */
     .canvas-wrap{position:relative;margin-top:12px;height:200px}
     canvas{width:100%;height:100%;display:block}
-
-    /* Tooltip */
     .tooltip{
       position:absolute;top:0;pointer-events:none;
       background:rgba(20,20,35,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
@@ -153,24 +128,15 @@
       padding:6px 10px;font-size:11px;font-weight:600;white-space:nowrap;
       transform:translateX(-50%);display:none;
     }
-
-    .chart-loading{
-      height:200px;display:flex;align-items:center;justify-content:center;
-      color:rgba(255,255,255,.3);font-size:13px;
-    }
-    .chart-err{color:var(--red);font-size:12px;text-align:center;padding:20px 0}
-
+    .chart-loading{height:200px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px}
     .ts{text-align:center;font-size:11px;color:rgba(255,255,255,.2);margin-top:14px}
-
-    /* Skeleton */
+    .src{text-align:center;font-size:10px;color:rgba(255,255,255,.15);margin-top:3px;letter-spacing:.3px}
     .sk{
       background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 75%);
       background-size:200% 100%;animation:sh 1.4s ease-in-out infinite;
       border-radius:10px;color:transparent!important;user-select:none;display:inline-block;
     }
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .spin{animation:spin .8s linear infinite;display:inline-block}
   </style>
 </head>
 <body>
@@ -179,8 +145,6 @@
 <div class="orb orb3"></div>
 
 <div class="wrap">
-
-  <!-- Header -->
   <div class="hdr">
     <div class="hdr-l">
       <div class="btc-ball">₿</div>
@@ -189,13 +153,11 @@
     <div class="pill">Živě</div>
   </div>
 
-  <!-- ── PRICE VIEW ── -->
+  <!-- PRICE VIEW -->
   <div id="priceView">
     <div class="glass">
       <div class="clabel">Cena</div>
-
-      <!-- USD — kliknutí = graf -->
-      <div class="price-tap" onclick="openChart('usd')" title="Zobrazit graf">
+      <div class="price-tap" onclick="openChart('usd')">
         <div class="usd-price">
           <span class="usd-sym">$</span>
           <span id="usd" class="sk" style="width:200px;height:50px"> </span>
@@ -205,8 +167,6 @@
           Klepněte pro graf
         </div>
       </div>
-
-      <!-- CZK — kliknutí = graf -->
       <div class="czk-glass" onclick="openChart('czk')">
         <span class="czk-l">CZK</span>
         <div class="czk-v">
@@ -214,11 +174,8 @@
           <span class="czk-s">Kč</span>
         </div>
       </div>
-
       <div id="badge" class="badge up sk" style="width:140px;height:32px"> </div>
-
       <div class="div"></div>
-
       <div class="stats">
         <div class="stat"><div class="sl">24H HIGH</div><div class="sv" id="s1">…</div></div>
         <div class="stat"><div class="sl">24H LOW</div><div class="sv" id="s2">…</div></div>
@@ -227,15 +184,15 @@
       </div>
     </div>
     <div class="ts" id="ts">Načítám data…</div>
+    <div class="src" id="src"></div>
   </div>
 
-  <!-- ── CHART VIEW ── -->
+  <!-- CHART VIEW -->
   <div class="chart-view" id="chartView">
     <button class="back-btn" onclick="closeChart()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       Zpět
     </button>
-
     <div class="chart-glass">
       <div class="chart-header">
         <div>
@@ -250,16 +207,14 @@
           <button class="period" onclick="setPeriod('365',this)">1R</button>
         </div>
       </div>
-
       <div class="canvas-wrap" id="canvasWrap">
-        <div class="chart-loading" id="chartLoading">⏳ Načítám graf…</div>
+        <div class="chart-loading" id="chartLoading">Načítám graf…</div>
         <canvas id="chartCanvas" style="display:none"></canvas>
         <div class="tooltip" id="tooltip"></div>
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
   </div>
-
 </div>
 
 <script>
@@ -267,63 +222,68 @@ const $=id=>document.getElementById(id);
 const fmt=(n,d=0)=>new Intl.NumberFormat('cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
 const fmtB=n=>n>=1e12?(n/1e12).toFixed(2)+' bil.':n>=1e9?(n/1e9).toFixed(2)+' mld.':n>=1e6?(n/1e6).toFixed(1)+' mil.':fmt(n);
 const pct=n=>(n>=0?'+':'')+parseFloat(n).toFixed(2)+'%';
-const P=u=>'https://corsproxy.io/?url='+encodeURIComponent(u);
+const P=u=>'https://corsproxy.io/?url='+encodeURIComponent(u)+'&_='+Date.now();
 
 let currentUSD=0, currentCZK=0, fxRate=1;
-let chartMode='usd', chartDays='1';
-let chartData=[], chartMin=0, chartMax=0;
-let isDragging=false;
+let chartMode='usd', chartDays='1', chartData=[];
 
-/* ── Načíst hlavní data ── */
+/* ── Kraken: aktuální cena (reálný čas) ── */
 async function loadPrice(){
   try{
+    // Kraken ticker — reálný čas, žádná cache
     const [r1,r2]=await Promise.all([
-      fetch(P('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin&sparkline=false')),
+      fetch(P('https://api.kraken.com/0/public/Ticker?pair=XBTUSD')),
       fetch(P('https://api.frankfurter.app/latest?from=USD&to=CZK'))
     ]);
-    const coins=await r1.json();
+    const k=await r1.json();
     const fx=await r2.json();
-    const b=coins[0];
+
+    if(k.error&&k.error.length) throw new Error(k.error[0]);
+
+    const t=k.result['XXBTZUSD'];
     fxRate=fx.rates.CZK;
-    currentUSD=b.current_price;
+    currentUSD=parseFloat(t.c[0]);   // last trade price
     currentCZK=currentUSD*fxRate;
-    const ch=b.price_change_percentage_24h;
+    const ch=parseFloat(t.P[1]);     // 24h % change
+    const hi=parseFloat(t.h[1]);
+    const lo=parseFloat(t.l[1]);
+    const vol=parseFloat(t.v[1])*currentUSD;
+    const trades=parseInt(t.t[1]);
 
     const uel=$('usd'),cel=$('czk'),bad=$('badge');
     uel.className='';uel.style='';uel.textContent=fmt(currentUSD);
     cel.className='';cel.style='';cel.textContent=fmt(currentCZK);
     bad.className='badge '+(ch>=0?'up':'dn');bad.style='';
     bad.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${ch>=0?'M5 15l7-7 7 7':'M19 9l-7 7-7-7'}"/></svg>${pct(ch)} za 24h`;
-    $('s1').textContent='$'+fmt(b.high_24h);
-    $('s2').textContent='$'+fmt(b.low_24h);
-    $('s3').textContent='$'+fmtB(b.market_cap);
-    $('s4').textContent='$'+fmtB(b.total_volume);
+
+    $('s1').textContent='$'+fmt(hi);
+    $('s2').textContent='$'+fmt(lo);
+    $('s3').textContent='$'+fmtB(currentUSD*19700000); // approx market cap
+    $('s4').textContent='$'+fmtB(vol);
+
     const now=new Date();
     $('ts').textContent='Aktualizováno: '+now.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    $('src').textContent='Zdroj: Kraken · reálný čas';
   }catch(e){
     $('ts').textContent='Chyba načítání. Zkuste otevřít znovu.';
     console.error(e);
   }
 }
 
-/* ── Graf ── */
+/* ── Graf: historická data z CoinGecko (jediné zdarma) ── */
 function openChart(mode){
-  chartMode=mode;
-  chartDays='1';
+  chartMode=mode; chartDays='1';
   $('priceView').style.display='none';
   $('chartView').classList.add('show');
-  // reset period buttons
-  document.querySelectorAll('.period').forEach((b,i)=>{b.classList.toggle('active',i===0)});
+  document.querySelectorAll('.period').forEach((b,i)=>b.classList.toggle('active',i===0));
   $('chartCurrency').textContent=mode==='usd'?'USD':'CZK';
   $('chartPrice').textContent=(mode==='usd'?'$':'')+fmt(mode==='usd'?currentUSD:currentCZK)+(mode==='czk'?' Kč':'');
   loadChart();
 }
-
 function closeChart(){
   $('chartView').classList.remove('show');
   $('priceView').style.display='';
 }
-
 function setPeriod(days,btn){
   chartDays=days;
   document.querySelectorAll('.period').forEach(b=>b.classList.remove('active'));
@@ -334,44 +294,33 @@ function setPeriod(days,btn){
 async function loadChart(){
   $('chartCanvas').style.display='none';
   $('chartLoading').style.display='flex';
-  $('chartLoading').textContent='⏳ Načítám graf…';
-  $('chartTs').textContent='';
-
+  $('chartLoading').textContent='Načítám graf…';
   try{
-    const days=chartDays;
-    const interval=days==='1'?'hourly':days==='7'?'daily':'daily';
-    const url=`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${days}&interval=${interval}`;
+    const interval=chartDays==='1'?'hourly':'daily';
+    const url=`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartDays}&interval=${interval}`;
     const r=await fetch(P(url));
     if(!r.ok) throw new Error('HTTP '+r.status);
     const data=await r.json();
-
-    // prices = [[timestamp, price], ...]
-    const raw=data.prices;
-    chartData=raw.map(p=>({t:p[0],v:chartMode==='czk'?p[1]*fxRate:p[1]}));
-    chartMin=Math.min(...chartData.map(d=>d.v));
-    chartMax=Math.max(...chartData.map(d=>d.v));
-
-    // Změna za období
+    chartData=data.prices.map(p=>({t:p[0],v:chartMode==='czk'?p[1]*fxRate:p[1]}));
+    const mn=Math.min(...chartData.map(d=>d.v));
+    const mx=Math.max(...chartData.map(d=>d.v));
     const first=chartData[0].v, last=chartData[chartData.length-1].v;
     const chg=((last-first)/first)*100;
     const isUp=chg>=0;
-    $('chartChange').textContent=pct(chg)+' za '+({1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok'}[days]);
+    $('chartChange').textContent=pct(chg)+' · '+({1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok'}[chartDays]);
     $('chartChange').className='chart-change '+(isUp?'up':'dn');
-
-    drawChart(isUp);
+    drawChart(isUp,mn,mx);
     $('chartLoading').style.display='none';
     $('chartCanvas').style.display='block';
-
     const now=new Date();
-    $('chartTs').textContent='Data: CoinGecko · '+now.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
-
+    $('chartTs').textContent='Graf: CoinGecko · '+now.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
   }catch(e){
     $('chartLoading').innerHTML='<span style="color:var(--red)">⚠ Chyba načítání grafu</span>';
     console.error(e);
   }
 }
 
-function drawChart(isUp){
+function drawChart(isUp,mn,mx){
   const canvas=$('chartCanvas');
   const wrap=$('canvasWrap');
   const dpr=window.devicePixelRatio||1;
@@ -380,99 +329,82 @@ function drawChart(isUp){
   canvas.style.width=W+'px'; canvas.style.height=H+'px';
   const ctx=canvas.getContext('2d');
   ctx.scale(dpr,dpr);
-
-  const pad={top:10,right:10,bottom:30,left:0};
-  const w=W-pad.left-pad.right, h=H-pad.top-pad.bottom;
-  const n=chartData.length;
-  const range=chartMax-chartMin||1;
-
-  const xOf=i=>pad.left+(i/(n-1))*w;
-  const yOf=v=>pad.top+h-(((v-chartMin)/range)*h);
+  const pad={t:10,r:10,b:28,l:0};
+  const w=W-pad.l-pad.r, h=H-pad.t-pad.b;
+  const n=chartData.length, range=mx-mn||1;
+  const xOf=i=>pad.l+(i/(n-1))*w;
+  const yOf=v=>pad.t+h-(((v-mn)/range)*h);
+  const color=isUp?'48,209,88':'255,69,58';
 
   // Gradient fill
-  const color=isUp?'48,209,88':'255,69,58';
-  const grad=ctx.createLinearGradient(0,pad.top,0,pad.top+h);
-  grad.addColorStop(0,`rgba(${color},0.25)`);
-  grad.addColorStop(1,`rgba(${color},0)`);
-
+  const gr=ctx.createLinearGradient(0,pad.t,0,pad.t+h);
+  gr.addColorStop(0,`rgba(${color},0.22)`);
+  gr.addColorStop(1,`rgba(${color},0)`);
   ctx.beginPath();
   ctx.moveTo(xOf(0),yOf(chartData[0].v));
   for(let i=1;i<n;i++){
-    const x0=xOf(i-1),y0=yOf(chartData[i-1].v);
-    const x1=xOf(i),  y1=yOf(chartData[i].v);
-    const cpx=(x0+x1)/2;
-    ctx.bezierCurveTo(cpx,y0,cpx,y1,x1,y1);
+    const cpx=(xOf(i-1)+xOf(i))/2;
+    ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v));
   }
-  ctx.lineTo(xOf(n-1),H-pad.bottom);
-  ctx.lineTo(xOf(0),H-pad.bottom);
-  ctx.closePath();
-  ctx.fillStyle=grad;
-  ctx.fill();
+  ctx.lineTo(xOf(n-1),H-pad.b);ctx.lineTo(xOf(0),H-pad.b);ctx.closePath();
+  ctx.fillStyle=gr;ctx.fill();
 
   // Čára
   ctx.beginPath();
   ctx.moveTo(xOf(0),yOf(chartData[0].v));
   for(let i=1;i<n;i++){
-    const x0=xOf(i-1),y0=yOf(chartData[i-1].v);
-    const x1=xOf(i),  y1=yOf(chartData[i].v);
-    const cpx=(x0+x1)/2;
-    ctx.bezierCurveTo(cpx,y0,cpx,y1,x1,y1);
+    const cpx=(xOf(i-1)+xOf(i))/2;
+    ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v));
   }
-  ctx.strokeStyle=`rgba(${color},1)`;
-  ctx.lineWidth=2;
-  ctx.stroke();
+  ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=2;ctx.stroke();
 
-  // X osy — časové popisky
-  ctx.fillStyle='rgba(255,255,255,0.25)';
+  // Časové popisky
+  ctx.fillStyle='rgba(255,255,255,0.22)';
   ctx.font='500 10px Inter,-apple-system,sans-serif';
   ctx.textAlign='center';
-  const lblCount=4;
-  for(let i=0;i<lblCount;i++){
-    const idx=Math.round(i*(n-1)/(lblCount-1));
+  [0,1,2,3].forEach(i=>{
+    const idx=Math.round(i*(n-1)/3);
     const d=new Date(chartData[idx].t);
-    let lbl='';
-    if(chartDays==='1') lbl=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
-    else if(chartDays==='7') lbl=d.toLocaleDateString('cs-CZ',{weekday:'short'});
-    else if(chartDays==='30') lbl=d.toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric'});
-    else lbl=d.toLocaleDateString('cs-CZ',{month:'short',year:'2-digit'});
-    ctx.fillText(lbl,xOf(idx),H-pad.bottom+16);
-  }
+    const lbl=chartDays==='1'?d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'}):
+              chartDays==='7'?d.toLocaleDateString('cs-CZ',{weekday:'short'}):
+              chartDays==='30'?d.toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric'}):
+              d.toLocaleDateString('cs-CZ',{month:'short',year:'2-digit'});
+    ctx.fillText(lbl,xOf(idx),H-pad.b+14);
+  });
 
-  // Touch/mouse handler pro tooltip
-  setupTooltip(canvas,W,H,pad,w,h,xOf,yOf,color);
+  setupTooltip(canvas,W,H,pad,w,xOf,yOf,color,n);
 }
 
-function setupTooltip(canvas,W,H,pad,w,h,xOf,yOf,color){
+function setupTooltip(canvas,W,H,pad,w,xOf,yOf,color,n){
   const tip=$('tooltip');
-  const n=chartData.length;
-  function showTip(cx){
+  function show(cx){
     const rect=canvas.getBoundingClientRect();
     const x=cx-rect.left;
-    const idx=Math.max(0,Math.min(n-1,Math.round(((x-pad.left)/w)*(n-1))));
-    const pt=chartData[idx];
-    if(!pt) return;
-    const px=xOf(idx);
-    const sym=chartMode==='czk'?' Kč':'';
-    const pre=chartMode==='usd'?'$':'';
-    tip.textContent=pre+fmt(pt.v)+(chartMode==='czk'?sym:'');
+    const idx=Math.max(0,Math.min(n-1,Math.round(((x-pad.l)/w)*(n-1))));
+    const pt=chartData[idx];if(!pt)return;
+    const sym=chartMode==='czk'?' Kč':'', pre=chartMode==='usd'?'$':'';
+    tip.textContent=pre+fmt(pt.v)+sym;
     tip.style.display='block';
-    tip.style.left=px+'px';
-    tip.style.top=(yOf(pt.v)-32)+'px';
-    // Update header price
+    tip.style.left=xOf(idx)+'px';
+    tip.style.top=(yOf(pt.v)-34)+'px';
     $('chartPrice').textContent=pre+fmt(pt.v)+sym;
   }
-  function hide(){tip.style.display='none';$('chartPrice').textContent=(chartMode==='usd'?'$':'')+fmt(chartData[n-1].v)+(chartMode==='czk'?' Kč':'')}
-
-  canvas.ontouchstart=e=>{e.preventDefault();showTip(e.touches[0].clientX)};
-  canvas.ontouchmove =e=>{e.preventDefault();showTip(e.touches[0].clientX)};
-  canvas.ontouchend  =()=>setTimeout(hide,1200);
-  canvas.onmousemove =e=>showTip(e.clientX);
+  function hide(){
+    tip.style.display='none';
+    const last=chartData[n-1];
+    if(last) $('chartPrice').textContent=(chartMode==='usd'?'$':'')+fmt(last.v)+(chartMode==='czk'?' Kč':'');
+  }
+  canvas.ontouchstart=e=>{e.preventDefault();show(e.touches[0].clientX)};
+  canvas.ontouchmove =e=>{e.preventDefault();show(e.touches[0].clientX)};
+  canvas.ontouchend  =()=>setTimeout(hide,1500);
+  canvas.onmousemove =e=>show(e.clientX);
   canvas.onmouseleave=()=>hide();
 }
 
-/* ── Start ── */
+// Spustit
 loadPrice();
-setInterval(loadPrice,90000);
+// Kraken aktualizace každých 15 sekund
+setInterval(loadPrice,15000);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadPrice();});
 </script>
 </body>
