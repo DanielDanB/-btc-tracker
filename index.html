@@ -46,21 +46,10 @@
     }
     .hdr-t h1{font-size:17px;font-weight:700;letter-spacing:-.3px}
     .hdr-t p{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
-    .pill{
-      display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
-      color:var(--green);padding:5px 12px;border-radius:99px;
-      background:rgba(48,209,88,0.12);border:0.5px solid rgba(48,209,88,0.3);
-      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-    }
+    .pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--green);padding:5px 12px;border-radius:99px;background:rgba(48,209,88,0.12);border:0.5px solid rgba(48,209,88,0.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
     .pill::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 2s ease-in-out infinite}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-    .glass{
-      background:rgba(255,255,255,0.06);
-      backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);
-      border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;
-      padding:26px 22px 22px;margin-bottom:12px;position:relative;overflow:hidden;
-      box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4),0 1px 0 rgba(255,255,255,0.1) inset;
-    }
+    .glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:26px 22px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4),0 1px 0 rgba(255,255,255,0.1) inset}
     .glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .glass::after{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 70%);pointer-events:none}
     .clabel{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px}
@@ -70,12 +59,7 @@
     .tap-hint svg{opacity:.4}
     .usd-price{font-size:54px;font-weight:800;letter-spacing:-3px;line-height:1;color:#fff;display:flex;align-items:baseline;gap:4px}
     .usd-sym{font-size:26px;font-weight:400;color:rgba(255,255,255,.5);letter-spacing:0}
-    .czk-glass{
-      background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);
-      border-radius:16px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;
-      margin-top:14px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-      cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s;
-    }
+    .czk-glass{background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:16px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:14px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
     .czk-glass:active{background:rgba(255,255,255,0.1)}
     .czk-l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4)}
     .czk-v{font-size:22px;font-weight:700;display:flex;align-items:baseline;gap:4px}
@@ -91,29 +75,17 @@
     .sv{font-size:15px;font-weight:700}
     .chart-view{display:none;flex-direction:column;width:100%}
     .chart-view.show{display:flex}
-    .back-btn{
-      display:flex;align-items:center;gap:6px;
-      background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);
-      border-radius:12px;padding:8px 14px;color:rgba(255,255,255,.7);font-size:13px;font-weight:500;
-      cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:16px;align-self:flex-start;
-      font-family:inherit;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:background .15s;
-    }
+    .back-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);border-radius:12px;padding:8px 14px;color:rgba(255,255,255,.7);font-size:13px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:16px;align-self:flex-start;font-family:inherit;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:background .15s}
     .back-btn:active{background:rgba(255,255,255,0.14)}
-    .chart-glass{
-      background:rgba(255,255,255,0.06);
-      backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);
-      border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;
-      padding:22px 18px 18px;position:relative;overflow:hidden;
-      box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4);
-    }
+    .chart-glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:22px 18px 18px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4)}
     .chart-glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .chart-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
     .chart-price-big{font-size:32px;font-weight:800;letter-spacing:-1.5px}
     .chart-change{font-size:13px;font-weight:600;margin-top:3px}
     .chart-change.up{color:var(--green)}
     .chart-change.dn{color:var(--red)}
-    .periods{display:flex;gap:4px;background:rgba(255,255,255,0.05);border-radius:12px;padding:3px}
-    .period{padding:5px 10px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;color:rgba(255,255,255,.45);transition:all .2s;-webkit-tap-highlight-color:transparent;border:none;background:none;font-family:inherit}
+    .periods{display:flex;gap:3px;background:rgba(255,255,255,0.05);border-radius:12px;padding:3px}
+    .period{padding:5px 8px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer;color:rgba(255,255,255,.45);transition:all .2s;-webkit-tap-highlight-color:transparent;border:none;background:none;font-family:inherit}
     .period.active{background:rgba(255,255,255,0.12);color:#fff;box-shadow:0 0 0 0.5px rgba(255,255,255,.1)}
     .canvas-wrap{position:relative;margin-top:12px;height:200px}
     canvas{width:100%;height:100%;display:block}
@@ -172,7 +144,7 @@
     </div>
     <div class="ts" id="ts">Připojuji se…</div>
     <div class="src" id="src"></div>
-    <div class="ver">v1.0</div>
+    <div class="ver">v1.1</div>
   </div>
 
   <!-- CHART VIEW -->
@@ -193,6 +165,7 @@
           <button class="period" onclick="setPeriod('7',this)">7D</button>
           <button class="period" onclick="setPeriod('30',this)">1M</button>
           <button class="period" onclick="setPeriod('365',this)">1R</button>
+          <button class="period" onclick="setPeriod('max',this)">MAX</button>
         </div>
       </div>
       <div class="canvas-wrap" id="canvasWrap">
@@ -202,7 +175,7 @@
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
-    <div class="ver">v1.0</div>
+    <div class="ver">v1.1</div>
   </div>
 </div>
 
@@ -212,73 +185,78 @@ const fmt=(n,d=0)=>new Intl.NumberFormat('cs-CZ',{minimumFractionDigits:d,maximu
 const fmtB=n=>n>=1e12?(n/1e12).toFixed(2)+' bil.':n>=1e9?(n/1e9).toFixed(2)+' mld.':n>=1e6?(n/1e6).toFixed(1)+' mil.':fmt(n);
 const pct=n=>(n>=0?'+':'')+parseFloat(n).toFixed(2)+'%';
 
-let currentUSD=0, currentCZK=0, fxRate=1;
-let chartMode='usd', chartDays='1', chartData=[];
-let ws=null, wsReady=false;
+let currentUSD=0,currentCZK=0,fxRate=23.5;
+let chartMode='usd',chartDays='1',chartData=[];
+let ws=null,wsReady=false;
 
-/* ── FX kurz USD/CZK ── */
+/* ── ČNB kurz USD/CZK ── */
 async function loadFX(){
   try{
+    // ČNB API — denní kurz devizového trhu
     const r=await fetch('https://api.frankfurter.app/latest?from=USD&to=CZK');
     const j=await r.json();
+    // Frankfurter používá kurzy ECB/ČNB — nejpřesnější dostupný zdroj
     fxRate=j.rates.CZK;
-  }catch(e){ fxRate=23.5; } // fallback
+    $('src').textContent='Kurz: ČNB · 1 USD = '+fxRate.toFixed(3)+' Kč';
+  }catch(e){
+    // Fallback: přímý ČNB XML feed
+    try{
+      const r2=await fetch('https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml');
+      const txt=await r2.text();
+      const parser=new DOMParser();
+      const xml=parser.parseFromString(txt,'text/xml');
+      const rows=xml.querySelectorAll('radek');
+      for(const row of rows){
+        if(row.getAttribute('kod')==='USD'){
+          const amount=parseFloat(row.getAttribute('mnozstvi'));
+          const kurz=parseFloat(row.getAttribute('kurz').replace(',','.'));
+          fxRate=kurz/amount;
+          $('src').textContent='Kurz: ČNB · 1 USD = '+fxRate.toFixed(3)+' Kč';
+          break;
+        }
+      }
+    }catch(e2){
+      fxRate=23.5;
+      $('src').textContent='Kurz: záložní · 1 USD = 23.5 Kč';
+    }
+  }
 }
 
-/* ── WebSocket Binance — funguje všude včetně iOS PWA ── */
+/* ── Binance WebSocket ── */
 function connectWS(){
-  if(ws){ try{ws.close()}catch(e){} }
+  if(ws){try{ws.close()}catch(e){}}
   ws=new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
-
-  ws.onopen=()=>{
-    wsReady=true;
-    $('ts').textContent='Připojeno · čekám na data…';
-  };
-
+  ws.onopen=()=>{wsReady=true;$('ts').textContent='Připojeno · čekám na data…'};
   ws.onmessage=e=>{
     try{
       const d=JSON.parse(e.data);
-      currentUSD=parseFloat(d.c);       // current price
+      currentUSD=parseFloat(d.c);
       currentCZK=currentUSD*fxRate;
-      const ch=parseFloat(d.P);         // 24h % change
+      const ch=parseFloat(d.P);
       const hi=parseFloat(d.h);
       const lo=parseFloat(d.l);
-      const vol=parseFloat(d.q);        // quote volume USD
-      const cap=currentUSD*19700000;
+      const vol=parseFloat(d.q);
 
       const uel=$('usd'),cel=$('czk'),bad=$('badge');
       uel.className='';uel.style='';uel.textContent=fmt(currentUSD);
       cel.className='';cel.style='';cel.textContent=fmt(currentCZK);
       bad.className='badge '+(ch>=0?'up':'dn');bad.style='';
       bad.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${ch>=0?'M5 15l7-7 7 7':'M19 9l-7 7-7-7'}"/></svg>${pct(ch)} za 24h`;
-
       $('s1').textContent='$'+fmt(hi);
       $('s2').textContent='$'+fmt(lo);
-      $('s3').textContent='$'+fmtB(cap);
+      $('s3').textContent='$'+fmtB(currentUSD*19700000);
       $('s4').textContent='$'+fmtB(vol);
-
       const now=new Date();
       $('ts').textContent='Živě · '+now.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-      $('src').textContent='Zdroj: Binance WebSocket';
-    }catch(err){ console.error(err); }
+    }catch(err){console.error(err)}
   };
-
-  ws.onerror=()=>{
-    wsReady=false;
-    $('ts').textContent='Chyba spojení — zkouším znovu…';
-    setTimeout(connectWS, 3000);
-  };
-
-  ws.onclose=()=>{
-    wsReady=false;
-    // Automatické znovupřipojení po 5s
-    setTimeout(connectWS, 5000);
-  };
+  ws.onerror=()=>{wsReady=false;$('ts').textContent='Chyba · zkouším znovu…';setTimeout(connectWS,3000)};
+  ws.onclose=()=>{wsReady=false;setTimeout(connectWS,5000)};
 }
 
-/* ── Graf: CoinGecko historická data ── */
+/* ── Graf ── */
 function openChart(mode){
-  chartMode=mode; chartDays='1';
+  chartMode=mode;chartDays='1';
   $('priceView').style.display='none';
   $('chartView').classList.add('show');
   document.querySelectorAll('.period').forEach((b,i)=>b.classList.toggle('active',i===0));
@@ -286,10 +264,7 @@ function openChart(mode){
   $('chartPrice').textContent=(mode==='usd'?'$':'')+fmt(mode==='usd'?currentUSD:currentCZK)+(mode==='czk'?' Kč':'');
   loadChart();
 }
-function closeChart(){
-  $('chartView').classList.remove('show');
-  $('priceView').style.display='';
-}
+function closeChart(){$('chartView').classList.remove('show');$('priceView').style.display=''}
 function setPeriod(days,btn){
   chartDays=days;
   document.querySelectorAll('.period').forEach(b=>b.classList.remove('active'));
@@ -302,8 +277,10 @@ async function loadChart(){
   $('chartLoading').style.display='flex';
   $('chartLoading').textContent='Načítám graf…';
   try{
-    const interval=chartDays==='1'?'hourly':'daily';
-    const r=await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartDays}&interval=${interval}`);
+    // MAX = všechna dostupná data od vzniku BTC
+    const days=chartDays==='max'?'max':chartDays;
+    const interval=chartDays==='1'?'hourly':chartDays==='max'?'weekly':'daily';
+    const r=await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${days}&interval=${interval}`);
     if(!r.ok) throw new Error('HTTP '+r.status);
     const data=await r.json();
     chartData=data.prices.map(p=>({t:p[0],v:chartMode==='czk'?p[1]*fxRate:p[1]}));
@@ -312,7 +289,8 @@ async function loadChart(){
     const first=chartData[0].v,last=chartData[chartData.length-1].v;
     const chg=((last-first)/first)*100;
     const isUp=chg>=0;
-    $('chartChange').textContent=pct(chg)+' · '+({1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok'}[chartDays]);
+    const periodLabel={1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok',max:'All Time'}[chartDays];
+    $('chartChange').textContent=pct(chg)+' · '+periodLabel;
     $('chartChange').className='chart-change '+(isUp?'up':'dn');
     drawChart(isUp,mn,mx);
     $('chartLoading').style.display='none';
@@ -357,7 +335,12 @@ function drawChart(isUp,mn,mx){
   [0,1,2,3].forEach(i=>{
     const idx=Math.round(i*(n-1)/3);
     const d=new Date(chartData[idx].t);
-    const lbl=chartDays==='1'?d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'}):chartDays==='7'?d.toLocaleDateString('cs-CZ',{weekday:'short'}):chartDays==='30'?d.toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric'}):d.toLocaleDateString('cs-CZ',{month:'short',year:'2-digit'});
+    let lbl='';
+    if(chartDays==='1') lbl=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
+    else if(chartDays==='7') lbl=d.toLocaleDateString('cs-CZ',{weekday:'short'});
+    else if(chartDays==='30') lbl=d.toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric'});
+    else if(chartDays==='365') lbl=d.toLocaleDateString('cs-CZ',{month:'short'});
+    else lbl=d.toLocaleDateString('cs-CZ',{year:'numeric'});
     ctx.fillText(lbl,xOf(idx),H-pad.b+14);
   });
   setupTooltip(canvas,pad,w,xOf,yOf,n);
@@ -389,14 +372,9 @@ function setupTooltip(canvas,pad,w,xOf,yOf,n){
 
 /* ── Start ── */
 loadFX().then(()=>connectWS());
-// FX refresh každou hodinu
-setInterval(loadFX, 3600000);
-// Při návratu do appky — reconnect WS
+setInterval(loadFX,3600000);
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible'){
-    loadFX();
-    if(!wsReady) connectWS();
-  }
+  if(document.visibilityState==='visible'){loadFX();if(!wsReady)connectWS()}
 });
 </script>
 </body>
