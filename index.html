@@ -35,6 +35,8 @@
     .orb3{width:250px;height:250px;background:radial-gradient(circle,rgba(48,209,88,0.08),transparent 70%);bottom:10%;left:20%;animation-delay:-8s}
     @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.05)}66%{transform:translate(-10px,15px) scale(0.95)}}
     .wrap{position:relative;z-index:1;width:100%;max-width:390px;margin:0 auto}
+
+    /* Header */
     .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:4px}
     .hdr-l{display:flex;align-items:center;gap:11px}
     .btc-ball{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,210,100,0.9),rgba(255,159,10,0.7) 50%,rgba(180,80,0,0.5));box-shadow:0 0 0 0.5px rgba(255,255,255,0.3),0 0 30px rgba(255,159,10,0.4),inset 0 1px 1px rgba(255,255,255,0.5),inset 0 -2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.4);flex-shrink:0}
@@ -43,30 +45,62 @@
     .pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--green);padding:5px 12px;border-radius:99px;background:rgba(48,209,88,0.12);border:0.5px solid rgba(48,209,88,0.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
     .pill::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 2s ease-in-out infinite}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+    /* Glass */
     .glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:26px 22px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4),0 1px 0 rgba(255,255,255,0.1) inset}
     .glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .glass::after{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 70%);pointer-events:none}
     .clabel{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px}
-    .price-tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
+
+    /* Cena + spark */
+    .price-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+    .price-tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s;flex:1}
     .price-tap:active{opacity:.7}
+    .usd-price{font-size:50px;font-weight:800;letter-spacing:-3px;line-height:1;color:#fff;display:flex;align-items:baseline;gap:4px}
+    .usd-sam{font-size:24px;font-weight:400;color:rgba(255,255,255,.5);letter-spacing:0}
     .tap-hint{font-size:10px;color:rgba(255,255,255,.2);margin-top:6px;display:flex;align-items:center;gap:4px}
     .tap-hint svg{opacity:.4}
-    .usd-price{font-size:54px;font-weight:800;letter-spacing:-3px;line-height:1;color:#fff;display:flex;align-items:baseline;gap:4px}
-    .usd-sam{font-size:26px;font-weight:400;color:rgba(255,255,255,.5);letter-spacing:0}
+
+    /* Spark mini graf */
+    .spark-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-bottom:6px}
+    .spark-wrap canvas{display:block}
+    .spark-label{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+
     .czk-glass{background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:16px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:14px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
     .czk-glass:active{background:rgba(255,255,255,0.1)}
     .czk-l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4)}
     .czk-v{font-size:22px;font-weight:700;display:flex;align-items:baseline;gap:4px}
     .czk-s{font-size:13px;font-weight:400;color:rgba(255,255,255,.4)}
+
     .badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;margin-top:14px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
     .badge.up{background:rgba(48,209,88,0.12);color:var(--green);border:0.5px solid rgba(48,209,88,0.25)}
     .badge.dn{background:rgba(255,69,58,0.12);color:var(--red);border:0.5px solid rgba(255,69,58,0.25)}
     .badge svg{width:12px;height:12px}
+
     .div{height:0.5px;background:rgba(255,255,255,0.08);margin:18px 0}
     .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .stat{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:16px;padding:13px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
     .sl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:5px}
     .sv{font-size:15px;font-weight:700}
+
+    /* ── Fear & Greed ── */
+    .fg-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4)}
+    .fg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
+    .fg-inner{display:flex;align-items:center;gap:18px}
+    .fg-gauge{position:relative;width:80px;height:80px;flex-shrink:0}
+    .fg-gauge svg{width:80px;height:80px}
+    .fg-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+    .fg-val{font-size:24px;font-weight:800;letter-spacing:-1px;line-height:1}
+    .fg-sub{font-size:8px;font-weight:600;letter-spacing:.5px;opacity:.5}
+    .fg-info{flex:1}
+    .fg-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:5px}
+    .fg-mood{font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+    .fg-bar-wrap{background:rgba(255,255,255,0.07);border-radius:99px;height:5px;overflow:hidden;width:100%}
+    .fg-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+    .fg-scale{display:flex;justify-content:space-between;margin-top:4px}
+    .fg-scale span{font-size:8px;color:rgba(255,255,255,.25);font-weight:500}
+
+    /* Chart view */
     .chart-view{display:none;flex-direction:column;width:100%}
     .chart-view.show{display:flex}
     .back-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);border-radius:12px;padding:8px 14px;color:rgba(255,255,255,.7);font-size:13px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:16px;align-self:flex-start;font-family:inherit;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:background .15s}
@@ -87,6 +121,7 @@
     .chart-loading{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px;text-align:center;gap:10px}
     .prog-bar{width:160px;height:3px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden}
     .prog-fill{height:100%;background:var(--btc);border-radius:99px;transition:width .3s;width:0%}
+
     .ts{text-align:center;font-size:11px;color:rgba(255,255,255,.2);margin-top:14px}
     .src{text-align:center;font-size:10px;color:rgba(255,255,255,.15);margin-top:3px;letter-spacing:.3px}
     .ver{text-align:center;font-size:10px;color:rgba(255,255,255,.1);margin-top:6px;letter-spacing:.5px}
@@ -108,19 +143,28 @@
     <div class="pill">Živě</div>
   </div>
 
+  <!-- PRICE VIEW -->
   <div id="priceView">
     <div class="glass">
       <div class="clabel">Cena</div>
-      <div class="price-tap" onclick="openChart('usd')">
-        <div class="usd-price">
-          <span class="usd-sam">$</span>
-          <span id="usd" class="sk" style="width:200px;height:50px"> </span>
+      <div class="price-row">
+        <div class="price-tap" onclick="openChart('usd')">
+          <div class="usd-price">
+            <span class="usd-sam">$</span>
+            <span id="usd" class="sk" style="width:180px;height:46px"> </span>
+          </div>
+          <div class="tap-hint">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Klepněte pro graf
+          </div>
         </div>
-        <div class="tap-hint">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Klepněte pro graf
+        <!-- Spark mini graf -->
+        <div class="spark-wrap">
+          <span class="spark-label">24H</span>
+          <canvas id="sparkCanvas" width="90" height="46" style="width:90px;height:46px"></canvas>
         </div>
       </div>
+
       <div class="czk-glass" onclick="openChart('czk')">
         <span class="czk-l">CZK</span>
         <div class="czk-v">
@@ -137,11 +181,38 @@
         <div class="stat"><div class="sl">OBJEM 24H</div><div class="sv" id="s4">…</div></div>
       </div>
     </div>
+
+    <!-- Fear & Greed Card -->
+    <div class="fg-card">
+      <div class="fg-inner">
+        <div class="fg-gauge">
+          <svg viewBox="0 0 80 80">
+            <!-- Pozadí oblouku -->
+            <path d="M10 60 A 30 30 0 1 1 70 60" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="7" stroke-linecap="round"/>
+            <!-- Aktivní oblouk -->
+            <path id="fgArc" d="M10 60 A 30 30 0 1 1 70 60" fill="none" stroke="#FF453A" stroke-width="7" stroke-linecap="round"
+              stroke-dasharray="0 188" style="transition:stroke-dasharray .8s cubic-bezier(.4,0,.2,1),stroke .5s"/>
+          </svg>
+          <div class="fg-num">
+            <span class="fg-val" id="fgVal">–</span>
+            <span class="fg-sub">/ 100</span>
+          </div>
+        </div>
+        <div class="fg-info">
+          <div class="fg-title">Fear &amp; Greed Index</div>
+          <div class="fg-mood" id="fgMood">Načítám…</div>
+          <div class="fg-bar-wrap"><div class="fg-bar-fill" id="fgBarFill" style="width:0%;background:#FF453A"></div></div>
+          <div class="fg-scale"><span>Strach</span><span>Neutrál</span><span>Chamtivost</span></div>
+        </div>
+      </div>
+    </div>
+
     <div class="ts" id="ts">Připojuji se…</div>
     <div class="src" id="src"></div>
-    <div class="ver">v1.3</div>
+    <div class="ver">v1.4</div>
   </div>
 
+  <!-- CHART VIEW -->
   <div class="chart-view" id="chartView">
     <button class="back-btn" onclick="closeChart()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
@@ -172,7 +243,7 @@
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
-    <div class="ver">v1.3</div>
+    <div class="ver">v1.4</div>
   </div>
 </div>
 
@@ -185,7 +256,9 @@ const pct=n=>(n>=0?'+':'')+parseFloat(n).toFixed(2)+'%';
 let currentUSD=0,currentCZK=0,fxRate=23.5;
 let chartMode='usd',chartDays='1',chartData=[];
 let ws=null,wsReady=false;
+let sparkData=[];
 
+/* ── FX ── */
 async function loadFX(){
   try{
     const r=await fetch('https://api.frankfurter.app/latest?from=USD&to=CZK');
@@ -195,6 +268,104 @@ async function loadFX(){
   }catch(e){fxRate=23.5}
 }
 
+/* ── Fear & Greed ── */
+async function loadFearGreed(){
+  try{
+    const r=await fetch('https://api.alternative.me/fng/?limit=1');
+    const j=await r.json();
+    const val=parseInt(j.data[0].value);
+    const cls=j.data[0].value_classification;
+
+    // Přeložit do češtiny
+    const moods={
+      'Extreme Fear':'Extrémní strach',
+      'Fear':'Strach',
+      'Neutral':'Neutrál',
+      'Greed':'Chamtivost',
+      'Extreme Greed':'Extrémní chamtivost'
+    };
+    const mood=moods[cls]||cls;
+
+    // Barva podle hodnoty
+    const color=val<=25?'#FF453A':val<=45?'#FF9F0A':val<=55?'#FFD60A':val<=75?'#30D158':'#34C759';
+
+    $('fgVal').textContent=val;
+    $('fgVal').style.color=color;
+    $('fgMood').textContent=mood;
+    $('fgMood').style.color=color;
+
+    // Progress bar
+    $('fgBarFill').style.width=val+'%';
+    $('fgBarFill').style.background=color;
+
+    // SVG oblouk — délka oblouku = 188px (délka půlkruhu)
+    const arcLen=(val/100)*188;
+    $('fgArc').setAttribute('stroke-dasharray',arcLen+' 188');
+    $('fgArc').setAttribute('stroke',color);
+  }catch(e){
+    $('fgMood').textContent='Nedostupné';
+    console.error('FnG:',e);
+  }
+}
+
+/* ── Spark data — 24h hodinové ceny ── */
+async function loadSparkData(){
+  try{
+    const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1&interval=hourly');
+    if(!r.ok) return;
+    const j=await r.json();
+    sparkData=j.prices.map(p=>p[1]);
+    drawSpark();
+  }catch(e){console.warn('Spark:',e)}
+}
+
+function drawSpark(){
+  if(sparkData.length<2) return;
+  const canvas=$('sparkCanvas');
+  const dpr=window.devicePixelRatio||1;
+  const W=90,H=46;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const mn=Math.min(...sparkData),mx=Math.max(...sparkData),range=mx-mn||1;
+  const n=sparkData.length;
+  const pad=3;
+  const w=W-pad*2,h=H-pad*2;
+  const xOf=i=>pad+(i/(n-1))*w;
+  const yOf=v=>pad+h-(((v-mn)/range)*h);
+  const isUp=sparkData[sparkData.length-1]>=sparkData[0];
+  const color=isUp?'48,209,88':'255,69,58';
+
+  // Gradient fill
+  const gr=ctx.createLinearGradient(0,pad,0,pad+h);
+  gr.addColorStop(0,`rgba(${color},0.3)`);
+  gr.addColorStop(1,`rgba(${color},0)`);
+  ctx.beginPath();
+  ctx.moveTo(xOf(0),yOf(sparkData[0]));
+  for(let i=1;i<n;i++){
+    const cpx=(xOf(i-1)+xOf(i))/2;
+    ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]));
+  }
+  ctx.lineTo(xOf(n-1),H);ctx.lineTo(xOf(0),H);ctx.closePath();
+  ctx.fillStyle=gr;ctx.fill();
+
+  // Linka
+  ctx.beginPath();
+  ctx.moveTo(xOf(0),yOf(sparkData[0]));
+  for(let i=1;i<n;i++){
+    const cpx=(xOf(i-1)+xOf(i))/2;
+    ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]));
+  }
+  ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=1.5;ctx.stroke();
+
+  // Tečka na konci
+  const lx=xOf(n-1),ly=yOf(sparkData[n-1]);
+  ctx.beginPath();ctx.arc(lx,ly,2.5,0,Math.PI*2);
+  ctx.fillStyle=`rgba(${color},1)`;ctx.fill();
+}
+
+/* ── Binance WebSocket ── */
 function connectWS(){
   if(ws){try{ws.close()}catch(e){}}
   ws=new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
@@ -212,12 +383,15 @@ function connectWS(){
       $('s1').textContent='$'+fmt(hi);$('s2').textContent='$'+fmt(lo);
       $('s3').textContent='$'+fmtB(currentUSD*19700000);$('s4').textContent='$'+fmtB(vol);
       $('ts').textContent='Živě · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      // Aktualizuj spark poslední bod
+      if(sparkData.length>0){sparkData[sparkData.length-1]=currentUSD;drawSpark()}
     }catch(err){console.error(err)}
   };
   ws.onerror=()=>{wsReady=false;setTimeout(connectWS,3000)};
   ws.onclose=()=>{wsReady=false;setTimeout(connectWS,5000)};
 }
 
+/* ── Graf ── */
 function openChart(mode){
   chartMode=mode;chartDays='1';
   $('priceView').style.display='none';
@@ -231,77 +405,52 @@ function closeChart(){$('chartView').classList.remove('show');$('priceView').sty
 function setPeriod(days,btn){
   chartDays=days;
   document.querySelectorAll('.period').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  loadChart();
+  btn.classList.add('active');loadChart();
 }
 
-/* ── MAX: Kraken OHLC týdenní interval, opakovaně dokud nemáme celou historii ── */
 async function loadMaxChart(){
-  // Kraken vrací max 720 svíček na jedno volání
-  // interval 10080 = týdenní (minuty). Od 2013 do dnes = ~680 týdnů → stačí 1 volání
-  // interval 1440  = denní. Od 2013 = ~4700 dní → potřebujeme ~7 volání
-  // Použijeme týdenní = vše v 1 volání, ale začínáme od 2011
-
-  const INTERVAL=10080; // týdenní svíčky
-  const START=1325376000; // 1. 1. 2012 unix timestamp
-
+  const INTERVAL=10080,START=1325376000;
   setProgress(10,'Načítám historická data…');
-
   const r=await fetch(`https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=${INTERVAL}&since=${START}`);
   if(!r.ok) throw new Error('Kraken HTTP '+r.status);
   const j=await r.json();
   if(j.error&&j.error.length) throw new Error('Kraken: '+j.error[0]);
-
   const raw=j.result['XXBTZUSD']||j.result['XBTUSD']||Object.values(j.result)[0];
   if(!raw||!raw.length) throw new Error('Kraken: prázdná data');
-
   setProgress(70,'Zpracovávám data…');
-
-  // Pokud stále nedostaneme dost — doplníme druhým voláním od nejstaršího dostupného záznamu
   let allRaw=[...raw];
-
-  // Zkontroluj jestli první záznam je opravdu kolem roku 2013
   const firstYear=new Date(allRaw[0][0]*1000).getFullYear();
   if(firstYear>2014){
-    // Zkus starší data druhým voláním
     try{
-      setProgress(40,'Načítám starší data (2013–2015)…');
+      setProgress(40,'Načítám starší data…');
       const r2=await fetch(`https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=${INTERVAL}&since=1356998400`);
       const j2=await r2.json();
       if(!j2.error||!j2.error.length){
         const raw2=j2.result['XXBTZUSD']||j2.result['XBTUSD']||Object.values(j2.result)[0];
         if(raw2&&raw2.length){
-          // Spoj a odstraň duplicity
           const existingTimes=new Set(allRaw.map(d=>d[0]));
           const newData=raw2.filter(d=>!existingTimes.has(d[0]));
           allRaw=[...newData,...allRaw].sort((a,b)=>a[0]-b[0]);
         }
       }
-    }catch(e2){console.warn('Druhé volání selhalo:',e2)}
+    }catch(e2){console.warn(e2)}
   }
-
-  setProgress(90,'Vykresluju graf…');
-
-  return allRaw.map(d=>({
-    t:d[0]*1000,
-    v:chartMode==='czk'?parseFloat(d[4])*fxRate:parseFloat(d[4])
-  })).filter(d=>d.v>0);
+  setProgress(90,'Vykresluju…');
+  return allRaw.map(d=>({t:d[0]*1000,v:chartMode==='czk'?parseFloat(d[4])*fxRate:parseFloat(d[4])})).filter(d=>d.v>0);
 }
 
-function setProgress(pct,text){
+function setProgress(p,text){
   $('loadingText').textContent=text;
   $('progBar').style.display='block';
-  $('progFill').style.width=pct+'%';
+  $('progFill').style.width=p+'%';
 }
 
 async function loadChart(){
   $('chartCanvas').style.display='none';
   $('chartLoading').style.display='flex';
   $('chartLoading').style.color='rgba(255,255,255,.3)';
-  $('progBar').style.display='none';
-  $('progFill').style.width='0%';
+  $('progBar').style.display='none';$('progFill').style.width='0%';
   $('loadingText').textContent='Načítám graf…';
-
   try{
     if(chartDays==='max'){
       chartData=await loadMaxChart();
@@ -313,9 +462,7 @@ async function loadChart(){
       if(data.error) throw new Error(JSON.stringify(data.error));
       chartData=data.prices.map(p=>({t:p[0],v:chartMode==='czk'?p[1]*fxRate:p[1]}));
     }
-
     if(!chartData||chartData.length<2) throw new Error('Nedostatek dat');
-
     const mn=Math.min(...chartData.map(d=>d.v));
     const mx=Math.max(...chartData.map(d=>d.v));
     const first=chartData[0].v,last=chartData[chartData.length-1].v;
@@ -324,15 +471,12 @@ async function loadChart(){
     const lbl={1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok',max:'All Time'}[chartDays];
     $('chartChange').textContent=pct(chg)+' · '+lbl;
     $('chartChange').className='chart-change '+(isUp?'up':'dn');
-
-    const firstYear=new Date(chartData[0].t).getFullYear();
-    const lastYear=new Date(chartData[chartData.length-1].t).getFullYear();
-
+    const fy=new Date(chartData[0].t).getFullYear();
+    const ly=new Date(chartData[chartData.length-1].t).getFullYear();
     drawChart(isUp,mn,mx);
     $('chartLoading').style.display='none';
     $('chartCanvas').style.display='block';
-    const src=chartDays==='max'?'Kraken ('+firstYear+'–'+lastYear+')':'CoinGecko';
-    $('chartTs').textContent='Graf: '+src+' · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
+    $('chartTs').textContent='Graf: '+(chartDays==='max'?'Kraken ('+fy+'–'+ly+')':'CoinGecko')+' · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
   }catch(e){
     $('progBar').style.display='none';
     $('chartLoading').style.color='var(--red)';
@@ -348,8 +492,7 @@ function drawChart(isUp,mn,mx){
   const W=wrap.clientWidth,H=200;
   canvas.width=W*dpr;canvas.height=H*dpr;
   canvas.style.width=W+'px';canvas.style.height=H+'px';
-  const ctx=canvas.getContext('2d');
-  ctx.scale(dpr,dpr);
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
   const pad={t:10,r:10,b:28,l:0};
   const w=W-pad.l-pad.r,h=H-pad.t-pad.b;
   const n=chartData.length,range=mx-mn||1;
@@ -405,8 +548,15 @@ function setupTooltip(canvas,pad,w,xOf,yOf,n){
   canvas.onmouseleave=()=>hide();
 }
 
-loadFX().then(()=>connectWS());
+/* ── Start ── */
+loadFX().then(()=>{
+  connectWS();
+  loadSparkData();
+  loadFearGreed();
+});
 setInterval(loadFX,3600000);
+setInterval(loadSparkData,300000);   // spark každých 5 min
+setInterval(loadFearGreed,3600000);  // FnG každou hodinu
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){loadFX();if(!wsReady)connectWS()}
 });
