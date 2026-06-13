@@ -14,7 +14,6 @@
 
     :root {
       --bg: #0a0a0f;
-      --surface: #12121a;
       --card: #1a1a27;
       --border: rgba(255,255,255,0.06);
       --accent: #f7931a;
@@ -24,7 +23,6 @@
       --text: #f0f0f8;
       --muted: #6b6b8a;
       --subtle: #2a2a3d;
-      /* iOS safe areas */
       --safe-top: env(safe-area-inset-top);
       --safe-bottom: env(safe-area-inset-bottom);
       --safe-left: env(safe-area-inset-left);
@@ -46,11 +44,9 @@
       position: relative;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      /* Disable iOS text size adjustment */
       -webkit-text-size-adjust: 100%;
     }
 
-    /* Ambient glow */
     body::before {
       content: '';
       position: fixed;
@@ -70,7 +66,6 @@
       margin: 0 auto;
     }
 
-    /* Header */
     .header {
       display: flex;
       align-items: center;
@@ -87,18 +82,9 @@
       box-shadow: 0 0 28px var(--accent-glow);
       flex-shrink: 0;
     }
-    .header-text h1 {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-    }
-    .header-text p {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 3px;
-    }
+    .header-text h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+    .header-text p  { font-size: 13px; color: var(--muted); margin-top: 3px; }
 
-    /* Main card */
     .price-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -107,7 +93,6 @@
       margin-bottom: 14px;
       position: relative;
       overflow: hidden;
-      /* iOS tap highlight */
       -webkit-tap-highlight-color: transparent;
     }
     .price-card::before {
@@ -133,7 +118,6 @@
       color: var(--muted);
     }
 
-    /* USD */
     .price-usd {
       font-size: 44px;
       font-weight: 800;
@@ -142,7 +126,6 @@
       display: flex;
       align-items: baseline;
       gap: 4px;
-      flex-wrap: wrap;
     }
     .price-usd .currency {
       font-size: 22px;
@@ -151,7 +134,6 @@
       letter-spacing: 0;
     }
 
-    /* CZK block */
     .czk-block {
       margin-top: 18px;
       background: var(--subtle);
@@ -181,7 +163,6 @@
       color: var(--muted);
     }
 
-    /* Change badge */
     .change-badge {
       display: inline-flex;
       align-items: center;
@@ -196,38 +177,17 @@
     .change-badge.negative { background: rgba(255,77,77,0.12); color: var(--red); }
     .change-badge svg { width: 14px; height: 14px; }
 
-    /* Divider */
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 22px 0;
-    }
+    .divider { height: 1px; background: var(--border); margin: 22px 0; }
 
-    /* Stats */
-    .stats-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .stat-item {
-      background: var(--subtle);
-      border-radius: 16px;
-      padding: 14px;
-    }
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat-item { background: var(--subtle); border-radius: 16px; padding: 14px; }
     .stat-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.8px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 6px;
     }
-    .stat-value {
-      font-size: 15px;
-      font-weight: 600;
-    }
+    .stat-value { font-size: 15px; font-weight: 600; }
 
-    /* Refresh button — touch-friendly min 48px */
     .refresh-btn {
       display: flex;
       align-items: center;
@@ -244,18 +204,14 @@
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
-      transition: all 0.2s ease;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
+      transition: all 0.2s ease;
     }
-    .refresh-btn:active {
-      background: rgba(247,147,26,0.25);
-      transform: scale(0.97);
-    }
+    .refresh-btn:active { background: rgba(247,147,26,0.25); transform: scale(0.97); }
     .refresh-btn.loading svg { animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Install banner */
     .install-banner {
       display: none;
       align-items: center;
@@ -269,9 +225,7 @@
       color: #b0abff;
     }
     .install-banner.show { display: flex; }
-    .install-banner strong { color: #d0ccff; }
 
-    /* Last updated */
     .last-update {
       text-align: center;
       font-size: 12px;
@@ -280,7 +234,6 @@
       padding-bottom: 4px;
     }
 
-    /* Skeleton */
     .skeleton {
       background: linear-gradient(90deg, var(--subtle) 25%, var(--card) 50%, var(--subtle) 75%);
       background-size: 200% 100%;
@@ -290,11 +243,10 @@
       user-select: none;
     }
     @keyframes shimmer {
-      0% { background-position: 200% 0; }
+      0%   { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
 
-    /* Error */
     .error-msg {
       text-align: center;
       color: var(--red);
@@ -303,7 +255,6 @@
       display: none;
     }
 
-    /* Live dot */
     .live-dot {
       display: inline-flex;
       align-items: center;
@@ -321,7 +272,7 @@
     }
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.75); }
+      50%       { opacity: 0.4; transform: scale(0.75); }
     }
   </style>
 </head>
@@ -389,7 +340,6 @@
     Obnovit cenu
   </button>
 
-  <!-- iOS install hint — zobrazí se jen v Safari -->
   <div class="install-banner" id="installBanner">
     <span style="font-size:20px">📲</span>
     <div><strong>Přidat na plochu:</strong> Klepněte na <strong>Sdílet</strong> → „Přidat na plochu"</div>
@@ -403,8 +353,12 @@
   const API_CZK     = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,czk';
 
   function fmt(n, dec = 0) {
-    return new Intl.NumberFormat('cs-CZ', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(n);
+    return new Intl.NumberFormat('cs-CZ', {
+      minimumFractionDigits: dec,
+      maximumFractionDigits: dec
+    }).format(n);
   }
+
   function fmtLarge(n) {
     if (n >= 1e12) return (n/1e12).toFixed(2) + ' bil.';
     if (n >= 1e9)  return (n/1e9).toFixed(2) + ' mld.';
@@ -413,26 +367,36 @@
   }
 
   async function fetchPrice() {
-    const btn = document.getElementById('refreshBtn');
+    const btn   = document.getElementById('refreshBtn');
     const errEl = document.getElementById('errorMsg');
     btn.classList.add('loading');
     errEl.style.display = 'none';
 
     try {
-      const [r1, r2] = await Promise.all([fetch(API_MARKETS), fetch(API_CZK)]);
-      if (!r1.ok || !r2.ok) throw new Error();
-
+      // První volání — tržní data v USD
+      const r1 = await fetch(API_MARKETS);
+      if (!r1.ok) throw new Error();
       const [market] = await r1.json();
-      const czk      = await r2.json();
 
+      // Pauza 0.5s aby CoinGecko rate limit nebyl překročen
+      await new Promise(r => setTimeout(r, 500));
+
+      // Druhé volání — cena v CZK
+      const r2 = await fetch(API_CZK);
+      if (!r2.ok) throw new Error();
+      const czk = await r2.json();
+
+      // USD
       const usdEl = document.getElementById('usdVal');
       usdEl.textContent = fmt(market.current_price);
       usdEl.classList.remove('skeleton');
 
+      // CZK
       const czkEl = document.getElementById('czkVal');
       czkEl.textContent = fmt(czk.bitcoin.czk);
       czkEl.classList.remove('skeleton');
 
+      // Změna 24h
       const change = market.price_change_percentage_24h;
       const badge  = document.getElementById('changeBadge');
       badge.className = 'change-badge ' + (change >= 0 ? 'positive' : 'negative');
@@ -442,14 +406,18 @@
         </svg>
         ${change >= 0 ? '+' : ''}${change.toFixed(2)}% za 24h`;
 
+      // Statistiky
       document.getElementById('high24').textContent    = '$' + fmt(market.high_24h);
       document.getElementById('low24').textContent     = '$' + fmt(market.low_24h);
       document.getElementById('marketCap').textContent = '$' + fmtLarge(market.market_cap);
       document.getElementById('volume24').textContent  = '$' + fmtLarge(market.total_volume);
 
+      // Čas aktualizace
       const now = new Date();
       document.getElementById('lastUpdate').textContent =
-        'Aktualizováno: ' + now.toLocaleTimeString('cs-CZ', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+        'Aktualizováno: ' + now.toLocaleTimeString('cs-CZ', {
+          hour: '2-digit', minute: '2-digit', second: '2-digit'
+        });
 
     } catch {
       errEl.style.display = 'block';
@@ -459,17 +427,20 @@
     }
   }
 
-  // Zobrazit iOS install banner jen v Safari (ne v PWA režimu)
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  // iOS install banner — jen v Safari, ne v PWA režimu
+  const isIOS        = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const isStandalone = window.navigator.standalone === true;
   if (isIOS && !isStandalone) {
     document.getElementById('installBanner').classList.add('show');
   }
 
+  // Spustit při načtení
   fetchPrice();
-  setInterval(fetchPrice, 60000);
 
-  // Refresh při návratu do aplikace (z pozadí)
+  // Auto-refresh každých 90 sekund
+  setInterval(fetchPrice, 90000);
+
+  // Obnovit při návratu z pozadí
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') fetchPrice();
   });
