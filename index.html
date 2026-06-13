@@ -121,6 +121,7 @@
     .chart-loading{height:200px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px}
     .ts{text-align:center;font-size:11px;color:rgba(255,255,255,.2);margin-top:14px}
     .src{text-align:center;font-size:10px;color:rgba(255,255,255,.15);margin-top:3px;letter-spacing:.3px}
+    .ver{text-align:center;font-size:10px;color:rgba(255,255,255,.1);margin-top:6px;letter-spacing:.5px}
     .sk{background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 75%);background-size:200% 100%;animation:sh 1.4s ease-in-out infinite;border-radius:10px;color:transparent!important;user-select:none;display:inline-block}
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
   </style>
@@ -169,8 +170,9 @@
         <div class="stat"><div class="sl">OBJEM 24H</div><div class="sv" id="s4">…</div></div>
       </div>
     </div>
-    <div class="ts" id="ts">Načítám data…</div>
+    <div class="ts" id="ts">Připojuji se…</div>
     <div class="src" id="src"></div>
+    <div class="ver">v1.0</div>
   </div>
 
   <!-- CHART VIEW -->
@@ -200,6 +202,7 @@
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
+    <div class="ver">v1.0</div>
   </div>
 </div>
 
@@ -209,50 +212,73 @@ const fmt=(n,d=0)=>new Intl.NumberFormat('cs-CZ',{minimumFractionDigits:d,maximu
 const fmtB=n=>n>=1e12?(n/1e12).toFixed(2)+' bil.':n>=1e9?(n/1e9).toFixed(2)+' mld.':n>=1e6?(n/1e6).toFixed(1)+' mil.':fmt(n);
 const pct=n=>(n>=0?'+':'')+parseFloat(n).toFixed(2)+'%';
 
-let currentUSD=0,currentCZK=0,fxRate=1;
-let chartMode='usd',chartDays='1',chartData=[];
+let currentUSD=0, currentCZK=0, fxRate=1;
+let chartMode='usd', chartDays='1', chartData=[];
+let ws=null, wsReady=false;
 
-/* ── Přímý fetch bez proxy — stejně jako první funkční verze ── */
-async function loadPrice(){
+/* ── FX kurz USD/CZK ── */
+async function loadFX(){
   try{
-    const [r1,r2]=await Promise.all([
-      fetch('https://api.coinlore.net/api/ticker/?id=90'),
-      fetch('https://api.frankfurter.app/latest?from=USD&to=CZK')
-    ]);
-    const coins=await r1.json();
-    const fx=await r2.json();
-
-    const b=coins[0];
-    fxRate=fx.rates.CZK;
-    currentUSD=parseFloat(b.price_usd);
-    currentCZK=currentUSD*fxRate;
-    const ch=parseFloat(b.percent_change_24h);
-    const hi=currentUSD*(1+Math.abs(ch)/100);
-    const lo=currentUSD*(1-Math.abs(ch)/100);
-
-    const uel=$('usd'),cel=$('czk'),bad=$('badge');
-    uel.className='';uel.style='';uel.textContent=fmt(currentUSD);
-    cel.className='';cel.style='';cel.textContent=fmt(currentCZK);
-    bad.className='badge '+(ch>=0?'up':'dn');bad.style='';
-    bad.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${ch>=0?'M5 15l7-7 7 7':'M19 9l-7 7-7-7'}"/></svg>${pct(ch)} za 24h`;
-
-    $('s1').textContent='$'+fmt(hi);
-    $('s2').textContent='$'+fmt(lo);
-    $('s3').textContent='$'+fmtB(parseFloat(b.market_cap_usd));
-    $('s4').textContent='$'+fmtB(parseFloat(b.volume24));
-
-    const now=new Date();
-    $('ts').textContent='Aktualizováno: '+now.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    $('src').textContent='Zdroj: CoinLore';
-  }catch(e){
-    $('ts').textContent='Chyba načítání.';
-    console.error(e);
-  }
+    const r=await fetch('https://api.frankfurter.app/latest?from=USD&to=CZK');
+    const j=await r.json();
+    fxRate=j.rates.CZK;
+  }catch(e){ fxRate=23.5; } // fallback
 }
 
-/* ── Graf přes CoinGecko (historická data) ── */
+/* ── WebSocket Binance — funguje všude včetně iOS PWA ── */
+function connectWS(){
+  if(ws){ try{ws.close()}catch(e){} }
+  ws=new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
+
+  ws.onopen=()=>{
+    wsReady=true;
+    $('ts').textContent='Připojeno · čekám na data…';
+  };
+
+  ws.onmessage=e=>{
+    try{
+      const d=JSON.parse(e.data);
+      currentUSD=parseFloat(d.c);       // current price
+      currentCZK=currentUSD*fxRate;
+      const ch=parseFloat(d.P);         // 24h % change
+      const hi=parseFloat(d.h);
+      const lo=parseFloat(d.l);
+      const vol=parseFloat(d.q);        // quote volume USD
+      const cap=currentUSD*19700000;
+
+      const uel=$('usd'),cel=$('czk'),bad=$('badge');
+      uel.className='';uel.style='';uel.textContent=fmt(currentUSD);
+      cel.className='';cel.style='';cel.textContent=fmt(currentCZK);
+      bad.className='badge '+(ch>=0?'up':'dn');bad.style='';
+      bad.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${ch>=0?'M5 15l7-7 7 7':'M19 9l-7 7-7-7'}"/></svg>${pct(ch)} za 24h`;
+
+      $('s1').textContent='$'+fmt(hi);
+      $('s2').textContent='$'+fmt(lo);
+      $('s3').textContent='$'+fmtB(cap);
+      $('s4').textContent='$'+fmtB(vol);
+
+      const now=new Date();
+      $('ts').textContent='Živě · '+now.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      $('src').textContent='Zdroj: Binance WebSocket';
+    }catch(err){ console.error(err); }
+  };
+
+  ws.onerror=()=>{
+    wsReady=false;
+    $('ts').textContent='Chyba spojení — zkouším znovu…';
+    setTimeout(connectWS, 3000);
+  };
+
+  ws.onclose=()=>{
+    wsReady=false;
+    // Automatické znovupřipojení po 5s
+    setTimeout(connectWS, 5000);
+  };
+}
+
+/* ── Graf: CoinGecko historická data ── */
 function openChart(mode){
-  chartMode=mode;chartDays='1';
+  chartMode=mode; chartDays='1';
   $('priceView').style.display='none';
   $('chartView').classList.add('show');
   document.querySelectorAll('.period').forEach((b,i)=>b.classList.toggle('active',i===0));
@@ -277,8 +303,7 @@ async function loadChart(){
   $('chartLoading').textContent='Načítám graf…';
   try{
     const interval=chartDays==='1'?'hourly':'daily';
-    const url=`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartDays}&interval=${interval}`;
-    const r=await fetch(url);
+    const r=await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartDays}&interval=${interval}`);
     if(!r.ok) throw new Error('HTTP '+r.status);
     const data=await r.json();
     chartData=data.prices.map(p=>({t:p[0],v:chartMode==='czk'?p[1]*fxRate:p[1]}));
@@ -362,9 +387,17 @@ function setupTooltip(canvas,pad,w,xOf,yOf,n){
   canvas.onmouseleave=()=>hide();
 }
 
-loadPrice();
-setInterval(loadPrice,60000);
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadPrice();});
+/* ── Start ── */
+loadFX().then(()=>connectWS());
+// FX refresh každou hodinu
+setInterval(loadFX, 3600000);
+// Při návratu do appky — reconnect WS
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'){
+    loadFX();
+    if(!wsReady) connectWS();
+  }
+});
 </script>
 </body>
 </html>
