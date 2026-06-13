@@ -137,20 +137,20 @@
     <div class="divider"></div>
     <div class="stats-row">
       <div class="stat-item">
-        <div class="stat-label">7D ZMĚNA</div>
-        <div class="stat-value" id="ch7d">…</div>
+        <div class="stat-label">24H HIGH</div>
+        <div class="stat-value" id="stat1">…</div>
       </div>
       <div class="stat-item">
-        <div class="stat-label">1H ZMĚNA</div>
-        <div class="stat-value" id="ch1h">…</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">TRŽNÍ CAP</div>
-        <div class="stat-value" id="marketCap">…</div>
+        <div class="stat-label">24H LOW</div>
+        <div class="stat-value" id="stat2">…</div>
       </div>
       <div class="stat-item">
         <div class="stat-label">OBJEM 24H</div>
-        <div class="stat-value" id="volume24">…</div>
+        <div class="stat-value" id="stat3">…</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">POČET OBCH.</div>
+        <div class="stat-value" id="stat4">…</div>
       </div>
     </div>
   </div>
@@ -167,9 +167,8 @@
 </div>
 
 <script>
-  // Binance API - bez CORS problémů, funguje na iOS
-  const API_BINANCE = 'https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT';
-  const API_FX      = 'https://api.frankfurter.app/latest?from=USD&to=CZK';
+  const API_KRAKEN = 'https://api.kraken.com/0/public/Ticker?pair=XBTUSD';
+  const API_FX     = 'https://api.frankfurter.app/latest?from=USD&to=CZK';
 
   function fmt(n, dec = 0) {
     return new Intl.NumberFormat('cs-CZ', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(n);
@@ -192,20 +191,24 @@
 
     try {
       const [r1, r2] = await Promise.all([
-        fetch(API_BINANCE),
+        fetch(API_KRAKEN),
         fetch(API_FX)
       ]);
       if (!r1.ok || !r2.ok) throw new Error('Chyba API');
 
-      const btc   = await r1.json();
-      const fx    = await r2.json();
+      const data   = await r1.json();
+      const fx     = await r2.json();
 
-      const usd    = parseFloat(btc.lastPrice);
+      if (data.error && data.error.length > 0) throw new Error(data.error[0]);
+
+      const ticker = data.result['XXBTZUSD'];
+      const usd    = parseFloat(ticker.c[0]);
       const czk    = usd * fx.rates.CZK;
-      const change = parseFloat(btc.priceChangePercent);
-      const high   = parseFloat(btc.highPrice);
-      const low    = parseFloat(btc.lowPrice);
-      const vol    = parseFloat(btc.quoteVolume);
+      const change = parseFloat(ticker.P[1]);
+      const high   = parseFloat(ticker.h[1]);
+      const low    = parseFloat(ticker.l[1]);
+      const vol    = parseFloat(ticker.v[1]) * usd;
+      const trades = parseInt(ticker.t[1]);
 
       const usdEl = document.getElementById('usdVal');
       usdEl.textContent = fmt(usd);
@@ -223,15 +226,10 @@
         </svg>
         ${pct(change)} za 24h`;
 
-      document.getElementById('ch7d').textContent    = '$' + fmt(high);
-      document.getElementById('ch1h').textContent    = '$' + fmt(low);
-      document.getElementById('marketCap').textContent = fmt(parseFloat(btc.count)) + ' obch.';
-      document.getElementById('volume24').textContent  = '$' + fmtLarge(vol);
-
-      document.querySelectorAll('.stat-label')[0].textContent = '24H HIGH';
-      document.querySelectorAll('.stat-label')[1].textContent = '24H LOW';
-      document.querySelectorAll('.stat-label')[2].textContent = 'POČET OBCH.';
-      document.querySelectorAll('.stat-label')[3].textContent = 'OBJEM 24H';
+      document.getElementById('stat1').textContent = '$' + fmt(high);
+      document.getElementById('stat2').textContent = '$' + fmt(low);
+      document.getElementById('stat3').textContent = '$' + fmtLarge(vol);
+      document.getElementById('stat4').textContent = fmt(trades) + ' obch.';
 
       const now = new Date();
       document.getElementById('lastUpdate').textContent =
