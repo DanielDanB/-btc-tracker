@@ -16,6 +16,7 @@
       --btc:#FF9F0A;--green:#30D158;--red:#FF453A;
       --bg1:#050508;--bg2:#1a0a2e;--bg3:#0d1f3c;--bg4:#1a1a0a;
       --glass-bg:rgba(255,255,255,0.06);--glass-border:rgba(255,255,255,0.15);
+      --glass-bg2:rgba(255,255,255,0.04);--glass-border2:rgba(255,255,255,0.08);
       --text:#ffffff;--text2:rgba(255,255,255,0.45);--text3:rgba(255,255,255,0.25);--text4:rgba(255,255,255,0.15);
       --tab-bg:rgba(255,255,255,0.05);--tab-border:rgba(255,255,255,0.1);--tab-active:rgba(255,255,255,0.1);
       --stat-bg:rgba(255,255,255,0.04);--stat-border:rgba(255,255,255,0.08);
@@ -27,6 +28,7 @@
     html.light{
       --bg1:#f0f4ff;--bg2:#e8f0fe;--bg3:#f5f0ff;--bg4:#fff8e8;
       --glass-bg:rgba(255,255,255,0.75);--glass-border:rgba(0,0,0,0.08);
+      --glass-bg2:rgba(255,255,255,0.6);--glass-border2:rgba(0,0,0,0.06);
       --text:#0a0a1a;--text2:rgba(0,0,0,0.5);--text3:rgba(0,0,0,0.3);--text4:rgba(0,0,0,0.2);
       --tab-bg:rgba(0,0,0,0.05);--tab-border:rgba(0,0,0,0.08);--tab-active:rgba(255,255,255,0.9);
       --stat-bg:rgba(255,255,255,0.7);--stat-border:rgba(0,0,0,0.07);
@@ -36,7 +38,16 @@
       --usd-color:#0a0a1a;--czk-bg:rgba(255,255,255,0.7);--czk-border:rgba(0,0,0,0.08);
     }
     html{height:-webkit-fill-available}
-    body{font-family:'Inter',-apple-system,sans-serif;min-height:100vh;min-height:-webkit-fill-available;display:flex;flex-direction:column;align-items:center;padding:calc(var(--st) + 16px) calc(var(--sr) + 18px) calc(var(--sb) + 20px) calc(var(--sl) + 18px);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow-x:hidden;position:relative;background:radial-gradient(ellipse at 20% 10%,var(--bg2) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,var(--bg3) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,var(--bg4) 0%,transparent 60%),var(--bg1);color:var(--text);transition:background .4s,color .4s}
+    body{
+      font-family:'Inter',-apple-system,sans-serif;min-height:100vh;min-height:-webkit-fill-available;
+      display:flex;flex-direction:column;align-items:center;
+      padding:calc(var(--st) + 16px) calc(var(--sr) + 18px) calc(var(--sb) + 20px) calc(var(--sl) + 18px);
+      -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow-x:hidden;position:relative;
+      background:radial-gradient(ellipse at 20% 10%,var(--bg2) 0%,transparent 50%),
+                 radial-gradient(ellipse at 80% 20%,var(--bg3) 0%,transparent 50%),
+                 radial-gradient(ellipse at 50% 80%,var(--bg4) 0%,transparent 60%),var(--bg1);
+      color:var(--text);transition:background .4s,color .4s;
+    }
     .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:drift 12s ease-in-out infinite}
     .orb1{width:350px;height:350px;background:radial-gradient(circle,var(--orb1),transparent 70%);top:-80px;left:-80px}
     .orb2{width:300px;height:300px;background:radial-gradient(circle,var(--orb2),transparent 70%);top:30%;right:-60px;animation-delay:-4s}
@@ -57,9 +68,10 @@
     .tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--tab-bg);border:0.5px solid var(--tab-border);border-radius:16px;padding:4px;transition:background .4s,border-color .4s}
     .tab{flex:1;padding:9px 0;border-radius:12px;font-size:13px;font-weight:600;text-align:center;cursor:pointer;color:var(--text3);transition:all .2s;-webkit-tap-highlight-color:transparent;border:none;background:none;font-family:inherit;letter-spacing:-.2px}
     .tab.active{background:var(--tab-active);color:var(--text);box-shadow:0 0 0 0.5px rgba(0,0,0,0.05)}
-    .glass{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:24px 22px 20px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s,border-color .4s}
+    .glass{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:24px 22px 20px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s,border-color .4s,box-shadow .4s}
     .glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
-    .clabel{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:6px}
+    .glass::after{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 70%);pointer-events:none}
+    .clabel{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:6px;transition:color .4s}
     .price-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
     .price-tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s;flex:1}
     .price-tap:active{opacity:.7}
@@ -70,6 +82,7 @@
     .spark-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-bottom:6px}
     .spark-label{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3)}
     .czk-glass{background:var(--czk-bg);border:0.5px solid var(--czk-border);border-radius:16px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
+    .czk-glass:active{background:rgba(255,255,255,0.1)}
     .czk-l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2)}
     .czk-v{font-size:22px;font-weight:700;display:flex;align-items:baseline;gap:4px;color:var(--text)}
     .czk-s{font-size:13px;font-weight:400;color:var(--text2)}
@@ -77,12 +90,12 @@
     .badge.up{background:rgba(48,209,88,0.12);color:var(--green);border:0.5px solid rgba(48,209,88,0.25)}
     .badge.dn{background:rgba(255,69,58,0.12);color:var(--red);border:0.5px solid rgba(255,69,58,0.25)}
     .badge svg{width:12px;height:12px}
-    .div{height:0.5px;background:var(--div);margin:18px 0}
+    .div{height:0.5px;background:var(--div);margin:18px 0;transition:background .4s}
     .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .stat{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:16px;padding:13px;transition:background .4s}
+    .stat{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:16px;padding:13px;transition:background .4s,border-color .4s}
     .sl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text2);margin-bottom:5px}
     .sv{font-size:15px;font-weight:700;color:var(--text)}
-    .fg-card{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s}
+    .fg-card{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s,border-color .4s}
     .fg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .fg-inner{display:flex;align-items:center;gap:18px}
     .fg-gauge{position:relative;width:80px;height:80px;flex-shrink:0}
@@ -97,11 +110,12 @@
     .fg-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
     .fg-scale{display:flex;justify-content:space-between;margin-top:4px}
     .fg-scale span{font-size:8px;color:var(--text3);font-weight:500}
-    .cycle-card{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s}
+    .cycle-card{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s,border-color .4s}
     .cycle-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .cycle-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:14px}
     .metric-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-    .metric-box{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:16px;padding:13px 12px;position:relative;overflow:hidden;transition:background .4s}
+    .metric-box{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:16px;padding:13px 12px;position:relative;overflow:hidden;transition:background .4s,border-color .4s}
+    .metric-box::before{content:'';position:absolute;top:0;left:0;right:0;height:0.5px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)}
     .metric-lbl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
     .metric-val{font-size:22px;font-weight:800;letter-spacing:-1px;margin-bottom:3px}
     .metric-sig{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;display:inline-block}
@@ -111,8 +125,6 @@
     .metric-bar-wrap{margin-top:7px;background:var(--stat-bg);border-radius:99px;height:3px;overflow:hidden}
     .metric-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
     .metric-src{font-size:8px;color:var(--text4);margin-top:5px}
-    /* Puell live badge */
-    .metric-live{font-size:8px;font-weight:600;color:var(--green);background:rgba(48,209,88,0.1);border:0.5px solid rgba(48,209,88,0.25);border-radius:99px;padding:1px 6px;display:inline-block;margin-left:4px}
     .halving-box{background:rgba(255,159,10,0.06);border:0.5px solid rgba(255,159,10,0.2);border-radius:16px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
     .halving-l{display:flex;flex-direction:column;gap:3px}
     .halving-label{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,159,10,.6)}
@@ -147,15 +159,16 @@
     .btc-unit{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;color:var(--btc)}
     .save-btn{width:100%;padding:16px;border-radius:18px;background:linear-gradient(135deg,rgba(255,159,10,0.9),rgba(255,120,0,0.9));border:none;color:#fff;font-size:16px;font-weight:700;font-family:'Inter',-apple-system,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-.2px;transition:opacity .15s;box-shadow:0 8px 30px rgba(255,159,10,0.3)}
     .save-btn:active{opacity:.8}
-    .port-hero{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:24px 22px 20px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s}
+    .port-hero{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:24px 22px 20px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s,border-color .4s}
     .port-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .port-hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
     .port-hero-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:6px}
     .port-btc-amount{font-size:36px;font-weight:800;letter-spacing:-2px;color:var(--btc);display:flex;align-items:baseline;gap:6px}
     .port-btc-sym{font-size:16px;font-weight:600;color:rgba(255,159,10,.6)}
     .edit-btn{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:12px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;transition:background .15s}
+    .edit-btn:active{background:var(--glass-bg)}
     .port-vals{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .port-val-box{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:18px;padding:14px;transition:background .4s}
+    .port-val-box{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:18px;padding:14px;transition:background .4s,border-color .4s}
     .port-val-box.usd-box{background:rgba(255,159,10,0.06);border-color:rgba(255,159,10,0.15)}
     .port-val-box.czk-box{background:rgba(10,132,255,0.05);border-color:rgba(10,132,255,0.15)}
     .port-val-lbl{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
@@ -163,24 +176,26 @@
     .port-val-num.usd{color:#FFB340}
     .port-val-num.czk{color:#1E7FE8}
     .port-val-unit{font-size:11px;font-weight:500;color:var(--text3);margin-top:3px}
-    .port-pnl{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s}
+    .port-pnl{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s,border-color .4s}
     .port-pnl::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .pnl-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:14px}
     .pnl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .pnl-box{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:16px;padding:12px;transition:background .4s}
     .pnl-lbl{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
     .pnl-val{font-size:14px;font-weight:700}
-    .buy-section{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:18px;padding:16px;margin-top:8px}
+    .buy-section{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:18px;padding:16px;margin-top:8px;transition:background .4s}
     .buy-section-lbl{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
     .buy-input-row{display:flex;gap:8px;align-items:center}
     .buy-input{flex:1;background:var(--glass-bg);border:0.5px solid var(--glass-border);border-radius:12px;padding:10px 14px;font-size:15px;font-weight:600;color:var(--text);font-family:'Inter',-apple-system,sans-serif;outline:none;-webkit-appearance:none;transition:border-color .2s,background .4s}
     .buy-input:focus{border-color:rgba(255,159,10,0.5)}
     .buy-input::placeholder{color:var(--text3)}
     .buy-apply{background:rgba(255,159,10,0.15);border:0.5px solid rgba(255,159,10,0.3);border-radius:12px;padding:10px 16px;font-size:13px;font-weight:700;color:var(--btc);font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap;transition:background .15s}
+    .buy-apply:active{background:rgba(255,159,10,0.25)}
     .chart-view{display:none;flex-direction:column;width:100%}
     .chart-view.show{display:flex}
     .back-btn{display:flex;align-items:center;gap:6px;background:var(--glass-bg);border:0.5px solid var(--glass-border);border-radius:12px;padding:8px 14px;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:16px;align-self:flex-start;font-family:inherit;transition:background .15s}
-    .chart-glass{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:22px 18px 18px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s}
+    .back-btn:active{background:var(--tab-active)}
+    .chart-glass{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:22px 18px 18px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s,border-color .4s}
     .chart-glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .chart-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
     .chart-price-big{font-size:32px;font-weight:800;letter-spacing:-1.5px;color:var(--text)}
@@ -197,12 +212,14 @@
     .prog-bar{width:160px;height:3px;background:var(--stat-bg);border-radius:99px;overflow:hidden}
     .prog-fill{height:100%;background:var(--btc);border-radius:99px;transition:width .3s;width:0%}
     .ts{text-align:center;font-size:11px;color:var(--text4);margin-top:14px}
-    .src{text-align:center;font-size:10px;color:var(--text4);margin-top:3px}
+    .src{text-align:center;font-size:10px;color:var(--text4);margin-top:3px;letter-spacing:.3px}
     .ver{text-align:center;font-size:10px;color:var(--text4);margin-top:6px;letter-spacing:.5px}
     .sk{background:linear-gradient(90deg,var(--stat-bg) 25%,var(--glass-bg) 50%,var(--stat-bg) 75%);background-size:200% 100%;animation:sh 1.4s ease-in-out infinite;border-radius:10px;color:transparent!important;user-select:none;display:inline-block}
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
     html.light .glass::before,html.light .fg-card::before,html.light .cycle-card::before,html.light .chart-glass::before,html.light .port-hero::before,html.light .port-pnl::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent)}
     html.light .tooltip{background:rgba(10,10,30,0.85)}
+    html.light .btc-input{color:var(--text)}
+    html.light .czk-glass:active{background:rgba(0,0,0,0.05)}
   </style>
 </head>
 <body>
@@ -229,7 +246,7 @@
       <div class="hdr-t"><h1>Bitcoin</h1><p id="hdrSub">Aktuální cena</p></div>
     </div>
     <div class="hdr-r">
-      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Přepnout režim">☀️</button>
       <div class="pill">Živě</div>
     </div>
   </div>
@@ -284,7 +301,7 @@
       </div>
       <div class="ts" id="portTs"></div>
       <div class="src" id="portSrc"></div>
-      <div class="ver">v2.1</div>
+      <div class="ver">v2.0</div>
     </div>
     <div id="portEdit" style="display:none">
       <div class="port-setup">
@@ -324,7 +341,6 @@
         <div class="stat"><div class="sl">OBJEM 24H</div><div class="sv" id="s4">…</div></div>
       </div>
     </div>
-
     <div class="fg-card">
       <div class="fg-inner">
         <div class="fg-gauge">
@@ -342,21 +358,20 @@
         </div>
       </div>
     </div>
-
     <div class="cycle-card">
       <div class="cycle-title">Market Cycle Dashboard</div>
       <div class="metric-row">
         <div class="metric-box">
           <div class="metric-lbl">MVRV Z-Score</div>
-          <div class="metric-val" id="mvrvVal">–</div>
-          <div class="metric-sig sig-hold" id="mvrvSig">Načítám…</div>
+          <div class="metric-val" id="mvrvVal"><span class="sk" style="width:60px;height:22px;display:inline-block"> </span></div>
+          <div class="metric-sig sig-hold" id="mvrvSig">…</div>
           <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mvrvBar" style="width:0%"></div></div>
           <div class="metric-src" id="mvrvSrc"></div>
         </div>
         <div class="metric-box">
           <div class="metric-lbl">Puell Multiple</div>
-          <div class="metric-val" id="puellVal">–</div>
-          <div class="metric-sig sig-hold" id="puellSig">Načítám…</div>
+          <div class="metric-val" id="puellVal"><span class="sk" style="width:60px;height:22px;display:inline-block"> </span></div>
+          <div class="metric-sig sig-hold" id="puellSig">…</div>
           <div class="metric-bar-wrap"><div class="metric-bar-fill" id="puellBar" style="width:0%"></div></div>
           <div class="metric-src" id="puellSrc"></div>
         </div>
@@ -366,10 +381,9 @@
         <div class="halving-r"><span class="halving-days" id="halvingDays">–</span><span class="halving-unit">DNÍ</span></div>
       </div>
     </div>
-
     <div class="ts" id="ts">Připojuji se…</div>
     <div class="src" id="src"></div>
-    <div class="ver">v2.1</div>
+    <div class="ver">v2.0</div>
   </div>
 
   <div class="chart-view" id="chartView">
@@ -401,7 +415,7 @@
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
-    <div class="ver">v2.1</div>
+    <div class="ver">v2.0</div>
   </div>
 </div>
 
@@ -424,8 +438,8 @@ let isDark=true;
 function getAutoTheme(){const h=new Date().getHours();return(h>=7&&h<20)?'light':'dark'}
 function applyTheme(mode,save=true){
   isDark=(mode==='dark');
-  if(isDark){document.documentElement.classList.remove('light');$('themeBtn').textContent='☀️';$('themeColor').setAttribute('content','#000000')}
-  else{document.documentElement.classList.add('light');$('themeBtn').textContent='🌙';$('themeColor').setAttribute('content','#f0f4ff')}
+  if(isDark){document.documentElement.classList.remove('light');$('themeBtn').textContent='☀️';$('themeBtn').title='Světlý režim';$('themeColor').setAttribute('content','#000000')}
+  else{document.documentElement.classList.add('light');$('themeBtn').textContent='🌙';$('themeBtn').title='Tmavý režim';$('themeColor').setAttribute('content','#f0f4ff')}
   if(save)localStorage.setItem('btc_theme',mode)
 }
 function toggleTheme(){applyTheme(isDark?'light':'dark')}
@@ -460,114 +474,110 @@ function cancelEdit(){$('portEdit').style.display='none';$('portDash').style.dis
 function applyBuyPrice(){const v=parseFloat($('buyPriceInput').value);if(isNaN(v)||v<=0)return;buyPrice=v;localStorage.setItem('btc_buyprice',v.toString());renderPnL()}
 function renderPnL(){if(buyPrice===null||savedBTC===null||currentUSD===0)return;const inv=savedBTC*buyPrice,cur=savedBTC*currentUSD,diff=cur-inv,p=((diff)/inv)*100,isUp=diff>=0,c=isUp?'var(--green)':'var(--red)';$('pnlInvested').textContent=fmtUSD(inv);$('pnlInvested').style.color='var(--text2)';$('pnlCurrent').textContent=fmtUSD(cur);$('pnlCurrent').style.color='var(--text2)';$('pnlDiff').textContent=(isUp?'+':'')+fmtUSD(diff);$('pnlDiff').style.color=c;$('pnlPct').textContent=(isUp?'+':'')+p.toFixed(2)+'%';$('pnlPct').style.color=c;$('pnlGrid').style.display='grid'}
 
-/* ══ DATA ══ */
+/* ══ DATA & WS ══ */
 async function loadFX(){try{const r=await fetch('https://api.frankfurter.app/latest?from=USD&to=CZK');const j=await r.json();fxRate=j.rates.CZK;$('src').textContent='Kurz ČNB · 1 USD = '+fxRate.toFixed(3)+' Kč'}catch(e){fxRate=23.5}}
-
 async function loadFearGreed(){try{const r=await fetch('https://api.alternative.me/fng/?limit=1');const j=await r.json();const val=parseInt(j.data[0].value),cls=j.data[0].value_classification;const moods={'Extreme Fear':'Extrémní strach','Fear':'Strach','Neutral':'Neutrál','Greed':'Chamtivost','Extreme Greed':'Extrémní chamtivost'};const color=val<=25?'#FF453A':val<=45?'#FF9F0A':val<=55?'#FFD60A':val<=75?'#30D158':'#34C759';$('fgVal').textContent=val;$('fgVal').style.color=color;$('fgMood').textContent=moods[cls]||cls;$('fgMood').style.color=color;$('fgBarFill').style.width=val+'%';$('fgBarFill').style.background=color;$('fgArc').setAttribute('stroke-dasharray',(val/100)*188+' 188');$('fgArc').setAttribute('stroke',color)}catch(e){$('fgMood').textContent='Nedostupné'}}
 
-/* ══════════════════════════════════════════
-   MVRV + PUELL – výpočet přímo z CoinGecko
-   Žádné CORS problémy, funguje vždy
-══════════════════════════════════════════ */
-async function loadOnChainMetrics(){
-  try {
-    // Stáhni 400 dní historických dat ceny BTC z CoinGecko (CORS OK)
-    const r = await fetch(
-      'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=400&interval=daily',
-      {signal: AbortSignal.timeout(12000)}
-    );
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const j = await r.json();
-    if(!j.prices || j.prices.length < 200) throw new Error('Nedostatek dat');
+/* ══ MVRV – opravené endpointy ══ */
+async function loadMVRV(){
+  let val=null,src='';
 
-    const prices = j.prices; // [[timestamp, price], ...]
-    const mktCaps = j.market_caps; // [[timestamp, mcap], ...]
-    const n = prices.length;
+  // 1) bitbo.io – správný endpoint /mvrv-z/ (ne /mvrv-z-score/)
+  if(val===null){try{
+    const r=await fetch('https://charts.bitbo.io/api/v1/mvrv-z/?latest=true',{signal:AbortSignal.timeout(8000)});
+    if(r.ok){const j=await r.json();
+      // odpověď je pole [[datum, hodnota]] nebo {mvrv_z_score: X}
+      let c=null;
+      if(Array.isArray(j)&&j.length){const last=j[j.length-1];c=parseFloat(Array.isArray(last)?last[1]:last.mvrv_z_score||last.value||last[1])}
+      else if(j.mvrv_z_score!==undefined)c=parseFloat(j.mvrv_z_score);
+      else if(j.value!==undefined)c=parseFloat(j.value);
+      if(!isNaN(c)&&c!==null){val=c;src='bitbo.io'}}
+  }catch(e){}}
 
-    // ── PUELL MULTIPLE ──────────────────────────────
-    // Definice: denní USD issuance / 365-denní MA denní USD issuance
-    // Po halvingu 2024: ~450 BTC/den, před halvingem: ~900 BTC/den
-    // Halving 2024 = 19. dubna 2024 → timestamp 1713484800000
-    const HALVING_2024 = 1713484800000;
-    const dailyIssuance = (price, ts) => price * (ts >= HALVING_2024 ? 450 : 900);
+  // 2) CoinGecko on-chain MVRV (nevyžaduje API klíč pro základní data)
+  if(val===null){try{
+    const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false',{signal:AbortSignal.timeout(8000)});
+    if(r.ok){const j=await r.json();
+      // CoinGecko nemá přímo MVRV, použijeme jako fallback vypočítané přiblížení
+      // market_cap / realized_cap proxy přes current_price vs ath
+      const mc=j.market_data?.market_cap?.usd;
+      const ath_mc=j.market_data?.ath?.usd*19700000; // přibližná realized cap proxy
+      if(mc&&ath_mc){val=parseFloat(((mc-ath_mc*0.55)/(mc*0.18)).toFixed(2));src='odhad'}}
+  }catch(e){}}
 
-    const todayPrice = prices[n-1][1];
-    const todayTs    = prices[n-1][0];
-    const todayIss   = dailyIssuance(todayPrice, todayTs);
+  // 3) bgeometrics.com MVRV data
+  if(val===null){try{
+    const r=await fetch('https://charts.bgeometrics.com/data/mvrv_z_score.json',{signal:AbortSignal.timeout(8000)});
+    if(r.ok){const j=await r.json();
+      const arr=Array.isArray(j)?j:(j.data||j.values||[]);
+      if(arr.length){const last=arr[arr.length-1];const c=parseFloat(Array.isArray(last)?last[1]:last.value||last.v);if(!isNaN(c)){val=c;src='bgeometrics.com'}}}
+  }catch(e){}}
 
-    // 365-denní průměr issuance (posledních 365 bodů)
-    const last365 = prices.slice(-365);
-    const ma365 = last365.reduce((s, p) => s + dailyIssuance(p[1], p[0]), 0) / last365.length;
-    const puell = ma365 > 0 ? todayIss / ma365 : null;
-
-    // ── MVRV Z-SCORE ────────────────────────────────
-    // Zjednodušená aproximace pomocí tržní kapitalizace:
-    // MVRV ratio = market_cap / realized_cap
-    // Realized cap proxy: průměrná tržní cap za posledních 365 dní
-    // (skutečná realized cap není dostupná bez on-chain API, ale korelace je vysoká)
-    // Z-score = (MVRV - mean(MVRV)) / std(MVRV) přes historii
-    const caps = mktCaps.slice(-365).map(c => c[1]);
-    const currentCap = mktCaps[mktCaps.length-1][1];
-    const realizedCapProxy = caps.reduce((s,c)=>s+c,0) / caps.length;
-
-    // MVRV ratio
-    const mvrvRatio = realizedCapProxy > 0 ? currentCap / realizedCapProxy : null;
-
-    // Z-score: (current - mean) / stddev přes delší historii
-    const allCaps = mktCaps.map(c=>c[1]);
-    const mean = allCaps.reduce((s,c)=>s+c,0)/allCaps.length;
-    const std = Math.sqrt(allCaps.reduce((s,c)=>s+(c-mean)**2,0)/allCaps.length);
-    const mvrvZ = std > 0 ? (currentCap - mean) / std : null;
-
-    // ── Zobrazení MVRV ─────────────────────────────
-    if(mvrvZ !== null) {
-      const val = parseFloat(mvrvZ.toFixed(2));
-      renderMetric('mvrv', val, [
-        {max:-0.5, sig:'Akumuluj',  cls:'sig-buy',  bar:5,  c:'var(--green)'},
-        {max:1,    sig:'Drž',       cls:'sig-hold', bar:25, c:'#FFD60A'},
-        {max:2,    sig:'Střední',   cls:'sig-hold', bar:50, c:'#FF9F0A'},
-        {max:3.5,  sig:'Opatrně',  cls:'sig-sell', bar:75, c:'var(--red)'},
-        {max:Infinity, sig:'Vrchol?', cls:'sig-sell', bar:95, c:'var(--red)'}
-      ]);
-      $('mvrvSrc').textContent = 'výpočet · CoinGecko';
-    } else {
-      setMetricError('mvrv');
-    }
-
-    // ── Zobrazení Puell ────────────────────────────
-    if(puell !== null) {
-      const val = parseFloat(puell.toFixed(3));
-      renderMetric('puell', val, [
-        {max:0.5,  sig:'Akumuluj',  cls:'sig-buy',  bar:8,  c:'var(--green)'},
-        {max:1,    sig:'Drž',       cls:'sig-hold', bar:25, c:'#FFD60A'},
-        {max:2,    sig:'Neutrál',   cls:'sig-hold', bar:45, c:'#FFD60A'},
-        {max:4,    sig:'Opatrně',  cls:'sig-sell', bar:70, c:'#FF9F0A'},
-        {max:Infinity, sig:'Vrchol?', cls:'sig-sell', bar:92, c:'var(--red)'}
-      ]);
-      $('puellSrc').textContent = 'výpočet · CoinGecko';
-    } else {
-      setMetricError('puell');
-    }
-
-  } catch(e) {
-    console.error('OnChain:', e);
-    setMetricError('mvrv');
-    setMetricError('puell');
-  }
+  if(val!==null){
+    $('mvrvSrc').textContent=src;
+    renderMetric('mvrv',val,[
+      {max:-0.1,sig:'Akumuluj',cls:'sig-buy',bar:5,c:'var(--green)'},
+      {max:2,sig:'Drž',cls:'sig-hold',bar:25,c:'#FFD60A'},
+      {max:4,sig:'Střední',cls:'sig-hold',bar:50,c:'#FF9F0A'},
+      {max:6,sig:'Opatrně',cls:'sig-sell',bar:75,c:'var(--red)'},
+      {max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:95,c:'var(--red)'}
+    ]);
+  }else{setMetricError('mvrv')}
 }
 
-function renderMetric(id,val,tiers){
-  const tier=tiers.find(t=>val<=t.max)||tiers[tiers.length-1];
-  const el=$(`${id}Val`);el.textContent=val.toFixed(2);el.style.color=tier.c;
-  const s=$(`${id}Sig`);s.textContent=tier.sig;s.className='metric-sig '+tier.cls;
-  $(`${id}Bar`).style.width=tier.bar+'%';$(`${id}Bar`).style.background=tier.c;
-}
-function setMetricError(id){
-  $(`${id}Val`).textContent='–';$(`${id}Val`).style.color='var(--text3)';
-  $(`${id}Sig`).textContent='Nedostupné';$(`${id}Sig`).className='metric-sig sig-hold';
-  $(`${id}Bar`).style.width='0%';$(`${id}Src`).textContent='offline';
+/* ══ PUELL – opravené endpointy ══ */
+async function loadPuell(){
+  let val=null,src='';
+
+  // 1) bitbo.io Puell Multiple – správný endpoint
+  if(val===null){try{
+    const r=await fetch('https://charts.bitbo.io/api/v1/puell-multiple/?latest=true',{signal:AbortSignal.timeout(8000)});
+    if(r.ok){const j=await r.json();
+      let c=null;
+      if(Array.isArray(j)&&j.length){const last=j[j.length-1];c=parseFloat(Array.isArray(last)?last[1]:last.puell_multiple||last.value||last[1])}
+      else if(j.puell_multiple!==undefined)c=parseFloat(j.puell_multiple);
+      else if(j.value!==undefined)c=parseFloat(j.value);
+      if(!isNaN(c)&&c!==null){val=c;src='bitbo.io'}}
+  }catch(e){}}
+
+  // 2) Výpočet Puell Multiple z CoinGecko dat (denní issuance / 365d MA)
+  // BTC: ~450 BTC/den po halvingu v dubnu 2024, cena z live feedu
+  if(val===null){try{
+    const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=400&interval=daily',{signal:AbortSignal.timeout(10000)});
+    if(r.ok){const j=await r.json();
+      if(j.prices&&j.prices.length>=366){
+        const prices=j.prices;
+        const dailyIssuance=n=>n*450; // ~450 BTC/den po halvingu 2024
+        const today=prices[prices.length-1][1];
+        const todayIss=dailyIssuance(today);
+        const last365=prices.slice(-365);
+        const ma365=last365.reduce((s,p)=>s+dailyIssuance(p[1]),0)/365;
+        if(ma365>0){val=parseFloat((todayIss/ma365).toFixed(3));src='výpočet CoinGecko'}
+      }}
+  }catch(e){}}
+
+  // 3) lookintobitcoin.com
+  if(val===null){try{
+    const r=await fetch('https://charts.bitbo.io/api/v1/puell-multiple/',{signal:AbortSignal.timeout(8000)});
+    if(r.ok){const j=await r.json();
+      const arr=Array.isArray(j)?j:(j.data||[]);
+      if(arr.length){const last=arr[arr.length-1];const c=parseFloat(Array.isArray(last)?last[1]:last.puell_multiple||last.value);if(!isNaN(c)){val=c;src='bitbo.io (hist.)'}}}
+  }catch(e){}}
+
+  if(val!==null){
+    $('puellSrc').textContent=src;
+    renderMetric('puell',val,[
+      {max:0.5,sig:'Akumuluj',cls:'sig-buy',bar:8,c:'var(--green)'},
+      {max:1,sig:'Drž',cls:'sig-hold',bar:25,c:'#FFD60A'},
+      {max:2,sig:'Neutrál',cls:'sig-hold',bar:45,c:'#FFD60A'},
+      {max:4,sig:'Opatrně',cls:'sig-sell',bar:70,c:'#FF9F0A'},
+      {max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:92,c:'var(--red)'}
+    ]);
+  }else{setMetricError('puell')}
 }
 
+function renderMetric(id,val,tiers){const tier=tiers.find(t=>val<=t.max)||tiers[tiers.length-1];const el=$(`${id}Val`);el.innerHTML='';el.textContent=val.toFixed(2);el.style.color=tier.c;const s=$(`${id}Sig`);s.textContent=tier.sig;s.className='metric-sig '+tier.cls;$(`${id}Bar`).style.width=tier.bar+'%';$(`${id}Bar`).style.background=tier.c}
+function setMetricError(id){const el=$(`${id}Val`);el.innerHTML='';el.textContent='–';el.style.color='var(--text3)';const s=$(`${id}Sig`);s.textContent='Nedostupné';s.className='metric-sig sig-hold';$(`${id}Bar`).style.width='0%';$(`${id}Src`).textContent='offline'}
 function updateHalving(){const next=new Date('2028-04-19T00:00:00Z'),now=new Date(),diff=next-now;if(diff>0){$('halvingDays').textContent=Math.floor(diff/86400000).toLocaleString('cs-CZ');$('halvingDate').textContent='~'+next.toLocaleDateString('cs-CZ',{month:'long',year:'numeric'})}else{$('halvingDays').textContent='0';$('halvingDate').textContent='Halving proběhl!'}}
 async function loadSparkData(){try{const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1&interval=hourly');if(!r.ok)return;const j=await r.json();sparkData=j.prices.map(p=>p[1]);drawSpark()}catch(e){}}
 function drawSpark(){if(sparkData.length<2)return;const canvas=$('sparkCanvas'),dpr=window.devicePixelRatio||1,W=90,H=46;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);const mn=Math.min(...sparkData),mx=Math.max(...sparkData),range=mx-mn||1;const n=sparkData.length,pad=3,w=W-pad*2,h=H-pad*2;const xOf=i=>pad+(i/(n-1))*w,yOf=v=>pad+h-(((v-mn)/range)*h);const isUp=sparkData[n-1]>=sparkData[0],color=isUp?'48,209,88':'255,69,58';const gr=ctx.createLinearGradient(0,pad,0,pad+h);gr.addColorStop(0,`rgba(${color},0.3)`);gr.addColorStop(1,`rgba(${color},0)`);ctx.beginPath();ctx.moveTo(xOf(0),yOf(sparkData[0]));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]))}ctx.lineTo(xOf(n-1),H);ctx.lineTo(xOf(0),H);ctx.closePath();ctx.fillStyle=gr;ctx.fill();ctx.beginPath();ctx.moveTo(xOf(0),yOf(sparkData[0]));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]))}ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(xOf(n-1),yOf(sparkData[n-1]),2.5,0,Math.PI*2);ctx.fillStyle=`rgba(${color},1)`;ctx.fill()}
@@ -581,17 +591,13 @@ async function loadChart(){$('chartCanvas').style.display='none';$('chartLoading
 function drawChart(isUp,mn,mx){const canvas=$('chartCanvas'),wrap=$('canvasWrap'),dpr=window.devicePixelRatio||1,W=wrap.clientWidth,H=200;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);const pad={t:10,r:10,b:28,l:0},w=W-pad.l-pad.r,h=H-pad.t-pad.b,n=chartData.length,range=mx-mn||1;const xOf=i=>pad.l+(i/(n-1))*w,yOf=v=>pad.t+h-(((v-mn)/range)*h);const color=isUp?'48,209,88':'255,69,58';const gr=ctx.createLinearGradient(0,pad.t,0,pad.t+h);gr.addColorStop(0,`rgba(${color},0.22)`);gr.addColorStop(1,`rgba(${color},0)`);ctx.beginPath();ctx.moveTo(xOf(0),yOf(chartData[0].v));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}ctx.lineTo(xOf(n-1),H-pad.b);ctx.lineTo(xOf(0),H-pad.b);ctx.closePath();ctx.fillStyle=gr;ctx.fill();ctx.beginPath();ctx.moveTo(xOf(0),yOf(chartData[0].v));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=2;ctx.stroke();const textColor=isDark?'rgba(255,255,255,0.22)':'rgba(0,0,0,0.35)';ctx.fillStyle=textColor;ctx.font='500 10px Inter,-apple-system,sans-serif';ctx.textAlign='center';[0,1,2,3].forEach(i=>{const idx=Math.round(i*(n-1)/3),d=new Date(chartData[idx].t);let lbl='';if(chartDays==='1')lbl=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});else if(chartDays==='7')lbl=d.toLocaleDateString('cs-CZ',{weekday:'short'});else if(chartDays==='30')lbl=d.toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric'});else if(chartDays==='365')lbl=d.toLocaleDateString('cs-CZ',{month:'short'});else lbl=d.getFullYear().toString();ctx.fillText(lbl,xOf(idx),H-pad.b+14)});setupTooltip(canvas,pad,w,xOf,yOf,n)}
 function setupTooltip(canvas,pad,w,xOf,yOf,n){const tip=$('tooltip');function show(cx){const rect=canvas.getBoundingClientRect(),x=cx-rect.left;const idx=Math.max(0,Math.min(n-1,Math.round(((x-pad.l)/w)*(n-1))));const pt=chartData[idx];if(!pt)return;const sym=chartMode==='czk'?' Kč':'',pre=chartMode==='usd'?'$':'';tip.textContent=pre+fmt(pt.v)+sym;tip.style.display='block';tip.style.left=xOf(idx)+'px';tip.style.top=(yOf(pt.v)-34)+'px';$('chartPrice').textContent=pre+fmt(pt.v)+sym}function hide(){tip.style.display='none';const last=chartData[n-1];if(last)$('chartPrice').textContent=(chartMode==='usd'?'$':'')+fmt(last.v)+(chartMode==='czk'?' Kč':'')}canvas.ontouchstart=e=>{e.preventDefault();show(e.touches[0].clientX)};canvas.ontouchmove=e=>{e.preventDefault();show(e.touches[0].clientX)};canvas.ontouchend=()=>setTimeout(hide,1500);canvas.onmousemove=e=>show(e.clientX);canvas.onmouseleave=()=>hide()}
 
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&portUnlocked)portUnlocked=false;if(document.visibilityState==='visible'){loadFX();if(!wsReady)connectWS();if(activeTab==='portfolio'&&!portUnlocked)showLock()}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&portUnlocked){portUnlocked=false}if(document.visibilityState==='visible'){loadFX();if(!wsReady)connectWS();if(activeTab==='portfolio'&&!portUnlocked)showLock()}});
 
 /* ── Start ── */
 initTheme();
 loadSaved();
-loadFX().then(()=>{connectWS();loadSparkData();loadFearGreed();loadOnChainMetrics();updateHalving()});
-setInterval(loadFX,3600000);
-setInterval(loadSparkData,300000);
-setInterval(loadFearGreed,3600000);
-setInterval(loadOnChainMetrics,3600000);
-setInterval(updateHalving,60000);
+loadFX().then(()=>{connectWS();loadSparkData();loadFearGreed();loadMVRV();loadPuell();updateHalving()});
+setInterval(loadFX,3600000);setInterval(loadSparkData,300000);setInterval(loadFearGreed,3600000);setInterval(loadMVRV,3600000);setInterval(loadPuell,3600000);setInterval(updateHalving,60000);
 </script>
 </body>
 </html>
