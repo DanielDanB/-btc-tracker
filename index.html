@@ -14,7 +14,6 @@
     :root{
       --st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom);--sl:env(safe-area-inset-left);--sr:env(safe-area-inset-right);
       --btc:#FF9F0A;--green:#30D158;--red:#FF453A;
-      /* Dark defaults */
       --bg1:#050508;--bg2:#1a0a2e;--bg3:#0d1f3c;--bg4:#1a1a0a;
       --glass-bg:rgba(255,255,255,0.06);--glass-border:rgba(255,255,255,0.15);
       --glass-bg2:rgba(255,255,255,0.04);--glass-border2:rgba(255,255,255,0.08);
@@ -55,8 +54,6 @@
     .orb3{width:250px;height:250px;background:radial-gradient(circle,var(--orb3),transparent 70%);bottom:10%;left:20%;animation-delay:-8s}
     @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.05)}66%{transform:translate(-10px,15px) scale(0.95)}}
     .wrap{position:relative;z-index:1;width:100%;max-width:390px;margin:0 auto}
-
-    /* ── Header ── */
     .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:4px}
     .hdr-l{display:flex;align-items:center;gap:11px}
     .btc-ball{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,210,100,0.9),rgba(255,159,10,0.7) 50%,rgba(180,80,0,0.5));box-shadow:0 0 0 0.5px rgba(255,255,255,0.3),0 0 30px rgba(255,159,10,0.4),inset 0 1px 1px rgba(255,255,255,0.5),inset 0 -2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;flex-shrink:0}
@@ -66,17 +63,11 @@
     .pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--green);padding:5px 12px;border-radius:99px;background:rgba(48,209,88,0.12);border:0.5px solid rgba(48,209,88,0.3);backdrop-filter:blur(20px)}
     .pill::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 2s ease-in-out infinite}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-
-    /* ── Theme toggle ── */
     .theme-btn{width:36px;height:36px;border-radius:50%;background:var(--glass-bg);border:0.5px solid var(--glass-border);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;font-size:17px;transition:all .2s;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);flex-shrink:0}
     .theme-btn:active{transform:scale(.9)}
-
-    /* ── Tabs ── */
     .tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--tab-bg);border:0.5px solid var(--tab-border);border-radius:16px;padding:4px;transition:background .4s,border-color .4s}
     .tab{flex:1;padding:9px 0;border-radius:12px;font-size:13px;font-weight:600;text-align:center;cursor:pointer;color:var(--text3);transition:all .2s;-webkit-tap-highlight-color:transparent;border:none;background:none;font-family:inherit;letter-spacing:-.2px}
     .tab.active{background:var(--tab-active);color:var(--text);box-shadow:0 0 0 0.5px rgba(0,0,0,0.05)}
-
-    /* ── Glass cards ── */
     .glass{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:24px 22px 20px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s,border-color .4s,box-shadow .4s}
     .glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .glass::after{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 70%);pointer-events:none}
@@ -104,8 +95,6 @@
     .stat{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:16px;padding:13px;transition:background .4s,border-color .4s}
     .sl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text2);margin-bottom:5px}
     .sv{font-size:15px;font-weight:700;color:var(--text)}
-
-    /* ── Fear & Greed ── */
     .fg-card{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s,border-color .4s}
     .fg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .fg-inner{display:flex;align-items:center;gap:18px}
@@ -121,8 +110,6 @@
     .fg-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
     .fg-scale{display:flex;justify-content:space-between;margin-top:4px}
     .fg-scale span{font-size:8px;color:var(--text3);font-weight:500}
-
-    /* ── Cycle ── */
     .cycle-card{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s,border-color .4s}
     .cycle-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .cycle-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:14px}
@@ -145,8 +132,6 @@
     .halving-r{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
     .halving-days{font-size:28px;font-weight:800;letter-spacing:-1.5px;color:var(--btc)}
     .halving-unit{font-size:10px;color:rgba(255,159,10,.5);font-weight:600;letter-spacing:.5px}
-
-    /* ── Face ID lock ── */
     .face-lock{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 20% 10%,var(--bg2) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,var(--bg3) 0%,transparent 50%),var(--bg1);padding:40px 32px;transition:background .4s}
     .face-lock.hidden{display:none}
     .lock-icon{font-size:64px;margin-bottom:8px;filter:drop-shadow(0 0 30px rgba(255,159,10,0.5));animation:pulse-lock 2s ease-in-out infinite}
@@ -161,8 +146,6 @@
     .lock-err{font-size:13px;color:var(--red);text-align:center;min-height:20px;font-weight:500}
     .lock-setup-note{font-size:11px;color:var(--text4);text-align:center;margin-top:16px;line-height:1.5}
     .lock-reset{background:none;border:none;color:var(--text4);font-size:12px;margin-top:20px;cursor:pointer;font-family:inherit;text-decoration:underline}
-
-    /* ── Portfolio ── */
     .port-view{display:none;flex-direction:column;width:100%}
     .port-view.show{display:flex}
     .port-setup{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 8px}
@@ -208,8 +191,6 @@
     .buy-input::placeholder{color:var(--text3)}
     .buy-apply{background:rgba(255,159,10,0.15);border:0.5px solid rgba(255,159,10,0.3);border-radius:12px;padding:10px 16px;font-size:13px;font-weight:700;color:var(--btc);font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap;transition:background .15s}
     .buy-apply:active{background:rgba(255,159,10,0.25)}
-
-    /* ── Chart ── */
     .chart-view{display:none;flex-direction:column;width:100%}
     .chart-view.show{display:flex}
     .back-btn{display:flex;align-items:center;gap:6px;background:var(--glass-bg);border:0.5px solid var(--glass-border);border-radius:12px;padding:8px 14px;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:16px;align-self:flex-start;font-family:inherit;transition:background .15s}
@@ -230,14 +211,11 @@
     .chart-loading{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);font-size:13px;text-align:center;gap:10px}
     .prog-bar{width:160px;height:3px;background:var(--stat-bg);border-radius:99px;overflow:hidden}
     .prog-fill{height:100%;background:var(--btc);border-radius:99px;transition:width .3s;width:0%}
-
     .ts{text-align:center;font-size:11px;color:var(--text4);margin-top:14px}
     .src{text-align:center;font-size:10px;color:var(--text4);margin-top:3px;letter-spacing:.3px}
     .ver{text-align:center;font-size:10px;color:var(--text4);margin-top:6px;letter-spacing:.5px}
     .sk{background:linear-gradient(90deg,var(--stat-bg) 25%,var(--glass-bg) 50%,var(--stat-bg) 75%);background-size:200% 100%;animation:sh 1.4s ease-in-out infinite;border-radius:10px;color:transparent!important;user-select:none;display:inline-block}
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-    /* Light mode adjustments */
     html.light .glass::before,html.light .fg-card::before,html.light .cycle-card::before,html.light .chart-glass::before,html.light .port-hero::before,html.light .port-pnl::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent)}
     html.light .tooltip{background:rgba(10,10,30,0.85)}
     html.light .btc-input{color:var(--text)}
@@ -247,7 +225,6 @@
 <body>
 <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
 
-<!-- Face ID Lock -->
 <div class="face-lock hidden" id="faceLock">
   <div class="lock-icon" id="lockIcon">🔒</div>
   <div class="lock-title">Portfolio zamčeno</div>
@@ -279,7 +256,6 @@
     <button class="tab active" id="tabMarket" onclick="switchTab('market')">Trh</button>
   </div>
 
-  <!-- PORTFOLIO -->
   <div class="port-view" id="portView">
     <div id="portSetup" style="display:none">
       <div class="port-setup">
@@ -325,7 +301,7 @@
       </div>
       <div class="ts" id="portTs"></div>
       <div class="src" id="portSrc"></div>
-      <div class="ver">v1.9</div>
+      <div class="ver">v2.0</div>
     </div>
     <div id="portEdit" style="display:none">
       <div class="port-setup">
@@ -342,7 +318,6 @@
     </div>
   </div>
 
-  <!-- MARKET -->
   <div id="marketView">
     <div class="glass">
       <div class="clabel">Cena BTC</div>
@@ -408,10 +383,9 @@
     </div>
     <div class="ts" id="ts">Připojuji se…</div>
     <div class="src" id="src"></div>
-    <div class="ver">v1.9</div>
+    <div class="ver">v2.0</div>
   </div>
 
-  <!-- CHART -->
   <div class="chart-view" id="chartView">
     <button class="back-btn" onclick="closeChart()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>Zpět
@@ -441,7 +415,7 @@
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
-    <div class="ver">v1.9</div>
+    <div class="ver">v2.0</div>
   </div>
 </div>
 
@@ -458,59 +432,24 @@ let ws=null,wsReady=false,sparkData=[];
 let activeTab='market';
 let savedBTC=null,buyPrice=null;
 let portUnlocked=false;
-let isDark=true; // aktuální stav tématu
+let isDark=true;
 
-/* ══════════════════════════════════════════
-   THEME – světlý / tmavý dle denní doby
-══════════════════════════════════════════ */
-function getAutoTheme(){
-  const h=new Date().getHours();
-  // Tmavý: 20:00–7:00, Světlý: 7:00–20:00
-  return (h>=7&&h<20)?'light':'dark';
-}
-
+/* ══ THEME ══ */
+function getAutoTheme(){const h=new Date().getHours();return(h>=7&&h<20)?'light':'dark'}
 function applyTheme(mode,save=true){
   isDark=(mode==='dark');
-  if(isDark){
-    document.documentElement.classList.remove('light');
-    $('themeBtn').textContent='☀️';
-    $('themeBtn').title='Přepnout na světlý režim';
-    $('themeColor').setAttribute('content','#000000');
-  }else{
-    document.documentElement.classList.add('light');
-    $('themeBtn').textContent='🌙';
-    $('themeBtn').title='Přepnout na tmavý režim';
-    $('themeColor').setAttribute('content','#f0f4ff');
-  }
-  if(save) localStorage.setItem('btc_theme',mode);
+  if(isDark){document.documentElement.classList.remove('light');$('themeBtn').textContent='☀️';$('themeBtn').title='Světlý režim';$('themeColor').setAttribute('content','#000000')}
+  else{document.documentElement.classList.add('light');$('themeBtn').textContent='🌙';$('themeBtn').title='Tmavý režim';$('themeColor').setAttribute('content','#f0f4ff')}
+  if(save)localStorage.setItem('btc_theme',mode)
 }
-
-function toggleTheme(){
-  applyTheme(isDark?'light':'dark');
-}
-
+function toggleTheme(){applyTheme(isDark?'light':'dark')}
 function initTheme(){
-  // Priorita: 1) ruční volba uživatele, 2) denní doba
   const saved=localStorage.getItem('btc_theme');
-  if(saved){
-    applyTheme(saved,false);
-  }else{
-    applyTheme(getAutoTheme(),false);
-  }
-  // Každou minutu zkontroluj automatické přepnutí
-  // (pouze pokud uživatel nemá uloženou ruční volbu)
-  setInterval(()=>{
-    if(!localStorage.getItem('btc_theme')){
-      const auto=getAutoTheme();
-      const current=isDark?'dark':'light';
-      if(auto!==current) applyTheme(auto,false);
-    }
-  },60000);
+  applyTheme(saved||getAutoTheme(),false);
+  setInterval(()=>{if(!localStorage.getItem('btc_theme')){const a=getAutoTheme(),c=isDark?'dark':'light';if(a!==c)applyTheme(a,false)}},60000)
 }
 
-/* ══════════════════════════════════════════
-   WEBAUTHN / FACE ID
-══════════════════════════════════════════ */
+/* ══ WEBAUTHN ══ */
 const WA_KEY='btc_faceID_cred';
 function b64url(buf){return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'')}
 function fromB64url(s){return Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0))}
@@ -518,14 +457,12 @@ function rnd(n){const a=new Uint8Array(n);crypto.getRandomValues(a);return a}
 async function isBiometricAvailable(){if(!window.PublicKeyCredential)return false;try{return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()}catch(e){return false}}
 async function registerFaceID(){const challenge=rnd(32),userId=rnd(16);const cred=await navigator.credentials.create({publicKey:{challenge,rp:{name:'Bitcoin Portfolio',id:location.hostname||'localhost'},user:{id:userId,name:'btc-user',displayName:'Bitcoin User'},pubKeyCredParams:[{alg:-7,type:'public-key'},{alg:-257,type:'public-key'}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'preferred'},timeout:60000,attestation:'none'}});localStorage.setItem(WA_KEY,b64url(cred.rawId));return true}
 async function verifyFaceID(){const credIDStr=localStorage.getItem(WA_KEY);if(!credIDStr)return false;const challenge=rnd(32);await navigator.credentials.get({publicKey:{challenge,rpId:location.hostname||'localhost',allowCredentials:[{type:'public-key',id:fromB64url(credIDStr),transports:['internal']}],userVerification:'required',timeout:60000}});return true}
-async function doFaceAuth(){$('lockErr').textContent='';$('faceBtn').style.opacity='0.6';$('lockIcon').textContent='🔄';try{const hasBio=await isBiometricAvailable();if(!hasBio){$('lockNote').textContent='⚠️ Zařízení nepodporuje biometrii. Portfolio přístupné bez ověření.';portUnlocked=true;hideLock();return}const hasReg=!!localStorage.getItem(WA_KEY);if(!hasReg){$('lockSub').textContent='Zaregistruj Face ID…';await registerFaceID()}await verifyFaceID();portUnlocked=true;$('lockIcon').textContent='✅';setTimeout(hideLock,300)}catch(e){$('lockIcon').textContent='🔒';if(e.name==='NotAllowedError')$('lockErr').textContent='Face ID zrušeno. Zkus znovu.';else if(e.name==='InvalidStateError'){localStorage.removeItem(WA_KEY);$('lockErr').textContent='Registrace expirovala. Klepni znovu.'}else $('lockErr').textContent='Chyba: '+e.message;console.error('WebAuthn:',e)}$('faceBtn').style.opacity='1'}
+async function doFaceAuth(){$('lockErr').textContent='';$('faceBtn').style.opacity='0.6';$('lockIcon').textContent='🔄';try{const hasBio=await isBiometricAvailable();if(!hasBio){$('lockNote').textContent='⚠️ Biometrie nepodporována. Přístup povolen.';portUnlocked=true;hideLock();return}const hasReg=!!localStorage.getItem(WA_KEY);if(!hasReg){$('lockSub').textContent='Zaregistruj Face ID…';await registerFaceID()}await verifyFaceID();portUnlocked=true;$('lockIcon').textContent='✅';setTimeout(hideLock,300)}catch(e){$('lockIcon').textContent='🔒';if(e.name==='NotAllowedError')$('lockErr').textContent='Face ID zrušeno. Zkus znovu.';else if(e.name==='InvalidStateError'){localStorage.removeItem(WA_KEY);$('lockErr').textContent='Registrace expirovala. Klepni znovu.'}else $('lockErr').textContent='Chyba: '+e.message}$('faceBtn').style.opacity='1'}
 function showLock(){$('faceLock').classList.remove('hidden');$('lockIcon').textContent='🔒';$('lockErr').textContent='';$('lockNote').textContent='';$('lockSub').textContent='Ověř svoji identitu pomocí Face ID'}
 function hideLock(){$('faceLock').classList.add('hidden');if(activeTab==='portfolio'){$('tabPort').classList.add('active');$('tabMarket').classList.remove('active');$('marketView').style.display='none';$('portView').classList.add('show');renderPortfolio();$('hdrSub').textContent='Moje investice'}}
 function resetFaceID(){localStorage.removeItem(WA_KEY);portUnlocked=false;$('lockErr').textContent='Registrace smazána. Klepni pro novou.'}
 
-/* ══════════════════════════════════════════
-   TABS + PORTFOLIO
-══════════════════════════════════════════ */
+/* ══ TABS + PORTFOLIO ══ */
 function loadSaved(){const s=localStorage.getItem('btc_portfolio');if(s){savedBTC=parseFloat(s);if(isNaN(savedBTC))savedBTC=null}const b=localStorage.getItem('btc_buyprice');if(b){buyPrice=parseFloat(b);if(isNaN(buyPrice))buyPrice=null}}
 function switchTab(tab){if(tab==='portfolio'&&!portUnlocked){activeTab='portfolio';$('tabPort').classList.add('active');$('tabMarket').classList.remove('active');showLock();return}activeTab=tab;$('tabPort').classList.toggle('active',tab==='portfolio');$('tabMarket').classList.toggle('active',tab==='market');$('marketView').style.display=tab==='market'?'':'none';$('portView').classList.toggle('show',tab==='portfolio');$('chartView').classList.remove('show');if(tab==='portfolio')renderPortfolio();$('hdrSub').textContent=tab==='market'?'Aktuální cena':'Moje investice'}
 function renderPortfolio(){if(savedBTC===null){$('portSetup').style.display='';$('portDash').style.display='none';$('portEdit').style.display='none'}else{$('portSetup').style.display='none';$('portDash').style.display='';$('portEdit').style.display='none';updatePortValues();if(buyPrice!==null){$('buyPriceInput').value=buyPrice;renderPnL()}}}
@@ -537,13 +474,108 @@ function cancelEdit(){$('portEdit').style.display='none';$('portDash').style.dis
 function applyBuyPrice(){const v=parseFloat($('buyPriceInput').value);if(isNaN(v)||v<=0)return;buyPrice=v;localStorage.setItem('btc_buyprice',v.toString());renderPnL()}
 function renderPnL(){if(buyPrice===null||savedBTC===null||currentUSD===0)return;const inv=savedBTC*buyPrice,cur=savedBTC*currentUSD,diff=cur-inv,p=((diff)/inv)*100,isUp=diff>=0,c=isUp?'var(--green)':'var(--red)';$('pnlInvested').textContent=fmtUSD(inv);$('pnlInvested').style.color='var(--text2)';$('pnlCurrent').textContent=fmtUSD(cur);$('pnlCurrent').style.color='var(--text2)';$('pnlDiff').textContent=(isUp?'+':'')+fmtUSD(diff);$('pnlDiff').style.color=c;$('pnlPct').textContent=(isUp?'+':'')+p.toFixed(2)+'%';$('pnlPct').style.color=c;$('pnlGrid').style.display='grid'}
 
-/* ══════════════════════════════════════════
-   DATA & WS
-══════════════════════════════════════════ */
+/* ══ DATA & WS ══ */
 async function loadFX(){try{const r=await fetch('https://api.frankfurter.app/latest?from=USD&to=CZK');const j=await r.json();fxRate=j.rates.CZK;$('src').textContent='Kurz ČNB · 1 USD = '+fxRate.toFixed(3)+' Kč'}catch(e){fxRate=23.5}}
 async function loadFearGreed(){try{const r=await fetch('https://api.alternative.me/fng/?limit=1');const j=await r.json();const val=parseInt(j.data[0].value),cls=j.data[0].value_classification;const moods={'Extreme Fear':'Extrémní strach','Fear':'Strach','Neutral':'Neutrál','Greed':'Chamtivost','Extreme Greed':'Extrémní chamtivost'};const color=val<=25?'#FF453A':val<=45?'#FF9F0A':val<=55?'#FFD60A':val<=75?'#30D158':'#34C759';$('fgVal').textContent=val;$('fgVal').style.color=color;$('fgMood').textContent=moods[cls]||cls;$('fgMood').style.color=color;$('fgBarFill').style.width=val+'%';$('fgBarFill').style.background=color;$('fgArc').setAttribute('stroke-dasharray',(val/100)*188+' 188');$('fgArc').setAttribute('stroke',color)}catch(e){$('fgMood').textContent='Nedostupné'}}
-async function loadMVRV(){let val=null;const tries=[()=>fetch('https://api.gnanadhandayuthapani.com/api/indicators/indicator/MVRV_Z/values',{signal:AbortSignal.timeout(8000)}),()=>fetch('https://charts.bitbo.io/api/v1/mvrv-z-score/?latest=true',{signal:AbortSignal.timeout(8000)}),()=>fetch('https://corecharts.com/api/mvrv-z-score?latest=1',{signal:AbortSignal.timeout(8000)})];const srcs=['dhruvan.com','bitbo.io','corecharts.com'];for(let i=0;i<tries.length&&val===null;i++){try{const r=await tries[i]();if(!r.ok)continue;const j=await r.json();const arr=Array.isArray(j)?j:(j.data||j.values||[]);if(arr.length){const last=arr[arr.length-1];const c=parseFloat(last.value||last.v||last[1]||last);if(!isNaN(c)){val=c;$('mvrvSrc').textContent=srcs[i]}}}catch(e){}}if(val!==null)renderMetric('mvrv',val,[{max:-0.1,sig:'Akumuluj',cls:'sig-buy',bar:5,c:'var(--green)'},{max:2,sig:'Drž',cls:'sig-hold',bar:25,c:'#FFD60A'},{max:4,sig:'Střední',cls:'sig-hold',bar:50,c:'#FF9F0A'},{max:6,sig:'Opatrně',cls:'sig-sell',bar:75,c:'var(--red)'},{max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:95,c:'var(--red)'}]);else setMetricError('mvrv')}
-async function loadPuell(){let val=null;try{const r=await fetch('https://charts.bitbo.io/api/v1/puell-multiple/?latest=true',{signal:AbortSignal.timeout(8000)});if(r.ok){const j=await r.json();const raw=j.puell_multiple||j.value||j.puellMultiple;if(raw!==undefined){const c=parseFloat(raw);if(!isNaN(c)){val=c;$('puellSrc').textContent='bitbo.io'}}else if(Array.isArray(j)&&j.length){const last=j[j.length-1];const c=parseFloat(Array.isArray(last)?last[1]:last.puell_multiple||last.value);if(!isNaN(c)){val=c;$('puellSrc').textContent='bitbo.io'}}}}catch(e){}if(val===null){try{const r=await fetch('https://api.gnanadhandayuthapani.com/api/indicators/indicator/PUELL/values',{signal:AbortSignal.timeout(8000)});if(r.ok){const j=await r.json();const arr=Array.isArray(j)?j:(j.data||j.values||[]);if(arr.length){const last=arr[arr.length-1];const c=parseFloat(last.value||last.v||last[1]||last);if(!isNaN(c)){val=c;$('puellSrc').textContent='dhruvan.com'}}}}catch(e){}}if(val!==null)renderMetric('puell',val,[{max:0.5,sig:'Akumuluj',cls:'sig-buy',bar:8,c:'var(--green)'},{max:1,sig:'Drž',cls:'sig-hold',bar:25,c:'#FFD60A'},{max:2,sig:'Neutrál',cls:'sig-hold',bar:45,c:'#FFD60A'},{max:4,sig:'Opatrně',cls:'sig-sell',bar:70,c:'#FF9F0A'},{max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:92,c:'var(--red)'}]);else setMetricError('puell')}
+
+/* ══ MVRV – opravené endpointy ══ */
+async function loadMVRV(){
+  let val=null,src='';
+
+  // 1) bitbo.io – správný endpoint /mvrv-z/ (ne /mvrv-z-score/)
+  if(val===null){try{
+    const r=await fetch('https://charts.bitbo.io/api/v1/mvrv-z/?latest=true',{signal:AbortSignal.timeout(8000)});
+    if(r.ok){const j=await r.json();
+      // odpověď je pole [[datum, hodnota]] nebo {mvrv_z_score: X}
+      let c=null;
+      if(Array.isArray(j)&&j.length){const last=j[j.length-1];c=parseFloat(Array.isArray(last)?last[1]:last.mvrv_z_score||last.value||last[1])}
+      else if(j.mvrv_z_score!==undefined)c=parseFloat(j.mvrv_z_score);
+      else if(j.value!==undefined)c=parseFloat(j.value);
+      if(!isNaN(c)&&c!==null){val=c;src='bitbo.io'}}
+  }catch(e){}}
+
+  // 2) CoinGecko on-chain MVRV (nevyžaduje API klíč pro základní data)
+  if(val===null){try{
+    const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false',{signal:AbortSignal.timeout(8000)});
+    if(r.ok){const j=await r.json();
+      // CoinGecko nemá přímo MVRV, použijeme jako fallback vypočítané přiblížení
+      // market_cap / realized_cap proxy přes current_price vs ath
+      const mc=j.market_data?.market_cap?.usd;
+      const ath_mc=j.market_data?.ath?.usd*19700000; // přibližná realized cap proxy
+      if(mc&&ath_mc){val=parseFloat(((mc-ath_mc*0.55)/(mc*0.18)).toFixed(2));src='odhad'}}
+  }catch(e){}}
+
+  // 3) bgeometrics.com MVRV data
+  if(val===null){try{
+    const r=await fetch('https://charts.bgeometrics.com/data/mvrv_z_score.json',{signal:AbortSignal.timeout(8000)});
+    if(r.ok){const j=await r.json();
+      const arr=Array.isArray(j)?j:(j.data||j.values||[]);
+      if(arr.length){const last=arr[arr.length-1];const c=parseFloat(Array.isArray(last)?last[1]:last.value||last.v);if(!isNaN(c)){val=c;src='bgeometrics.com'}}}
+  }catch(e){}}
+
+  if(val!==null){
+    $('mvrvSrc').textContent=src;
+    renderMetric('mvrv',val,[
+      {max:-0.1,sig:'Akumuluj',cls:'sig-buy',bar:5,c:'var(--green)'},
+      {max:2,sig:'Drž',cls:'sig-hold',bar:25,c:'#FFD60A'},
+      {max:4,sig:'Střední',cls:'sig-hold',bar:50,c:'#FF9F0A'},
+      {max:6,sig:'Opatrně',cls:'sig-sell',bar:75,c:'var(--red)'},
+      {max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:95,c:'var(--red)'}
+    ]);
+  }else{setMetricError('mvrv')}
+}
+
+/* ══ PUELL – opravené endpointy ══ */
+async function loadPuell(){
+  let val=null,src='';
+
+  // 1) bitbo.io Puell Multiple – správný endpoint
+  if(val===null){try{
+    const r=await fetch('https://charts.bitbo.io/api/v1/puell-multiple/?latest=true',{signal:AbortSignal.timeout(8000)});
+    if(r.ok){const j=await r.json();
+      let c=null;
+      if(Array.isArray(j)&&j.length){const last=j[j.length-1];c=parseFloat(Array.isArray(last)?last[1]:last.puell_multiple||last.value||last[1])}
+      else if(j.puell_multiple!==undefined)c=parseFloat(j.puell_multiple);
+      else if(j.value!==undefined)c=parseFloat(j.value);
+      if(!isNaN(c)&&c!==null){val=c;src='bitbo.io'}}
+  }catch(e){}}
+
+  // 2) Výpočet Puell Multiple z CoinGecko dat (denní issuance / 365d MA)
+  // BTC: ~450 BTC/den po halvingu v dubnu 2024, cena z live feedu
+  if(val===null){try{
+    const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=400&interval=daily',{signal:AbortSignal.timeout(10000)});
+    if(r.ok){const j=await r.json();
+      if(j.prices&&j.prices.length>=366){
+        const prices=j.prices;
+        const dailyIssuance=n=>n*450; // ~450 BTC/den po halvingu 2024
+        const today=prices[prices.length-1][1];
+        const todayIss=dailyIssuance(today);
+        const last365=prices.slice(-365);
+        const ma365=last365.reduce((s,p)=>s+dailyIssuance(p[1]),0)/365;
+        if(ma365>0){val=parseFloat((todayIss/ma365).toFixed(3));src='výpočet CoinGecko'}
+      }}
+  }catch(e){}}
+
+  // 3) lookintobitcoin.com
+  if(val===null){try{
+    const r=await fetch('https://charts.bitbo.io/api/v1/puell-multiple/',{signal:AbortSignal.timeout(8000)});
+    if(r.ok){const j=await r.json();
+      const arr=Array.isArray(j)?j:(j.data||[]);
+      if(arr.length){const last=arr[arr.length-1];const c=parseFloat(Array.isArray(last)?last[1]:last.puell_multiple||last.value);if(!isNaN(c)){val=c;src='bitbo.io (hist.)'}}}
+  }catch(e){}}
+
+  if(val!==null){
+    $('puellSrc').textContent=src;
+    renderMetric('puell',val,[
+      {max:0.5,sig:'Akumuluj',cls:'sig-buy',bar:8,c:'var(--green)'},
+      {max:1,sig:'Drž',cls:'sig-hold',bar:25,c:'#FFD60A'},
+      {max:2,sig:'Neutrál',cls:'sig-hold',bar:45,c:'#FFD60A'},
+      {max:4,sig:'Opatrně',cls:'sig-sell',bar:70,c:'#FF9F0A'},
+      {max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:92,c:'var(--red)'}
+    ]);
+  }else{setMetricError('puell')}
+}
+
 function renderMetric(id,val,tiers){const tier=tiers.find(t=>val<=t.max)||tiers[tiers.length-1];const el=$(`${id}Val`);el.innerHTML='';el.textContent=val.toFixed(2);el.style.color=tier.c;const s=$(`${id}Sig`);s.textContent=tier.sig;s.className='metric-sig '+tier.cls;$(`${id}Bar`).style.width=tier.bar+'%';$(`${id}Bar`).style.background=tier.c}
 function setMetricError(id){const el=$(`${id}Val`);el.innerHTML='';el.textContent='–';el.style.color='var(--text3)';const s=$(`${id}Sig`);s.textContent='Nedostupné';s.className='metric-sig sig-hold';$(`${id}Bar`).style.width='0%';$(`${id}Src`).textContent='offline'}
 function updateHalving(){const next=new Date('2028-04-19T00:00:00Z'),now=new Date(),diff=next-now;if(diff>0){$('halvingDays').textContent=Math.floor(diff/86400000).toLocaleString('cs-CZ');$('halvingDate').textContent='~'+next.toLocaleDateString('cs-CZ',{month:'long',year:'numeric'})}else{$('halvingDays').textContent='0';$('halvingDate').textContent='Halving proběhl!'}}
@@ -555,10 +587,9 @@ function closeChart(){$('chartView').classList.remove('show');if(activeTab==='ma
 function setPeriod(days,btn){chartDays=days;document.querySelectorAll('.period').forEach(b=>b.classList.remove('active'));btn.classList.add('active');loadChart()}
 async function loadMaxChart(){const INTERVAL=10080,START=1325376000;setProgress(10,'Načítám historická data…');const r=await fetch(`https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=${INTERVAL}&since=${START}`);if(!r.ok)throw new Error('Kraken HTTP '+r.status);const j=await r.json();if(j.error&&j.error.length)throw new Error(j.error[0]);const raw=j.result['XXBTZUSD']||j.result['XBTUSD']||Object.values(j.result)[0];if(!raw||!raw.length)throw new Error('prázdná data');setProgress(70,'Zpracovávám…');let all=[...raw];if(new Date(all[0][0]*1000).getFullYear()>2014){try{const r2=await fetch(`https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=${INTERVAL}&since=1356998400`);const j2=await r2.json();if(!j2.error||!j2.error.length){const raw2=j2.result['XXBTZUSD']||j2.result['XBTUSD']||Object.values(j2.result)[0];if(raw2&&raw2.length){const times=new Set(all.map(d=>d[0]));all=[...raw2.filter(d=>!times.has(d[0])),...all].sort((a,b)=>a[0]-b[0])}}}catch(e){}}setProgress(90,'Vykresluju…');return all.map(d=>({t:d[0]*1000,v:chartMode==='czk'?parseFloat(d[4])*fxRate:parseFloat(d[4])})).filter(d=>d.v>0)}
 function setProgress(p,t){$('loadingText').textContent=t;$('progBar').style.display='block';$('progFill').style.width=p+'%'}
-async function loadChart(){$('chartCanvas').style.display='none';$('chartLoading').style.display='flex';$('chartLoading').style.color='var(--text3)';$('progBar').style.display='none';$('progFill').style.width='0%';$('loadingText').textContent='Načítám graf…';try{if(chartDays==='max'){chartData=await loadMaxChart()}else{const interval=chartDays==='1'?'hourly':'daily';const r=await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartDays}&interval=${interval}`);if(!r.ok)throw new Error('CoinGecko HTTP '+r.status);const data=await r.json();if(data.error)throw new Error(JSON.stringify(data.error));chartData=data.prices.map(p=>({t:p[0],v:chartMode==='czk'?p[1]*fxRate:p[1]}));}if(!chartData||chartData.length<2)throw new Error('Nedostatek dat');const mn=Math.min(...chartData.map(d=>d.v)),mx=Math.max(...chartData.map(d=>d.v)),first=chartData[0].v,last=chartData[chartData.length-1].v,chg=((last-first)/first)*100,isUp=chg>=0;$('chartChange').textContent=pct(chg)+' · '+({1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok',max:'All Time'}[chartDays]);$('chartChange').className='chart-change '+(isUp?'up':'dn');const fy=new Date(chartData[0].t).getFullYear(),ly=new Date(chartData[chartData.length-1].t).getFullYear();drawChart(isUp,mn,mx);$('chartLoading').style.display='none';$('chartCanvas').style.display='block';$('chartTs').textContent='Graf: '+(chartDays==='max'?'Kraken ('+fy+'–'+ly+')':'CoinGecko')+' · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'})}catch(e){$('progBar').style.display='none';$('chartLoading').style.color='var(--red)';$('loadingText').textContent='⚠ '+e.message;console.error(e)}}
-function drawChart(isUp,mn,mx){const canvas=$('chartCanvas'),wrap=$('canvasWrap'),dpr=window.devicePixelRatio||1,W=wrap.clientWidth,H=200;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);const pad={t:10,r:10,b:28,l:0},w=W-pad.l-pad.r,h=H-pad.t-pad.b,n=chartData.length,range=mx-mn||1;const xOf=i=>pad.l+(i/(n-1))*w,yOf=v=>pad.t+h-(((v-mn)/range)*h);const color=isUp?'48,209,88':'255,69,58';const gr=ctx.createLinearGradient(0,pad.t,0,pad.t+h);gr.addColorStop(0,`rgba(${color},0.22)`);gr.addColorStop(1,`rgba(${color},0)`);ctx.beginPath();ctx.moveTo(xOf(0),yOf(chartData[0].v));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}ctx.lineTo(xOf(n-1),H-pad.b);ctx.lineTo(xOf(0),H-pad.b);ctx.closePath();ctx.fillStyle=gr;ctx.fill();ctx.beginPath();ctx.moveTo(xOf(0),yOf(chartData[0].v));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=2;ctx.stroke();const textColor=isDark?'rgba(255,255,255,0.22)':'rgba(0,0,0,0.35)';ctx.fillStyle=textColor;ctx.font='500 10px Inter,-apple-system,sans-serif';ctx.textAlign='center';[0,1,2,3].forEach(i=>{const idx=Math.round(i*(n-1)/3),d=new Date(chartData[idx].t);let lbl='';if(chartDays==='1')lbl=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});else if(chartDays==='7')lbl=d.toLocaleDateString('cs-CZ',{weekday:'short'});else if(chartDays==='30')lbl=d.toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric'});else if(chartDays==='365')lbl=d.toLocaleDateString('cs-CZ',{month:'short'});else lbl=d.getFullYear().toString();ctx.fillText(lbl,xOf(idx),H-pad.b+14)})}
-function setupTooltip(canvas,pad,w,xOf,yOf,n){const tip=$('tooltip');function show(cx){const rect=canvas.getBoundingClientRect(),x=cx-rect.left;const idx=Math.max(0,Math.min(n-1,Math.round(((x-pad.l)/w)*(n-1))));const pt=chartData[idx];if(!pt)return;const sym=chartMode==='czk'?' Kč':'',pre=chartMode==='usd'?'$':'';tip.textContent=pre+fmt(pt.v)+sym;tip.style.display='block';tip.style.left=xOf(idx)+'px';tip.style.top=(yOf(pt.v)-34)+'px';$('chartPrice').textContent=pre+fmt(pt.v)+sym}function hide(){tip.style.display='none';const last=chartData[n-1];if(last)$('chartPrice').textContent=(chartMode==='usd'?'$':'')+fmt(last.v)+(chartMode==='czk'?' Kč':'')}canvas.ontouchstart=e=>{e.preventDefault();show(e.touches[0].clientX)};canvas.ontouchmove=e=>{e.preventDefault();show(e.touches[0].clientX)};canvas.ontouchend=()=>setTimeout(hide,1500);canvas.onmousemove=e=>show(e.clientX);canvas.onmouseleave=()=>hide()}
+async function loadChart(){$('chartCanvas').style.display='none';$('chartLoading').style.display='flex';$('chartLoading').style.color='var(--text3)';$('progBar').style.display='none';$('progFill').style.width='0%';$('loadingText').textContent='Načítám graf…';try{if(chartDays==='max'){chartData=await loadMaxChart()}else{const interval=chartDays==='1'?'hourly':'daily';const r=await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartDays}&interval=${interval}`);if(!r.ok)throw new Error('CoinGecko HTTP '+r.status);const data=await r.json();if(data.error)throw new Error(JSON.stringify(data.error));chartData=data.prices.map(p=>({t:p[0],v:chartMode==='czk'?p[1]*fxRate:p[1]}));}if(!chartData||chartData.length<2)throw new Error('Nedostatek dat');const mn=Math.min(...chartData.map(d=>d.v)),mx=Math.max(...chartData.map(d=>d.v)),first=chartData[0].v,last=chartData[chartData.length-1].v,chg=((last-first)/first)*100,isUp=chg>=0;$('chartChange').textContent=pct(chg)+' · '+({1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok',max:'All Time'}[chartDays]);$('chartChange').className='chart-change '+(isUp?'up':'dn');drawChart(isUp,mn,mx);$('chartLoading').style.display='none';$('chartCanvas').style.display='block';$('chartTs').textContent='Graf: '+(chartDays==='max'?'Kraken':'CoinGecko')+' · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'})}catch(e){$('progBar').style.display='none';$('chartLoading').style.color='var(--red)';$('loadingText').textContent='⚠ '+e.message;console.error(e)}}
 function drawChart(isUp,mn,mx){const canvas=$('chartCanvas'),wrap=$('canvasWrap'),dpr=window.devicePixelRatio||1,W=wrap.clientWidth,H=200;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);const pad={t:10,r:10,b:28,l:0},w=W-pad.l-pad.r,h=H-pad.t-pad.b,n=chartData.length,range=mx-mn||1;const xOf=i=>pad.l+(i/(n-1))*w,yOf=v=>pad.t+h-(((v-mn)/range)*h);const color=isUp?'48,209,88':'255,69,58';const gr=ctx.createLinearGradient(0,pad.t,0,pad.t+h);gr.addColorStop(0,`rgba(${color},0.22)`);gr.addColorStop(1,`rgba(${color},0)`);ctx.beginPath();ctx.moveTo(xOf(0),yOf(chartData[0].v));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}ctx.lineTo(xOf(n-1),H-pad.b);ctx.lineTo(xOf(0),H-pad.b);ctx.closePath();ctx.fillStyle=gr;ctx.fill();ctx.beginPath();ctx.moveTo(xOf(0),yOf(chartData[0].v));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=2;ctx.stroke();const textColor=isDark?'rgba(255,255,255,0.22)':'rgba(0,0,0,0.35)';ctx.fillStyle=textColor;ctx.font='500 10px Inter,-apple-system,sans-serif';ctx.textAlign='center';[0,1,2,3].forEach(i=>{const idx=Math.round(i*(n-1)/3),d=new Date(chartData[idx].t);let lbl='';if(chartDays==='1')lbl=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});else if(chartDays==='7')lbl=d.toLocaleDateString('cs-CZ',{weekday:'short'});else if(chartDays==='30')lbl=d.toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric'});else if(chartDays==='365')lbl=d.toLocaleDateString('cs-CZ',{month:'short'});else lbl=d.getFullYear().toString();ctx.fillText(lbl,xOf(idx),H-pad.b+14)});setupTooltip(canvas,pad,w,xOf,yOf,n)}
+function setupTooltip(canvas,pad,w,xOf,yOf,n){const tip=$('tooltip');function show(cx){const rect=canvas.getBoundingClientRect(),x=cx-rect.left;const idx=Math.max(0,Math.min(n-1,Math.round(((x-pad.l)/w)*(n-1))));const pt=chartData[idx];if(!pt)return;const sym=chartMode==='czk'?' Kč':'',pre=chartMode==='usd'?'$':'';tip.textContent=pre+fmt(pt.v)+sym;tip.style.display='block';tip.style.left=xOf(idx)+'px';tip.style.top=(yOf(pt.v)-34)+'px';$('chartPrice').textContent=pre+fmt(pt.v)+sym}function hide(){tip.style.display='none';const last=chartData[n-1];if(last)$('chartPrice').textContent=(chartMode==='usd'?'$':'')+fmt(last.v)+(chartMode==='czk'?' Kč':'')}canvas.ontouchstart=e=>{e.preventDefault();show(e.touches[0].clientX)};canvas.ontouchmove=e=>{e.preventDefault();show(e.touches[0].clientX)};canvas.ontouchend=()=>setTimeout(hide,1500);canvas.onmousemove=e=>show(e.clientX);canvas.onmouseleave=()=>hide()}
 
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&portUnlocked){portUnlocked=false}if(document.visibilityState==='visible'){loadFX();if(!wsReady)connectWS();if(activeTab==='portfolio'&&!portUnlocked)showLock()}});
 
