@@ -20,23 +20,17 @@
     .orb3{width:250px;height:250px;background:radial-gradient(circle,rgba(48,209,88,0.08),transparent 70%);bottom:10%;left:20%;animation-delay:-8s}
     @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.05)}66%{transform:translate(-10px,15px) scale(0.95)}}
     .wrap{position:relative;z-index:1;width:100%;max-width:390px;margin:0 auto}
-
-    /* ── Tabs ── */
     .tabs{display:flex;gap:6px;margin-bottom:18px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:16px;padding:4px}
     .tab{flex:1;padding:9px 0;border-radius:12px;font-size:13px;font-weight:600;text-align:center;cursor:pointer;color:rgba(255,255,255,.4);transition:all .2s;-webkit-tap-highlight-color:transparent;border:none;background:none;font-family:inherit;letter-spacing:-.2px}
     .tab.active{background:rgba(255,255,255,0.1);color:#fff;box-shadow:0 0 0 0.5px rgba(255,255,255,0.12)}
-
-    /* ── Header ── */
     .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:4px}
     .hdr-l{display:flex;align-items:center;gap:11px}
     .btc-ball{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,210,100,0.9),rgba(255,159,10,0.7) 50%,rgba(180,80,0,0.5));box-shadow:0 0 0 0.5px rgba(255,255,255,0.3),0 0 30px rgba(255,159,10,0.4),inset 0 1px 1px rgba(255,255,255,0.5),inset 0 -2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;flex-shrink:0}
     .hdr-t h1{font-size:17px;font-weight:700;letter-spacing:-.3px}
     .hdr-t p{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
-    .pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--green);padding:5px 12px;border-radius:99px;background:rgba(48,209,88,0.12);border:0.5px solid rgba(48,209,88,0.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+    .pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--green);padding:5px 12px;border-radius:99px;background:rgba(48,209,88,0.12);border:0.5px solid rgba(48,209,88,0.3);backdrop-filter:blur(20px)}
     .pill::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 2s ease-in-out infinite}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-
-    /* ── Glass ── */
     .glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:24px 22px 20px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4)}
     .glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .glass::after{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 70%);pointer-events:none}
@@ -64,8 +58,6 @@
     .stat{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:16px;padding:13px}
     .sl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:5px}
     .sv{font-size:15px;font-weight:700}
-
-    /* ── Fear & Greed ── */
     .fg-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4)}
     .fg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .fg-inner{display:flex;align-items:center;gap:18px}
@@ -81,8 +73,6 @@
     .fg-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
     .fg-scale{display:flex;justify-content:space-between;margin-top:4px}
     .fg-scale span{font-size:8px;color:rgba(255,255,255,.25);font-weight:500}
-
-    /* ── Cycle Dashboard ── */
     .cycle-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4)}
     .cycle-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .cycle-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px}
@@ -106,11 +96,25 @@
     .halving-days{font-size:28px;font-weight:800;letter-spacing:-1.5px;color:var(--btc)}
     .halving-unit{font-size:10px;color:rgba(255,159,10,.5);font-weight:600;letter-spacing:.5px}
 
-    /* ── PORTFOLIO ── */
+    /* ── Face ID lock screen ── */
+    .face-lock{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 20% 10%,#1a0a2e 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,#0d1f3c 0%,transparent 50%),#050508;padding:40px 32px}
+    .face-lock.hidden{display:none}
+    .lock-icon{font-size:64px;margin-bottom:8px;filter:drop-shadow(0 0 30px rgba(255,159,10,0.5));animation:pulse-lock 2s ease-in-out infinite}
+    @keyframes pulse-lock{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+    .lock-title{font-size:24px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px;text-align:center}
+    .lock-sub{font-size:14px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:40px;line-height:1.5}
+    .face-btn{display:flex;flex-direction:column;align-items:center;gap:10px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);border-radius:24px;padding:24px 40px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;font-family:inherit;color:#fff;margin-bottom:20px}
+    .face-btn:active{transform:scale(.96);background:rgba(255,255,255,0.12)}
+    .face-btn-icon{font-size:40px;line-height:1}
+    .face-btn-label{font-size:15px;font-weight:700;letter-spacing:-.2px}
+    .face-btn-sub{font-size:12px;color:rgba(255,255,255,.4);font-weight:400}
+    .lock-err{font-size:13px;color:var(--red);text-align:center;min-height:20px;font-weight:500}
+    .lock-setup-note{font-size:11px;color:rgba(255,255,255,.2);text-align:center;margin-top:16px;line-height:1.5}
+    .lock-reset{background:none;border:none;color:rgba(255,255,255,.2);font-size:12px;margin-top:20px;cursor:pointer;font-family:inherit;text-decoration:underline}
+
+    /* ── Portfolio ── */
     .port-view{display:none;flex-direction:column;width:100%}
     .port-view.show{display:flex}
-
-    /* Setup stav — zadání BTC */
     .port-setup{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 8px}
     .port-setup-icon{font-size:48px;margin-bottom:16px;filter:drop-shadow(0 0 20px rgba(255,159,10,0.4))}
     .port-setup h2{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
@@ -122,8 +126,6 @@
     .btc-unit{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;color:var(--btc)}
     .save-btn{width:100%;padding:16px;border-radius:18px;background:linear-gradient(135deg,rgba(255,159,10,0.9),rgba(255,120,0,0.9));border:none;color:#fff;font-size:16px;font-weight:700;font-family:'Inter',-apple-system,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-.2px;transition:opacity .15s;box-shadow:0 8px 30px rgba(255,159,10,0.3)}
     .save-btn:active{opacity:.8}
-
-    /* Portfolio karta */
     .port-hero{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:24px 22px 20px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4)}
     .port-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .port-hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
@@ -141,8 +143,6 @@
     .port-val-num.usd{color:#FFB340}
     .port-val-num.czk{color:#64B5F6}
     .port-val-unit{font-size:11px;font-weight:500;color:rgba(255,255,255,.3);margin-top:3px}
-
-    /* P&L sekce */
     .port-pnl{background:rgba(255,255,255,0.06);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,0.15);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 0 0.5px rgba(255,255,255,0.05) inset,0 20px 60px rgba(0,0,0,0.4)}
     .port-pnl::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
     .pnl-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px}
@@ -150,8 +150,6 @@
     .pnl-box{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:16px;padding:12px}
     .pnl-lbl{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:5px}
     .pnl-val{font-size:14px;font-weight:700}
-
-    /* Buy price input */
     .buy-section{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;margin-top:8px}
     .buy-section-lbl{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
     .buy-input-row{display:flex;gap:8px;align-items:center}
@@ -160,8 +158,6 @@
     .buy-input::placeholder{color:rgba(255,255,255,.2)}
     .buy-apply{background:rgba(255,159,10,0.15);border:0.5px solid rgba(255,159,10,0.3);border-radius:12px;padding:10px 16px;font-size:13px;font-weight:700;color:var(--btc);font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap;transition:background .15s}
     .buy-apply:active{background:rgba(255,159,10,0.25)}
-
-    /* Chart */
     .chart-view{display:none;flex-direction:column;width:100%}
     .chart-view.show{display:flex}
     .back-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);border-radius:12px;padding:8px 14px;color:rgba(255,255,255,.7);font-size:13px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:16px;align-self:flex-start;font-family:inherit;transition:background .15s}
@@ -191,9 +187,23 @@
 </head>
 <body>
 <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
-<div class="wrap">
 
-  <!-- Header -->
+<!-- ══════════ FACE ID LOCK SCREEN ══════════ -->
+<div class="face-lock hidden" id="faceLock">
+  <div class="lock-icon" id="lockIcon">🔒</div>
+  <div class="lock-title">Portfolio zamčeno</div>
+  <div class="lock-sub" id="lockSub">Ověř svoji identitu<br/>pomocí Face ID</div>
+  <button class="face-btn" id="faceBtn" onclick="doFaceAuth()">
+    <span class="face-btn-icon">󠀠</span>
+    <span class="face-btn-label">Odemknout Face ID</span>
+    <span class="face-btn-sub">Touch ID · Biometrika</span>
+  </button>
+  <div class="lock-err" id="lockErr"></div>
+  <div class="lock-setup-note" id="lockNote"></div>
+  <button class="lock-reset" onclick="resetFaceID()">Resetovat Face ID registraci</button>
+</div>
+
+<div class="wrap" id="mainWrap">
   <div class="hdr">
     <div class="hdr-l">
       <div class="btc-ball">₿</div>
@@ -202,16 +212,13 @@
     <div class="pill">Živě</div>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <button class="tab" id="tabPort" onclick="switchTab('portfolio')">Moje portfolio</button>
     <button class="tab active" id="tabMarket" onclick="switchTab('market')">Trh</button>
   </div>
 
-  <!-- ══════════════ PORTFOLIO VIEW ══════════════ -->
+  <!-- PORTFOLIO VIEW -->
   <div class="port-view" id="portView">
-
-    <!-- Setup (první zadání) -->
     <div id="portSetup" style="display:none">
       <div class="port-setup">
         <div class="port-setup-icon">₿</div>
@@ -224,75 +231,45 @@
         <button class="save-btn" onclick="savePortfolio()">Uložit portfolio</button>
       </div>
     </div>
-
-    <!-- Portfolio dashboard -->
     <div id="portDash" style="display:none">
       <div class="port-hero">
         <div class="port-hero-top">
           <div>
             <div class="port-hero-label">Moje portfolio</div>
-            <div class="port-btc-amount">
-              <span id="portBtcAmt">–</span>
-              <span class="port-btc-sym">BTC</span>
-            </div>
+            <div class="port-btc-amount"><span id="portBtcAmt">–</span><span class="port-btc-sym">BTC</span></div>
           </div>
           <button class="edit-btn" onclick="editPortfolio()">✏️ Upravit</button>
         </div>
         <div class="port-vals">
-          <div class="port-val-box usd-box">
-            <div class="port-val-lbl">Hodnota USD</div>
-            <div class="port-val-num usd" id="portUSD">–</div>
-            <div class="port-val-unit">americký dolar</div>
-          </div>
-          <div class="port-val-box czk-box">
-            <div class="port-val-lbl">Hodnota CZK</div>
-            <div class="port-val-num czk" id="portCZK">–</div>
-            <div class="port-val-unit">česká koruna</div>
-          </div>
+          <div class="port-val-box usd-box"><div class="port-val-lbl">Hodnota USD</div><div class="port-val-num usd" id="portUSD">–</div><div class="port-val-unit">americký dolar</div></div>
+          <div class="port-val-box czk-box"><div class="port-val-lbl">Hodnota CZK</div><div class="port-val-num czk" id="portCZK">–</div><div class="port-val-unit">česká koruna</div></div>
         </div>
       </div>
-
-      <!-- P&L sekce -->
       <div class="port-pnl">
         <div class="pnl-title">Profit / Loss kalkulačka</div>
         <div class="buy-section">
-          <div class="buy-section-lbl">Průměrná nákupní cena (USD za 1 BTC)</div>
+          <div class="buy-section-lbl">Průměrná nákupní cena (USD / BTC)</div>
           <div class="buy-input-row">
             <input class="buy-input" id="buyPriceInput" type="number" step="any" min="0" placeholder="např. 45000"/>
             <button class="buy-apply" onclick="applyBuyPrice()">Vypočítat</button>
           </div>
         </div>
         <div class="pnl-grid" id="pnlGrid" style="margin-top:12px;display:none">
-          <div class="pnl-box">
-            <div class="pnl-lbl">Investováno (USD)</div>
-            <div class="pnl-val" id="pnlInvested">–</div>
-          </div>
-          <div class="pnl-box">
-            <div class="pnl-lbl">Aktuální hodnota</div>
-            <div class="pnl-val" id="pnlCurrent">–</div>
-          </div>
-          <div class="pnl-box">
-            <div class="pnl-lbl">Zisk / Ztráta</div>
-            <div class="pnl-val" id="pnlDiff">–</div>
-          </div>
-          <div class="pnl-box">
-            <div class="pnl-lbl">Výnos</div>
-            <div class="pnl-val" id="pnlPct">–</div>
-          </div>
+          <div class="pnl-box"><div class="pnl-lbl">Investováno</div><div class="pnl-val" id="pnlInvested">–</div></div>
+          <div class="pnl-box"><div class="pnl-lbl">Aktuální hodnota</div><div class="pnl-val" id="pnlCurrent">–</div></div>
+          <div class="pnl-box"><div class="pnl-lbl">Zisk / Ztráta</div><div class="pnl-val" id="pnlDiff">–</div></div>
+          <div class="pnl-box"><div class="pnl-lbl">Výnos</div><div class="pnl-val" id="pnlPct">–</div></div>
         </div>
       </div>
-
       <div class="ts" id="portTs"></div>
       <div class="src" id="portSrc"></div>
-      <div class="ver">v1.7</div>
+      <div class="ver">v1.8</div>
     </div>
-
-    <!-- Edit overlay -->
     <div id="portEdit" style="display:none">
       <div class="port-setup">
         <div class="port-setup-icon">✏️</div>
         <h2>Upravit portfolio</h2>
-        <p>Zadej nový počet BTC.<br/>Předchozí hodnota bude nahrazena.</p>
+        <p>Zadej nový počet BTC.</p>
         <div class="btc-input-wrap">
           <input class="btc-input" id="btcEditInput" type="number" step="any" min="0" placeholder="0.00000000"/>
           <span class="btc-unit">BTC</span>
@@ -303,7 +280,7 @@
     </div>
   </div>
 
-  <!-- ══════════════ MARKET VIEW ══════════════ -->
+  <!-- MARKET VIEW -->
   <div id="marketView">
     <div class="glass">
       <div class="clabel">Cena BTC</div>
@@ -312,10 +289,7 @@
           <div class="usd-price"><span class="usd-sam">$</span><span id="usd" class="sk" style="width:180px;height:46px"> </span></div>
           <div class="tap-hint"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Klepněte pro graf</div>
         </div>
-        <div class="spark-wrap">
-          <span class="spark-label">24H</span>
-          <canvas id="sparkCanvas" width="90" height="46" style="width:90px;height:46px"></canvas>
-        </div>
+        <div class="spark-wrap"><span class="spark-label">24H</span><canvas id="sparkCanvas" width="90" height="46" style="width:90px;height:46px"></canvas></div>
       </div>
       <div class="czk-glass" onclick="openChart('czk')">
         <span class="czk-l">CZK</span>
@@ -330,7 +304,6 @@
         <div class="stat"><div class="sl">OBJEM 24H</div><div class="sv" id="s4">…</div></div>
       </div>
     </div>
-
     <div class="fg-card">
       <div class="fg-inner">
         <div class="fg-gauge">
@@ -348,7 +321,6 @@
         </div>
       </div>
     </div>
-
     <div class="cycle-card">
       <div class="cycle-title">Market Cycle Dashboard</div>
       <div class="metric-row">
@@ -368,23 +340,16 @@
         </div>
       </div>
       <div class="halving-box">
-        <div class="halving-l">
-          <span class="halving-label">⚡ Příští Halving</span>
-          <span class="halving-date" id="halvingDate">~duben 2028</span>
-        </div>
-        <div class="halving-r">
-          <span class="halving-days" id="halvingDays">–</span>
-          <span class="halving-unit">DNÍ</span>
-        </div>
+        <div class="halving-l"><span class="halving-label">⚡ Příští Halving</span><span class="halving-date" id="halvingDate">~duben 2028</span></div>
+        <div class="halving-r"><span class="halving-days" id="halvingDays">–</span><span class="halving-unit">DNÍ</span></div>
       </div>
     </div>
-
     <div class="ts" id="ts">Připojuji se…</div>
     <div class="src" id="src"></div>
-    <div class="ver">v1.7</div>
+    <div class="ver">v1.8</div>
   </div>
 
-  <!-- Chart View -->
+  <!-- CHART VIEW -->
   <div class="chart-view" id="chartView">
     <button class="back-btn" onclick="closeChart()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
@@ -415,15 +380,14 @@
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
-    <div class="ver">v1.7</div>
+    <div class="ver">v1.8</div>
   </div>
-
-</div><!-- /wrap -->
+</div>
 
 <script>
 const $=id=>document.getElementById(id);
 const fmt=(n,d=0)=>new Intl.NumberFormat('cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
-const fmtUSD=(n)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(n);
+const fmtUSD=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(n);
 const fmtB=n=>n>=1e12?(n/1e12).toFixed(2)+' bil.':n>=1e9?(n/1e9).toFixed(2)+' mld.':n>=1e6?(n/1e6).toFixed(1)+' mil.':fmt(n);
 const pct=n=>(n>=0?'+':'')+parseFloat(n).toFixed(2)+'%';
 
@@ -432,17 +396,137 @@ let chartMode='usd',chartDays='1',chartData=[];
 let ws=null,wsReady=false,sparkData=[];
 let activeTab='market';
 let savedBTC=null,buyPrice=null;
+let portUnlocked=false; // Face ID session flag
 
-/* ── LocalStorage ── */
-function loadSaved(){
-  const s=localStorage.getItem('btc_portfolio');
-  if(s){savedBTC=parseFloat(s);if(isNaN(savedBTC))savedBTC=null}
-  const b=localStorage.getItem('btc_buyprice');
-  if(b){buyPrice=parseFloat(b);if(isNaN(buyPrice))buyPrice=null}
+/* ══════════════════════════════════════════
+   WEBAUTHN / FACE ID
+══════════════════════════════════════════ */
+const WA_KEY='btc_faceID_cred'; // uložené credential ID
+
+function b64url(buf){return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'')}
+function fromB64url(s){return Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0))}
+function rnd(n){const a=new Uint8Array(n);crypto.getRandomValues(a);return a}
+
+function isWebAuthnSupported(){return window.PublicKeyCredential&&typeof window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable==='function'}
+
+async function isBiometricAvailable(){
+  if(!isWebAuthnSupported()) return false;
+  try{return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()}catch(e){return false}
 }
 
-/* ── Tabs ── */
+/* Registrace — při prvním použití Face ID */
+async function registerFaceID(){
+  const challenge=rnd(32);
+  const userId=rnd(16);
+  const options={
+    challenge,
+    rp:{name:'Bitcoin Portfolio',id:location.hostname||'localhost'},
+    user:{id:userId,name:'btc-user',displayName:'Bitcoin User'},
+    pubKeyCredParams:[{alg:-7,type:'public-key'},{alg:-257,type:'public-key'}],
+    authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'preferred'},
+    timeout:60000,
+    attestation:'none'
+  };
+  const cred=await navigator.credentials.create({publicKey:options});
+  // Ulož credential ID
+  const credID=b64url(cred.rawId);
+  localStorage.setItem(WA_KEY,credID);
+  return true;
+}
+
+/* Ověření Face ID */
+async function verifyFaceID(){
+  const credIDStr=localStorage.getItem(WA_KEY);
+  if(!credIDStr) return false;
+  const challenge=rnd(32);
+  const options={
+    challenge,
+    rpId:location.hostname||'localhost',
+    allowCredentials:[{type:'public-key',id:fromB64url(credIDStr),transports:['internal']}],
+    userVerification:'required',
+    timeout:60000
+  };
+  await navigator.credentials.get({publicKey:options});
+  return true;
+}
+
+/* Hlavní auth flow — volá se při klepnutí na tlačítko nebo při přepnutí na portfolio */
+async function doFaceAuth(){
+  $('lockErr').textContent='';
+  $('faceBtn').style.opacity='0.6';
+  $('lockIcon').textContent='🔄';
+  try{
+    const hasBio=await isBiometricAvailable();
+    if(!hasBio){
+      // Fallback — zařízení nepodporuje biometrii, odemkni bez ověření a zobraz varování
+      $('lockNote').textContent='⚠️ Toto zařízení nepodporuje Face ID / Touch ID. Portfolio je přístupné bez ověření.';
+      portUnlocked=true;
+      hideLock();
+      return;
+    }
+    const hasReg=!!localStorage.getItem(WA_KEY);
+    if(!hasReg){
+      // První registrace
+      $('lockSub').textContent='Zaregistruj Face ID\npro budoucí přístupy…';
+      await registerFaceID();
+      $('lockIcon').textContent='✅';
+    }
+    // Ověření
+    await verifyFaceID();
+    portUnlocked=true;
+    $('lockIcon').textContent='✅';
+    setTimeout(hideLock,300);
+  }catch(e){
+    $('lockIcon').textContent='🔒';
+    if(e.name==='NotAllowedError'){
+      $('lockErr').textContent='Face ID zrušeno nebo odmítnuto. Zkus znovu.';
+    } else if(e.name==='InvalidStateError'){
+      // Credential neexistuje — resetuj a zkus znovu
+      localStorage.removeItem(WA_KEY);
+      $('lockErr').textContent='Registrace expirovala. Klepni znovu pro novou registraci.';
+    } else {
+      $('lockErr').textContent='Chyba: '+e.message;
+    }
+    console.error('WebAuthn:',e);
+  }
+  $('faceBtn').style.opacity='1';
+}
+
+function hideLock(){
+  $('faceLock').classList.add('hidden');
+}
+
+function showLock(){
+  $('faceLock').classList.remove('hidden');
+  $('lockIcon').textContent='🔒';
+  $('lockErr').textContent='';
+  $('lockNote').textContent='';
+  $('lockSub').textContent='Ověř svoji identitu\npomocí Face ID';
+}
+
+function resetFaceID(){
+  localStorage.removeItem(WA_KEY);
+  portUnlocked=false;
+  $('lockErr').textContent='Registrace smazána. Při příštím odemčení se zaregistruje znovu.';
+}
+
+/* ══════════════════════════════════════════
+   TABS + PORTFOLIO
+══════════════════════════════════════════ */
+function loadSaved(){
+  const s=localStorage.getItem('btc_portfolio');if(s){savedBTC=parseFloat(s);if(isNaN(savedBTC))savedBTC=null}
+  const b=localStorage.getItem('btc_buyprice');if(b){buyPrice=parseFloat(b);if(isNaN(buyPrice))buyPrice=null}
+}
+
 function switchTab(tab){
+  // Portfolio vyžaduje Face ID
+  if(tab==='portfolio'&&!portUnlocked){
+    activeTab='portfolio';
+    // Nastav aktivní tab vizuálně
+    $('tabPort').classList.add('active');$('tabMarket').classList.remove('active');
+    showLock();
+    return;
+  }
   activeTab=tab;
   $('tabPort').classList.toggle('active',tab==='portfolio');
   $('tabMarket').classList.toggle('active',tab==='market');
@@ -453,174 +537,98 @@ function switchTab(tab){
   $('hdrSub').textContent=tab==='market'?'Aktuální cena':'Moje investice';
 }
 
-/* ── Portfolio logika ── */
+// Když se Face ID povede, zobraz portfolio
+function hideLock(){
+  $('faceLock').classList.add('hidden');
+  if(activeTab==='portfolio'){
+    $('tabPort').classList.add('active');$('tabMarket').classList.remove('active');
+    $('marketView').style.display='none';
+    $('portView').classList.add('show');
+    renderPortfolio();
+    $('hdrSub').textContent='Moje investice';
+  }
+}
+
 function renderPortfolio(){
   if(savedBTC===null){
-    $('portSetup').style.display='';
-    $('portDash').style.display='none';
-    $('portEdit').style.display='none';
-  } else {
-    $('portSetup').style.display='none';
-    $('portDash').style.display='';
-    $('portEdit').style.display='none';
+    $('portSetup').style.display='';$('portDash').style.display='none';$('portEdit').style.display='none';
+  }else{
+    $('portSetup').style.display='none';$('portDash').style.display='';$('portEdit').style.display='none';
     updatePortValues();
-    if(buyPrice!==null){
-      $('buyPriceInput').value=buyPrice;
-      renderPnL();
-    }
+    if(buyPrice!==null){$('buyPriceInput').value=buyPrice;renderPnL()}
   }
 }
 
 function updatePortValues(){
   if(savedBTC===null) return;
-  const usdVal=savedBTC*currentUSD;
-  const czkVal=savedBTC*currentCZK;
   $('portBtcAmt').textContent=savedBTC%1===0?savedBTC.toString():savedBTC.toFixed(8).replace(/\.?0+$/,'');
-  $('portUSD').textContent=currentUSD>0?fmtUSD(usdVal):'–';
-  $('portCZK').textContent=currentUSD>0?fmt(czkVal)+' Kč':'–';
+  $('portUSD').textContent=currentUSD>0?fmtUSD(savedBTC*currentUSD):'–';
+  $('portCZK').textContent=currentUSD>0?fmt(savedBTC*currentCZK)+' Kč':'–';
   $('portTs').textContent='Živě · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   $('portSrc').textContent='Kurz ČNB · 1 USD = '+fxRate.toFixed(3)+' Kč';
   if(buyPrice!==null) renderPnL();
 }
 
 function savePortfolio(){
-  const v=parseFloat($('btcSetupInput').value);
-  if(isNaN(v)||v<0){$('btcSetupInput').style.borderColor='var(--red)';return}
-  savedBTC=v;
-  localStorage.setItem('btc_portfolio',v.toString());
-  $('btcSetupInput').value='';
-  renderPortfolio();
+  const v=parseFloat($('btcSetupInput').value);if(isNaN(v)||v<0){$('btcSetupInput').style.borderColor='var(--red)';return}
+  savedBTC=v;localStorage.setItem('btc_portfolio',v.toString());$('btcSetupInput').value='';renderPortfolio();
 }
-
-function editPortfolio(){
-  $('portDash').style.display='none';
-  $('portEdit').style.display='';
-  if(savedBTC!==null) $('btcEditInput').value=savedBTC;
-}
-
-function saveEdit(){
-  const v=parseFloat($('btcEditInput').value);
-  if(isNaN(v)||v<0){$('btcEditInput').style.borderColor='var(--red)';return}
-  savedBTC=v;
-  localStorage.setItem('btc_portfolio',v.toString());
-  renderPortfolio();
-}
-
-function cancelEdit(){
-  $('portEdit').style.display='none';
-  $('portDash').style.display='';
-}
-
-function applyBuyPrice(){
-  const v=parseFloat($('buyPriceInput').value);
-  if(isNaN(v)||v<=0) return;
-  buyPrice=v;
-  localStorage.setItem('btc_buyprice',v.toString());
-  renderPnL();
-}
-
+function editPortfolio(){$('portDash').style.display='none';$('portEdit').style.display='';if(savedBTC!==null)$('btcEditInput').value=savedBTC}
+function saveEdit(){const v=parseFloat($('btcEditInput').value);if(isNaN(v)||v<0){$('btcEditInput').style.borderColor='var(--red)';return}savedBTC=v;localStorage.setItem('btc_portfolio',v.toString());renderPortfolio()}
+function cancelEdit(){$('portEdit').style.display='none';$('portDash').style.display=''}
+function applyBuyPrice(){const v=parseFloat($('buyPriceInput').value);if(isNaN(v)||v<=0)return;buyPrice=v;localStorage.setItem('btc_buyprice',v.toString());renderPnL()}
 function renderPnL(){
   if(buyPrice===null||savedBTC===null||currentUSD===0) return;
-  const invested=savedBTC*buyPrice;
-  const current=savedBTC*currentUSD;
-  const diff=current-invested;
-  const p=((diff)/invested)*100;
-  const isUp=diff>=0;
-  const c=isUp?'var(--green)':'var(--red)';
-  $('pnlInvested').textContent=fmtUSD(invested);$('pnlInvested').style.color='rgba(255,255,255,.7)';
-  $('pnlCurrent').textContent=fmtUSD(current);$('pnlCurrent').style.color='rgba(255,255,255,.7)';
+  const inv=savedBTC*buyPrice,cur=savedBTC*currentUSD,diff=cur-inv,p=((diff)/inv)*100,isUp=diff>=0,c=isUp?'var(--green)':'var(--red)';
+  $('pnlInvested').textContent=fmtUSD(inv);$('pnlInvested').style.color='rgba(255,255,255,.7)';
+  $('pnlCurrent').textContent=fmtUSD(cur);$('pnlCurrent').style.color='rgba(255,255,255,.7)';
   $('pnlDiff').textContent=(isUp?'+':'')+fmtUSD(diff);$('pnlDiff').style.color=c;
   $('pnlPct').textContent=(isUp?'+':'')+p.toFixed(2)+'%';$('pnlPct').style.color=c;
   $('pnlGrid').style.display='grid';
 }
 
-/* ── FX ── */
-async function loadFX(){
-  try{const r=await fetch('https://api.frankfurter.app/latest?from=USD&to=CZK');const j=await r.json();fxRate=j.rates.CZK;$('src').textContent='Kurz ČNB · 1 USD = '+fxRate.toFixed(3)+' Kč'}catch(e){fxRate=23.5}
-}
-
-/* ── Fear & Greed ── */
-async function loadFearGreed(){
-  try{const r=await fetch('https://api.alternative.me/fng/?limit=1');const j=await r.json();const val=parseInt(j.data[0].value),cls=j.data[0].value_classification;const moods={'Extreme Fear':'Extrémní strach','Fear':'Strach','Neutral':'Neutrál','Greed':'Chamtivost','Extreme Greed':'Extrémní chamtivost'};const color=val<=25?'#FF453A':val<=45?'#FF9F0A':val<=55?'#FFD60A':val<=75?'#30D158':'#34C759';$('fgVal').textContent=val;$('fgVal').style.color=color;$('fgMood').textContent=moods[cls]||cls;$('fgMood').style.color=color;$('fgBarFill').style.width=val+'%';$('fgBarFill').style.background=color;$('fgArc').setAttribute('stroke-dasharray',(val/100)*188+' 188');$('fgArc').setAttribute('stroke',color)}catch(e){$('fgMood').textContent='Nedostupné'}}
-
-/* ── MVRV ── */
-async function loadMVRV(){
-  let val=null;
-  const tries=[
-    ()=>fetch('https://api.gnanadhandayuthapani.com/api/indicators/indicator/MVRV_Z/values',{signal:AbortSignal.timeout(8000)}),
-    ()=>fetch('https://charts.bitbo.io/api/v1/mvrv-z-score/?latest=true',{signal:AbortSignal.timeout(8000)}),
-    ()=>fetch('https://corecharts.com/api/mvrv-z-score?latest=1',{signal:AbortSignal.timeout(8000)})
-  ];
-  const srcs=['dhruvan.com','bitbo.io','corecharts.com'];
-  for(let i=0;i<tries.length&&val===null;i++){
-    try{const r=await tries[i]();if(!r.ok)continue;const j=await r.json();const arr=Array.isArray(j)?j:(j.data||j.values||[]);if(arr.length){const last=arr[arr.length-1];const c=parseFloat(last.value||last.v||last[1]||last);if(!isNaN(c)){val=c;$('mvrvSrc').textContent=srcs[i]}}}catch(e){}
+/* ══════════════════════════════════════════
+   LOCK when app goes to background
+══════════════════════════════════════════ */
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden'&&portUnlocked){
+    // Zamkni při odchodu z apky
+    portUnlocked=false;
   }
-  if(val!==null)renderMetric('mvrv',val,[{max:-0.1,sig:'Akumuluj',cls:'sig-buy',bar:5,c:'var(--green)'},{max:2,sig:'Drž',cls:'sig-hold',bar:25,c:'#FFD60A'},{max:4,sig:'Střední',cls:'sig-hold',bar:50,c:'#FF9F0A'},{max:6,sig:'Opatrně',cls:'sig-sell',bar:75,c:'var(--red)'},{max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:95,c:'var(--red)'}]);
-  else setMetricError('mvrv');
-}
+  if(document.visibilityState==='visible'){
+    loadFX();if(!wsReady)connectWS();
+    // Pokud bylo portfolio otevřeno a session expirovala, zamkni
+    if(activeTab==='portfolio'&&!portUnlocked){
+      showLock();
+    }
+  }
+});
 
-/* ── Puell ── */
-async function loadPuell(){
-  let val=null;
-  try{const r=await fetch('https://charts.bitbo.io/api/v1/puell-multiple/?latest=true',{signal:AbortSignal.timeout(8000)});if(r.ok){const j=await r.json();const raw=j.puell_multiple||j.value||j.puellMultiple;if(raw!==undefined){const c=parseFloat(raw);if(!isNaN(c)){val=c;$('puellSrc').textContent='bitbo.io'}}else if(Array.isArray(j)&&j.length){const last=j[j.length-1];const c=parseFloat(Array.isArray(last)?last[1]:last.puell_multiple||last.value);if(!isNaN(c)){val=c;$('puellSrc').textContent='bitbo.io'}}}}catch(e){}
-  if(val===null){try{const r=await fetch('https://api.gnanadhandayuthapani.com/api/indicators/indicator/PUELL/values',{signal:AbortSignal.timeout(8000)});if(r.ok){const j=await r.json();const arr=Array.isArray(j)?j:(j.data||j.values||[]);if(arr.length){const last=arr[arr.length-1];const c=parseFloat(last.value||last.v||last[1]||last);if(!isNaN(c)){val=c;$('puellSrc').textContent='dhruvan.com'}}}}catch(e){}}
-  if(val!==null)renderMetric('puell',val,[{max:0.5,sig:'Akumuluj',cls:'sig-buy',bar:8,c:'var(--green)'},{max:1,sig:'Drž',cls:'sig-hold',bar:25,c:'#FFD60A'},{max:2,sig:'Neutrál',cls:'sig-hold',bar:45,c:'#FFD60A'},{max:4,sig:'Opatrně',cls:'sig-sell',bar:70,c:'#FF9F0A'},{max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:92,c:'var(--red)'}]);
-  else setMetricError('puell');
-}
-
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+async function loadFX(){try{const r=await fetch('https://api.frankfurter.app/latest?from=USD&to=CZK');const j=await r.json();fxRate=j.rates.CZK;$('src').textContent='Kurz ČNB · 1 USD = '+fxRate.toFixed(3)+' Kč'}catch(e){fxRate=23.5}}
+async function loadFearGreed(){try{const r=await fetch('https://api.alternative.me/fng/?limit=1');const j=await r.json();const val=parseInt(j.data[0].value),cls=j.data[0].value_classification;const moods={'Extreme Fear':'Extrémní strach','Fear':'Strach','Neutral':'Neutrál','Greed':'Chamtivost','Extreme Greed':'Extrémní chamtivost'};const color=val<=25?'#FF453A':val<=45?'#FF9F0A':val<=55?'#FFD60A':val<=75?'#30D158':'#34C759';$('fgVal').textContent=val;$('fgVal').style.color=color;$('fgMood').textContent=moods[cls]||cls;$('fgMood').style.color=color;$('fgBarFill').style.width=val+'%';$('fgBarFill').style.background=color;$('fgArc').setAttribute('stroke-dasharray',(val/100)*188+' 188');$('fgArc').setAttribute('stroke',color)}catch(e){$('fgMood').textContent='Nedostupné'}}
+async function loadMVRV(){let val=null;const tries=[()=>fetch('https://api.gnanadhandayuthapani.com/api/indicators/indicator/MVRV_Z/values',{signal:AbortSignal.timeout(8000)}),()=>fetch('https://charts.bitbo.io/api/v1/mvrv-z-score/?latest=true',{signal:AbortSignal.timeout(8000)}),()=>fetch('https://corecharts.com/api/mvrv-z-score?latest=1',{signal:AbortSignal.timeout(8000)})];const srcs=['dhruvan.com','bitbo.io','corecharts.com'];for(let i=0;i<tries.length&&val===null;i++){try{const r=await tries[i]();if(!r.ok)continue;const j=await r.json();const arr=Array.isArray(j)?j:(j.data||j.values||[]);if(arr.length){const last=arr[arr.length-1];const c=parseFloat(last.value||last.v||last[1]||last);if(!isNaN(c)){val=c;$('mvrvSrc').textContent=srcs[i]}}}catch(e){}}if(val!==null)renderMetric('mvrv',val,[{max:-0.1,sig:'Akumuluj',cls:'sig-buy',bar:5,c:'var(--green)'},{max:2,sig:'Drž',cls:'sig-hold',bar:25,c:'#FFD60A'},{max:4,sig:'Střední',cls:'sig-hold',bar:50,c:'#FF9F0A'},{max:6,sig:'Opatrně',cls:'sig-sell',bar:75,c:'var(--red)'},{max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:95,c:'var(--red)'}]);else setMetricError('mvrv')}
+async function loadPuell(){let val=null;try{const r=await fetch('https://charts.bitbo.io/api/v1/puell-multiple/?latest=true',{signal:AbortSignal.timeout(8000)});if(r.ok){const j=await r.json();const raw=j.puell_multiple||j.value||j.puellMultiple;if(raw!==undefined){const c=parseFloat(raw);if(!isNaN(c)){val=c;$('puellSrc').textContent='bitbo.io'}}else if(Array.isArray(j)&&j.length){const last=j[j.length-1];const c=parseFloat(Array.isArray(last)?last[1]:last.puell_multiple||last.value);if(!isNaN(c)){val=c;$('puellSrc').textContent='bitbo.io'}}}}catch(e){}if(val===null){try{const r=await fetch('https://api.gnanadhandayuthapani.com/api/indicators/indicator/PUELL/values',{signal:AbortSignal.timeout(8000)});if(r.ok){const j=await r.json();const arr=Array.isArray(j)?j:(j.data||j.values||[]);if(arr.length){const last=arr[arr.length-1];const c=parseFloat(last.value||last.v||last[1]||last);if(!isNaN(c)){val=c;$('puellSrc').textContent='dhruvan.com'}}}}catch(e){}}if(val!==null)renderMetric('puell',val,[{max:0.5,sig:'Akumuluj',cls:'sig-buy',bar:8,c:'var(--green)'},{max:1,sig:'Drž',cls:'sig-hold',bar:25,c:'#FFD60A'},{max:2,sig:'Neutrál',cls:'sig-hold',bar:45,c:'#FFD60A'},{max:4,sig:'Opatrně',cls:'sig-sell',bar:70,c:'#FF9F0A'},{max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:92,c:'var(--red)'}]);else setMetricError('puell')}
 function renderMetric(id,val,tiers){const tier=tiers.find(t=>val<=t.max)||tiers[tiers.length-1];const el=$(`${id}Val`);el.innerHTML='';el.textContent=val.toFixed(2);el.style.color=tier.c;const s=$(`${id}Sig`);s.textContent=tier.sig;s.className='metric-sig '+tier.cls;$(`${id}Bar`).style.width=tier.bar+'%';$(`${id}Bar`).style.background=tier.c}
 function setMetricError(id){const el=$(`${id}Val`);el.innerHTML='';el.textContent='–';el.style.color='rgba(255,255,255,.3)';const s=$(`${id}Sig`);s.textContent='Nedostupné';s.className='metric-sig sig-hold';$(`${id}Bar`).style.width='0%';$(`${id}Src`).textContent='všechny zdroje offline'}
-
 function updateHalving(){const next=new Date('2028-04-19T00:00:00Z'),now=new Date(),diff=next-now;if(diff>0){$('halvingDays').textContent=Math.floor(diff/86400000).toLocaleString('cs-CZ');$('halvingDate').textContent='~'+next.toLocaleDateString('cs-CZ',{month:'long',year:'numeric'})}else{$('halvingDays').textContent='0';$('halvingDate').textContent='Halving proběhl!'}}
-
 async function loadSparkData(){try{const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1&interval=hourly');if(!r.ok)return;const j=await r.json();sparkData=j.prices.map(p=>p[1]);drawSpark()}catch(e){}}
 function drawSpark(){if(sparkData.length<2)return;const canvas=$('sparkCanvas'),dpr=window.devicePixelRatio||1,W=90,H=46;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);const mn=Math.min(...sparkData),mx=Math.max(...sparkData),range=mx-mn||1;const n=sparkData.length,pad=3,w=W-pad*2,h=H-pad*2;const xOf=i=>pad+(i/(n-1))*w,yOf=v=>pad+h-(((v-mn)/range)*h);const isUp=sparkData[n-1]>=sparkData[0],color=isUp?'48,209,88':'255,69,58';const gr=ctx.createLinearGradient(0,pad,0,pad+h);gr.addColorStop(0,`rgba(${color},0.3)`);gr.addColorStop(1,`rgba(${color},0)`);ctx.beginPath();ctx.moveTo(xOf(0),yOf(sparkData[0]));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]))}ctx.lineTo(xOf(n-1),H);ctx.lineTo(xOf(0),H);ctx.closePath();ctx.fillStyle=gr;ctx.fill();ctx.beginPath();ctx.moveTo(xOf(0),yOf(sparkData[0]));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]))}ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(xOf(n-1),yOf(sparkData[n-1]),2.5,0,Math.PI*2);ctx.fillStyle=`rgba(${color},1)`;ctx.fill()}
-
-/* ── WebSocket ── */
-function connectWS(){
-  if(ws){try{ws.close()}catch(e){}}
-  ws=new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
-  ws.onopen=()=>{wsReady=true;$('ts').textContent='Připojeno…'};
-  ws.onmessage=e=>{
-    try{
-      const d=JSON.parse(e.data);
-      currentUSD=parseFloat(d.c);currentCZK=currentUSD*fxRate;
-      const ch=parseFloat(d.P),hi=parseFloat(d.h),lo=parseFloat(d.l),vol=parseFloat(d.q);
-      const uel=$('usd'),cel=$('czk'),bad=$('badge');
-      uel.className='';uel.style='';uel.textContent=fmt(currentUSD);
-      cel.className='';cel.style='';cel.textContent=fmt(currentCZK);
-      bad.className='badge '+(ch>=0?'up':'dn');bad.style='';
-      bad.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${ch>=0?'M5 15l7-7 7 7':'M19 9l-7 7-7-7'}"/></svg>${pct(ch)} za 24h`;
-      $('s1').textContent='$'+fmt(hi);$('s2').textContent='$'+fmt(lo);
-      $('s3').textContent='$'+fmtB(currentUSD*19700000);$('s4').textContent='$'+fmtB(vol);
-      $('ts').textContent='Živě · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-      if(sparkData.length>0){sparkData[sparkData.length-1]=currentUSD;drawSpark()}
-      if(activeTab==='portfolio') updatePortValues();
-    }catch(err){console.error(err)}
-  };
-  ws.onerror=()=>{wsReady=false;setTimeout(connectWS,3000)};
-  ws.onclose=()=>{wsReady=false;setTimeout(connectWS,5000)};
-}
-
-/* ── Graf ── */
+function connectWS(){if(ws){try{ws.close()}catch(e){}}ws=new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');ws.onopen=()=>{wsReady=true;$('ts').textContent='Připojeno…'};ws.onmessage=e=>{try{const d=JSON.parse(e.data);currentUSD=parseFloat(d.c);currentCZK=currentUSD*fxRate;const ch=parseFloat(d.P),hi=parseFloat(d.h),lo=parseFloat(d.l),vol=parseFloat(d.q);const uel=$('usd'),cel=$('czk'),bad=$('badge');uel.className='';uel.style='';uel.textContent=fmt(currentUSD);cel.className='';cel.style='';cel.textContent=fmt(currentCZK);bad.className='badge '+(ch>=0?'up':'dn');bad.style='';bad.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${ch>=0?'M5 15l7-7 7 7':'M19 9l-7 7-7-7'}"/></svg>${pct(ch)} za 24h`;$('s1').textContent='$'+fmt(hi);$('s2').textContent='$'+fmt(lo);$('s3').textContent='$'+fmtB(currentUSD*19700000);$('s4').textContent='$'+fmtB(vol);$('ts').textContent='Živě · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});if(sparkData.length>0){sparkData[sparkData.length-1]=currentUSD;drawSpark()}if(activeTab==='portfolio'&&portUnlocked)updatePortValues()}catch(err){console.error(err)}};ws.onerror=()=>{wsReady=false;setTimeout(connectWS,3000)};ws.onclose=()=>{wsReady=false;setTimeout(connectWS,5000)}}
 function openChart(mode){chartMode=mode;chartDays='1';$('marketView').style.display='none';$('portView').classList.remove('show');$('chartView').classList.add('show');document.querySelectorAll('.period').forEach((b,i)=>b.classList.toggle('active',i===0));$('chartCurrency').textContent=mode==='usd'?'USD':'CZK';$('chartPrice').textContent=(mode==='usd'?'$':'')+fmt(mode==='usd'?currentUSD:currentCZK)+(mode==='czk'?' Kč':'');loadChart()}
 function closeChart(){$('chartView').classList.remove('show');if(activeTab==='market')$('marketView').style.display='';else $('portView').classList.add('show')}
 function setPeriod(days,btn){chartDays=days;document.querySelectorAll('.period').forEach(b=>b.classList.remove('active'));btn.classList.add('active');loadChart()}
-
 async function loadMaxChart(){const INTERVAL=10080,START=1325376000;setProgress(10,'Načítám historická data…');const r=await fetch(`https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=${INTERVAL}&since=${START}`);if(!r.ok)throw new Error('Kraken HTTP '+r.status);const j=await r.json();if(j.error&&j.error.length)throw new Error(j.error[0]);const raw=j.result['XXBTZUSD']||j.result['XBTUSD']||Object.values(j.result)[0];if(!raw||!raw.length)throw new Error('prázdná data');setProgress(70,'Zpracovávám…');let all=[...raw];if(new Date(all[0][0]*1000).getFullYear()>2014){try{const r2=await fetch(`https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=${INTERVAL}&since=1356998400`);const j2=await r2.json();if(!j2.error||!j2.error.length){const raw2=j2.result['XXBTZUSD']||j2.result['XBTUSD']||Object.values(j2.result)[0];if(raw2&&raw2.length){const times=new Set(all.map(d=>d[0]));all=[...raw2.filter(d=>!times.has(d[0])),...all].sort((a,b)=>a[0]-b[0])}}}catch(e){}}setProgress(90,'Vykresluju…');return all.map(d=>({t:d[0]*1000,v:chartMode==='czk'?parseFloat(d[4])*fxRate:parseFloat(d[4])})).filter(d=>d.v>0)}
 function setProgress(p,t){$('loadingText').textContent=t;$('progBar').style.display='block';$('progFill').style.width=p+'%'}
-
 async function loadChart(){$('chartCanvas').style.display='none';$('chartLoading').style.display='flex';$('chartLoading').style.color='rgba(255,255,255,.3)';$('progBar').style.display='none';$('progFill').style.width='0%';$('loadingText').textContent='Načítám graf…';try{if(chartDays==='max'){chartData=await loadMaxChart()}else{const interval=chartDays==='1'?'hourly':'daily';const r=await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartDays}&interval=${interval}`);if(!r.ok)throw new Error('CoinGecko HTTP '+r.status);const data=await r.json();if(data.error)throw new Error(JSON.stringify(data.error));chartData=data.prices.map(p=>({t:p[0],v:chartMode==='czk'?p[1]*fxRate:p[1]}));}if(!chartData||chartData.length<2)throw new Error('Nedostatek dat');const mn=Math.min(...chartData.map(d=>d.v)),mx=Math.max(...chartData.map(d=>d.v)),first=chartData[0].v,last=chartData[chartData.length-1].v,chg=((last-first)/first)*100,isUp=chg>=0;$('chartChange').textContent=pct(chg)+' · '+({1:'1 den',7:'7 dní',30:'30 dní',365:'1 rok',max:'All Time'}[chartDays]);$('chartChange').className='chart-change '+(isUp?'up':'dn');const fy=new Date(chartData[0].t).getFullYear(),ly=new Date(chartData[chartData.length-1].t).getFullYear();drawChart(isUp,mn,mx);$('chartLoading').style.display='none';$('chartCanvas').style.display='block';$('chartTs').textContent='Graf: '+(chartDays==='max'?'Kraken ('+fy+'–'+ly+')':'CoinGecko')+' · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'})}catch(e){$('progBar').style.display='none';$('chartLoading').style.color='var(--red)';$('loadingText').textContent='⚠ '+e.message;console.error(e)}}
-
 function drawChart(isUp,mn,mx){const canvas=$('chartCanvas'),wrap=$('canvasWrap'),dpr=window.devicePixelRatio||1,W=wrap.clientWidth,H=200;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);const pad={t:10,r:10,b:28,l:0},w=W-pad.l-pad.r,h=H-pad.t-pad.b,n=chartData.length,range=mx-mn||1;const xOf=i=>pad.l+(i/(n-1))*w,yOf=v=>pad.t+h-(((v-mn)/range)*h);const color=isUp?'48,209,88':'255,69,58';const gr=ctx.createLinearGradient(0,pad.t,0,pad.t+h);gr.addColorStop(0,`rgba(${color},0.22)`);gr.addColorStop(1,`rgba(${color},0)`);ctx.beginPath();ctx.moveTo(xOf(0),yOf(chartData[0].v));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}ctx.lineTo(xOf(n-1),H-pad.b);ctx.lineTo(xOf(0),H-pad.b);ctx.closePath();ctx.fillStyle=gr;ctx.fill();ctx.beginPath();ctx.moveTo(xOf(0),yOf(chartData[0].v));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(chartData[i-1].v),cpx,yOf(chartData[i].v),xOf(i),yOf(chartData[i].v))}ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='rgba(255,255,255,0.22)';ctx.font='500 10px Inter,-apple-system,sans-serif';ctx.textAlign='center';[0,1,2,3].forEach(i=>{const idx=Math.round(i*(n-1)/3),d=new Date(chartData[idx].t);let lbl='';if(chartDays==='1')lbl=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});else if(chartDays==='7')lbl=d.toLocaleDateString('cs-CZ',{weekday:'short'});else if(chartDays==='30')lbl=d.toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric'});else if(chartDays==='365')lbl=d.toLocaleDateString('cs-CZ',{month:'short'});else lbl=d.getFullYear().toString();ctx.fillText(lbl,xOf(idx),H-pad.b+14)});setupTooltip(canvas,pad,w,xOf,yOf,n)}
-
 function setupTooltip(canvas,pad,w,xOf,yOf,n){const tip=$('tooltip');function show(cx){const rect=canvas.getBoundingClientRect(),x=cx-rect.left;const idx=Math.max(0,Math.min(n-1,Math.round(((x-pad.l)/w)*(n-1))));const pt=chartData[idx];if(!pt)return;const sym=chartMode==='czk'?' Kč':'',pre=chartMode==='usd'?'$':'';tip.textContent=pre+fmt(pt.v)+sym;tip.style.display='block';tip.style.left=xOf(idx)+'px';tip.style.top=(yOf(pt.v)-34)+'px';$('chartPrice').textContent=pre+fmt(pt.v)+sym}function hide(){tip.style.display='none';const last=chartData[n-1];if(last)$('chartPrice').textContent=(chartMode==='usd'?'$':'')+fmt(last.v)+(chartMode==='czk'?' Kč':'')}canvas.ontouchstart=e=>{e.preventDefault();show(e.touches[0].clientX)};canvas.ontouchmove=e=>{e.preventDefault();show(e.touches[0].clientX)};canvas.ontouchend=()=>setTimeout(hide,1500);canvas.onmousemove=e=>show(e.clientX);canvas.onmouseleave=()=>hide()}
 
-/* ── Start ── */
 loadSaved();
 loadFX().then(()=>{connectWS();loadSparkData();loadFearGreed();loadMVRV();loadPuell();updateHalving()});
 setInterval(loadFX,3600000);setInterval(loadSparkData,300000);setInterval(loadFearGreed,3600000);setInterval(loadMVRV,3600000);setInterval(loadPuell,3600000);setInterval(updateHalving,60000);
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){loadFX();if(!wsReady)connectWS()}});
 </script>
 </body>
 </html>
