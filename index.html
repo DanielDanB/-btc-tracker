@@ -203,6 +203,76 @@
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
     html.light .glass::before,html.light .fg-card::before,html.light .cycle-card::before,html.light .chart-glass::before,html.light .port-hero::before,html.light .port-pnl::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent)}
     html.light .tooltip{background:rgba(10,10,30,0.85)}
+
+    /* --- info ikonka u MVRV / Puell --- */
+    .metric-sig-wrap{display:inline-flex;align-items:center;gap:6px}
+    .metric-info-btn{
+      width:18px;height:18px;border-radius:999px;
+      border:0.5px solid rgba(255,255,255,0.28);
+      background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.35),transparent 55%),rgba(0,0,0,0.55);
+      display:inline-flex;align-items:center;justify-content:center;
+      color:var(--text2);font-size:11px;font-weight:700;
+      cursor:pointer;outline:none;
+      transition:background .15s,transform .12s,border-color .15s,color .15s;
+    }
+    .metric-info-btn:hover{
+      background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.4),transparent 55%),rgba(0,0,0,0.75);
+      border-color:rgba(255,255,255,0.7);color:#fff;transform:translateY(-1px);
+    }
+    .metric-info-btn:active{transform:translateY(0);opacity:.85}
+    .metric-info-btn.hidden{display:none}
+
+    /* --- modal s vysvětlením strategie --- */
+    .metric-help-overlay{
+      position:fixed;inset:0;z-index:120;
+      display:none;align-items:center;justify-content:center;
+      padding:24px 16px;
+      background:radial-gradient(circle at 20% 0,rgba(10,132,255,0.22),transparent 65%),rgba(0,0,10,0.86);
+      opacity:0;transition:opacity .18s ease-out;
+    }
+    .metric-help-overlay.show{display:flex;opacity:1}
+    .metric-help-dialog{
+      width:100%;max-width:360px;
+      background:linear-gradient(145deg,rgba(10,10,25,0.96),rgba(10,10,35,0.96));
+      border-radius:22px;
+      border:0.6px solid rgba(255,255,255,0.18);
+      box-shadow:0 22px 60px rgba(0,0,0,0.75),0 0 0 1px rgba(255,255,255,0.03);
+      padding:18px 18px 16px;
+      position:relative;color:var(--text);
+    }
+    .metric-help-accent{
+      position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      background:radial-gradient(circle at 0 0,rgba(255,159,10,0.25),transparent 55%),
+                 radial-gradient(circle at 100% 0,rgba(255,69,58,0.15),transparent 55%);
+      opacity:.55;mix-blend-mode:soft-light;
+    }
+    .metric-help-dialog-inner{position:relative;z-index:1}
+    .metric-help-chip{
+      font-size:10px;font-weight:600;letter-spacing:1.6px;
+      text-transform:uppercase;color:var(--text3);margin-bottom:6px;
+    }
+    .metric-help-title{
+      font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;
+    }
+    .metric-help-state{
+      font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;
+    }
+    .metric-help-text{
+      font-size:13px;line-height:1.5;color:var(--text2);margin-bottom:14px;
+    }
+    .metric-help-actions{display:flex;justify-content:flex-end;gap:8px}
+    .metric-help-close{
+      border-radius:999px;border:0.5px solid rgba(255,255,255,0.3);
+      background:rgba(255,255,255,0.02);
+      padding:8px 16px;font-size:13px;font-weight:600;
+      color:var(--text2);cursor:pointer;outline:none;
+      transition:background .15s,color .15s,border-color .15s,transform .12s;
+    }
+    .metric-help-close:hover{
+      background:rgba(255,255,255,0.08);color:#fff;
+      border-color:rgba(255,255,255,0.6);transform:translateY(-.5px);
+    }
+    .metric-help-close:active{transform:translateY(0);opacity:.9}
   </style>
 </head>
 <body>
@@ -349,14 +419,30 @@
         <div class="metric-box">
           <div class="metric-lbl">MVRV Z-Score</div>
           <div class="metric-val" id="mvrvVal"><span class="sk" style="width:60px;height:22px;display:inline-block"> </span></div>
-          <div class="metric-sig sig-hold" id="mvrvSig">…</div>
+          <div class="metric-sig-wrap">
+            <div class="metric-sig sig-hold" id="mvrvSig">…</div>
+            <button
+              type="button"
+              class="metric-info-btn hidden"
+              data-metric="mvrv"
+              aria-label="Vysvětlení strategie pro MVRV"
+              onclick="openMetricHelp('mvrv')">i</button>
+          </div>
           <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mvrvBar" style="width:0%"></div></div>
           <div class="metric-src" id="mvrvSrc"></div>
         </div>
         <div class="metric-box">
           <div class="metric-lbl">Puell Multiple</div>
           <div class="metric-val" id="puellVal"><span class="sk" style="width:60px;height:22px;display:inline-block"> </span></div>
-          <div class="metric-sig sig-hold" id="puellSig">…</div>
+          <div class="metric-sig-wrap">
+            <div class="metric-sig sig-hold" id="puellSig">…</div>
+            <button
+              type="button"
+              class="metric-info-btn hidden"
+              data-metric="puell"
+              aria-label="Vysvětlení strategie pro Puell Multiple"
+              onclick="openMetricHelp('puell')">i</button>
+          </div>
           <div class="metric-bar-wrap"><div class="metric-bar-fill" id="puellBar" style="width:0%"></div></div>
           <div class="metric-src" id="puellSrc"></div>
         </div>
@@ -405,6 +491,26 @@
   </div>
 </div>
 
+<!-- MODAL S VYSVĚTLENÍM STRATEGIE -->
+<div class="metric-help-overlay" id="metricHelp">
+  <div class="metric-help-dialog" role="dialog" aria-modal="true" aria-labelledby="metricHelpTitle">
+    <div class="metric-help-accent"></div>
+    <div class="metric-help-dialog-inner">
+      <div class="metric-help-chip" id="metricHelpMetricChip">INDIKÁTOR</div>
+      <div class="metric-help-title" id="metricHelpTitle">Název indikátoru</div>
+      <div class="metric-help-state" id="metricHelpState">Aktuální signál: –</div>
+      <div class="metric-help-text" id="metricHelpText">
+        Tady se objeví vysvětlení, co tento signál znamená a jakou zvolit strategii.
+      </div>
+      <div class="metric-help-actions">
+        <button class="metric-help-close" type="button" onclick="closeMetricHelp()">
+          Zavřít
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 const $=id=>document.getElementById(id);
 const fmt=(n,d=0)=>new Intl.NumberFormat('cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
@@ -449,7 +555,7 @@ function hideLock(){$('faceLock').classList.add('hidden');if(activeTab==='portfo
 function resetFaceID(){localStorage.removeItem(WA_KEY);portUnlocked=false;$('lockErr').textContent='Registrace smazána. Klepni pro novou.'}
 
 /* ══ TABS + PORTFOLIO ══ */
-function loadSaved(){const s=localStorage.getItem('btc_portfolio');if(s){savedBTC=parseFloat(s);if(isNaN(savedBTC))savedBTC=null}const b=localStorage.getItem('btc_buyprice');if(b){buyPrice=parseFloat(b);if(isNaN(buyPrice))buyPrice=null}}
+function loadSaved(){const s=localStorage.getItem('btc_portfolio');if(s){savedBTC=parseFloat(s);if(isNaN(savedBTC))savedBTC=null}const b=localStorage.getItem('btc_buyprice');if(b){buyPrice=parseFloat(b);if(isNaN(buyPrice))buyPricenull}}
 function switchTab(tab){if(tab==='portfolio'&&!portUnlocked){activeTab='portfolio';$('tabPort').classList.add('active');$('tabMarket').classList.remove('active');showLock();return}activeTab=tab;$('tabPort').classList.toggle('active',tab==='portfolio');$('tabMarket').classList.toggle('active',tab==='market');$('marketView').style.display=tab==='market'?'':'none';$('portView').classList.toggle('show',tab==='portfolio');$('chartView').classList.remove('show');if(tab==='portfolio')renderPortfolio();$('hdrSub').textContent=tab==='market'?'Aktuální cena':'Moje investice'}
 function renderPortfolio(){if(savedBTC===null){$('portSetup').style.display='';$('portDash').style.display='none';$('portEdit').style.display='none'}else{$('portSetup').style.display='none';$('portDash').style.display='';$('portEdit').style.display='none';updatePortValues();if(buyPrice!==null){$('buyPriceInput').value=buyPrice;renderPnL()}}}
 function updatePortValues(){if(savedBTC===null)return;$('portBtcAmt').textContent=savedBTC%1===0?savedBTC.toString():savedBTC.toFixed(8).replace(/\.?0+$/,'');$('portUSD').textContent=currentUSD>0?fmtUSD(savedBTC*currentUSD):'–';$('portCZK').textContent=currentUSD>0?fmt(savedBTC*currentCZK)+' Kč':'–';$('portTs').textContent='Živě · '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});$('portSrc').textContent='Kurz ČNB · 1 USD = '+fxRate.toFixed(3)+' Kč';if(buyPrice!==null)renderPnL()}
@@ -535,8 +641,161 @@ async function loadPuell(){
   $('puellSrc').textContent=src;
 }
 
-function renderMetric(id,val,tiers){const tier=tiers.find(t=>val<=t.max)||tiers[tiers.length-1];const el=$(`${id}Val`);el.innerHTML='';el.textContent=val.toFixed(2);el.style.color=tier.c;const s=$(`${id}Sig`);s.textContent=tier.sig;s.className='metric-sig '+tier.cls;$(`${id}Bar`).style.width=tier.bar+'%';$(`${id}Bar`).style.background=tier.c}
-function setMetricError(id){$(`${id}Val`).innerHTML='';$(`${id}Val`).textContent='–';$(`${id}Val`).style.color='var(--text3)';$(`${id}Sig`).textContent='Nedostupné';$(`${id}Sig`).className='metric-sig sig-hold';$(`${id}Bar`).style.width='0%';$(`${id}Src`).textContent='offline'}
+/* ══ Kontextové texty pro ikonku „i“ ══ */
+const metricHelpTexts = {
+  mvrv: {
+    label:'MVRV Z‑Score',
+    'Akumuluj':{
+      title:'MVRV Z‑Score – Akumuluj',
+      text:'On‑chain hodnota naznačuje relativně levnější fázi trhu. Může dávat smysl postupně přikupovat (DCA), nehnat se all‑in a počítat s delším horizontem držením BTC.'
+    },
+    'Drž':{
+      title:'MVRV Z‑Score – Drž',
+      text:'Trh není ani výrazně levný, ani přepálený. Většinou dává smysl držet současnou pozici, nepanikařit a spíš čekat na jasnější signál k nákupu nebo realizaci zisků.'
+    },
+    'Střední':{
+      title:'MVRV Z‑Score – Střední',
+      text:'Standardní střední stav bez silného překoupení nebo přeprodanosti. Obvykle není potřeba dělat velké úpravy pozice, vhodné je dál sledovat ostatní metriky a vývoj trendu.'
+    },
+    'Neutrál':{
+      title:'MVRV Z‑Score – Neutrál',
+      text:'Trh je z pohledu MVRV relativně vyvážený. Můžeš pokračovat v dlouhodobé strategii (např. DCA) a nechat se vést spíše širším kontextem než samotným MVRV.'
+    },
+    'Opatrně':{
+      title:'MVRV Z‑Score – Opatrně',
+      text:'MVRV naznačuje, že trh je blíž překoupeným zónám. Uvažuj o postupné realizaci části zisků, nepřidávej agresivně novou expozici a počítej s vyšším rizikem korekce.'
+    },
+    'Vrchol?':{
+      title:'MVRV Z‑Score – Potenciální vrchol',
+      text:'Historicky podobné hodnoty často předcházely lokálním nebo cyklickým vrcholům. Vhodná je postupná realizace zisků, výrazné omezení nových nákupů a celkově konzervativnější přístup.'
+    },
+    default:{
+      title:'MVRV Z‑Score – Jak číst tento signál',
+      text:'Podle hodnoty MVRV můžeš odhadovat, zda je trh spíš levný nebo drahý vůči historii. Nižší hodnoty nahrávají akumulaci, vyšší spíš realizaci zisků.'
+    }
+  },
+  puell: {
+    label:'Puell Multiple',
+    'Akumuluj':{
+      title:'Puell Multiple – Akumuluj',
+      text:'Minerské příjmy jsou nízko vůči historii, což často souvisí s chladnější fází trhu. Dává smysl opatrně akumulovat a počítat s dlouhodobým horizontem.'
+    },
+    'Drž':{
+      title:'Puell Multiple – Drž',
+      text:'Aktuální úroveň neindikuje extrém. Obvykle stačí držet současnou pozici a sledovat další vývoj, bez nutnosti zásadních zásahů do strategie.'
+    },
+    'Střední':{
+      title:'Puell Multiple – Střední',
+      text:'Standardní střední pásmo, kde Puell Multiple nemá výrazný býčí ani medvědí bias. Vhodné je řídit se celkovým plánem a kombinovat s dalšími ukazateli.'
+    },
+    'Neutrál':{
+      title:'Puell Multiple – Neutrál',
+      text:'Trh vypadá z pohledu minerských příjmů relativně vyváženě. Můžeš pokračovat v nastavené strategii a sleduj, zda se indikátor neposune do extrémnějších zón.'
+    },
+    'Opatrně':{
+      title:'Puell Multiple – Opatrně',
+      text:'Hodnoty směřují do zvýšeného pásma. Vyplatí se zvážit redukci rizikovější části pozice a nepřidávat bezmyšlenkovitě další expozici.'
+    },
+    'Vrchol?':{
+      title:'Puell Multiple – Potenciální vrchol',
+      text:'Historicky se podobné úrovně objevují blízko lokálních vrcholů. Typická strategie je postupné odprodávání části pozice a ochrana dosažených zisků.'
+    },
+    default:{
+      title:'Puell Multiple – Jak číst tento signál',
+      text:'Puell Multiple sleduje, jak extrémní jsou minerské příjmy vůči historii. Nižší hodnoty často doprovází akumulační fáze, vysoké spíš pozdější fáze cyklu.'
+    }
+  }
+};
+
+// stavy, kdy ikonku nechceme zobrazit (výchozí „střední / neutrální“)
+const defaultStates=['Střední','Neutrál','Neutrální'];
+
+function applyMetricHelpButton(metricId,sigText){
+  const btn=document.querySelector(`.metric-info-btn[data-metric="${metricId}"]`);
+  if(!btn)return;
+  if(defaultStates.includes(sigText)){
+    btn.classList.add('hidden');
+    btn.dataset.state='';
+    return;
+  }
+  btn.classList.remove('hidden');
+  btn.dataset.state=sigText;
+}
+
+function openMetricHelp(metricId){
+  const overlay=$('metricHelp');
+  const chip=$('metricHelpMetricChip');
+  const titleEl=$('metricHelpTitle');
+  const stateEl=$('metricHelpState');
+  const textEl=$('metricHelpText');
+  const btn=document.querySelector(`.metric-info-btn[data-metric="${metricId}"]`);
+
+  const meta=metricHelpTexts[metricId]||{};
+  const label=meta.label||'Indikátor';
+  const sig=(btn&&btn.dataset.state)||'–';
+
+  const config=meta[sig]||meta.default||{
+    title:`${label} – strategie`,
+    text:'Tento signál pomáhá orientovat se, zda spíše akumulovat, držet nebo realizovat zisky. Konečné rozhodnutí vždy kombinuj s vlastním risk managementem.'
+  };
+
+  chip.textContent=label.toUpperCase();
+  titleEl.textContent=config.title;
+  stateEl.textContent=sig && sig!=='–' ? `Aktuální signál: ${sig}` : '';
+  textEl.textContent=config.text;
+
+  overlay.classList.add('show');
+}
+
+function closeMetricHelp(){
+  $('metricHelp').classList.remove('show');
+}
+
+$('metricHelp').addEventListener('click',e=>{
+  if(e.target.id==='metricHelp')closeMetricHelp();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeMetricHelp();
+});
+
+/* ══ renderMetric + error (rozšířeno o info ikonku) ══ */
+function renderMetric(id,val,tiers){
+  const tier=tiers.find(t=>val<=t.max)||tiers[tiers.length-1];
+  const el=$(`${id}Val`);
+  if(!el)return;
+  el.innerHTML='';
+  el.textContent=val.toFixed(2);
+  el.style.color=tier.c;
+
+  const s=$(`${id}Sig`);
+  if(s){
+    s.textContent=tier.sig;
+    s.className='metric-sig '+tier.cls;
+  }
+
+  const bar=$(`${id}Bar`);
+  if(bar){
+    bar.style.width=tier.bar+'%';
+    bar.style.background=tier.c;
+  }
+
+  applyMetricHelpButton(id,tier.sig);
+}
+
+function setMetricError(id){
+  const valEl=$(`${id}Val`);
+  const sigEl=$(`${id}Sig`);
+  const barEl=$(`${id}Bar`);
+  const srcEl=$(`${id}Src`);
+
+  if(valEl){valEl.innerHTML='';valEl.textContent='–';valEl.style.color='var(--text3)'}
+  if(sigEl){sigEl.textContent='Nedostupné';sigEl.className='metric-sig sig-hold'}
+  if(barEl){barEl.style.width='0%';barEl.style.background='var(--text4)'}
+  if(srcEl){srcEl.textContent='offline'}
+
+  applyMetricHelpButton(id,'Střední');
+}
+
 function updateHalving(){const next=new Date('2028-04-19T00:00:00Z'),now=new Date(),diff=next-now;if(diff>0){$('halvingDays').textContent=Math.floor(diff/86400000).toLocaleString('cs-CZ');$('halvingDate').textContent='~'+next.toLocaleDateString('cs-CZ',{month:'long',year:'numeric'})}else{$('halvingDays').textContent='0';$('halvingDate').textContent='Halving proběhl!'}}
 async function loadSparkData(){try{const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1&interval=hourly');if(!r.ok)return;const j=await r.json();sparkData=j.prices.map(p=>p[1]);drawSpark()}catch(e){}}
 function drawSpark(){if(sparkData.length<2)return;const canvas=$('sparkCanvas'),dpr=window.devicePixelRatio||1,W=90,H=46;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);const mn=Math.min(...sparkData),mx=Math.max(...sparkData),range=mx-mn||1;const n=sparkData.length,pad=3,w=W-pad*2,h=H-pad*2;const xOf=i=>pad+(i/(n-1))*w,yOf=v=>pad+h-(((v-mn)/range)*h);const isUp=sparkData[n-1]>=sparkData[0],color=isUp?'48,209,88':'255,69,58';const gr=ctx.createLinearGradient(0,pad,0,pad+h);gr.addColorStop(0,`rgba(${color},0.3)`);gr.addColorStop(1,`rgba(${color},0)`);ctx.beginPath();ctx.moveTo(xOf(0),yOf(sparkData[0]));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]))}ctx.lineTo(xOf(n-1),H);ctx.lineTo(xOf(0),H);ctx.closePath();ctx.fillStyle=gr;ctx.fill();ctx.beginPath();ctx.moveTo(xOf(0),yOf(sparkData[0]));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]))}ctx.strokeStyle=`rgba(${color},1)`;ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(xOf(n-1),yOf(sparkData[n-1]),2.5,0,Math.PI*2);ctx.fillStyle=`rgba(${color},1)`;ctx.fill()}
