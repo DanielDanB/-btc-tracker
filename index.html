@@ -104,10 +104,26 @@
     .metric-box{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:16px;padding:13px 12px;position:relative;overflow:hidden;transition:background .4s}
     .metric-lbl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
     .metric-val{font-size:22px;font-weight:800;letter-spacing:-1px;margin-bottom:3px}
+    .metric-sig-wrap{display:inline-flex;align-items:center;gap:6px}
     .metric-sig{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;display:inline-block}
     .sig-buy{background:rgba(48,209,88,0.15);color:var(--green);border:0.5px solid rgba(48,209,88,0.3)}
     .sig-hold{background:rgba(255,214,10,0.12);color:#FFD60A;border:0.5px solid rgba(255,214,10,0.25)}
     .sig-sell{background:rgba(255,69,58,0.12);color:var(--red);border:0.5px solid rgba(255,69,58,0.25)}
+    .metric-info-btn{
+      width:18px;height:18px;border-radius:999px;
+      border:0.5px solid rgba(255,255,255,0.28);
+      background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.35),transparent 55%),rgba(0,0,0,0.55);
+      display:inline-flex;align-items:center;justify-content:center;
+      color:var(--text2);font-size:11px;font-weight:700;
+      cursor:pointer;outline:none;
+      transition:background .15s,transform .12s,border-color .15s,color .15s;
+    }
+    .metric-info-btn:hover{
+      background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.4),transparent 55%),rgba(0,0,0,0.75);
+      border-color:rgba(255,255,255,0.7);color:#fff;transform:translateY(-1px);
+    }
+    .metric-info-btn:active{transform:translateY(0);opacity:.85}
+    .metric-info-btn.hidden{display:none}
     .metric-bar-wrap{margin-top:7px;background:var(--stat-bg);border-radius:99px;height:3px;overflow:hidden}
     .metric-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
     .metric-src{font-size:8px;color:var(--text4);margin-top:5px}
@@ -118,6 +134,56 @@
     .halving-r{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
     .halving-days{font-size:28px;font-weight:800;letter-spacing:-1.5px;color:var(--btc)}
     .halving-unit{font-size:10px;color:rgba(255,159,10,.5);font-weight:600;letter-spacing:.5px}
+    .metric-help-overlay{
+      position:fixed;inset:0;z-index:120;
+      display:none;align-items:center;justify-content:center;
+      padding:24px 16px;
+      background:radial-gradient(circle at 20% 0,rgba(10,132,255,0.22),transparent 65%),rgba(0,0,10,0.86);
+      opacity:0;transition:opacity .18s ease-out;
+    }
+    .metric-help-overlay.show{display:flex;opacity:1}
+    .metric-help-dialog{
+      width:100%;max-width:360px;
+      background:linear-gradient(145deg,rgba(10,10,25,0.96),rgba(10,10,35,0.96));
+      border-radius:22px;
+      border:0.6px solid rgba(255,255,255,0.18);
+      box-shadow:0 22px 60px rgba(0,0,0,0.75),0 0 0 1px rgba(255,255,255,0.03);
+      padding:18px 18px 16px;
+      position:relative;color:var(--text);
+    }
+    .metric-help-accent{
+      position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      background:radial-gradient(circle at 0 0,rgba(255,159,10,0.25),transparent 55%),
+                 radial-gradient(circle at 100% 0,rgba(255,69,58,0.15),transparent 55%);
+      opacity:.55;mix-blend-mode:soft-light;
+    }
+    .metric-help-dialog-inner{position:relative;z-index:1}
+    .metric-help-chip{
+      font-size:10px;font-weight:600;letter-spacing:1.6px;
+      text-transform:uppercase;color:var(--text3);margin-bottom:6px;
+    }
+    .metric-help-title{
+      font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;
+    }
+    .metric-help-state{
+      font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;
+    }
+    .metric-help-text{
+      font-size:13px;line-height:1.5;color:var(--text2);margin-bottom:14px;
+    }
+    .metric-help-actions{display:flex;justify-content:flex-end;gap:8px}
+    .metric-help-close{
+      border-radius:999px;border:0.5px solid rgba(255,255,255,0.3);
+      background:rgba(255,255,255,0.02);
+      padding:8px 16px;font-size:13px;font-weight:600;
+      color:var(--text2);cursor:pointer;outline:none;
+      transition:background .15s,color .15s,border-color .15s,transform .12s;
+    }
+    .metric-help-close:hover{
+      background:rgba(255,255,255,0.08);color:#fff;
+      border-color:rgba(255,255,255,0.6);transform:translateY(-.5px);
+    }
+    .metric-help-close:active{transform:translateY(0);opacity:.9}
     .face-lock{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 20% 10%,var(--bg2) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,var(--bg3) 0%,transparent 50%),var(--bg1);padding:40px 32px;transition:background .4s}
     .face-lock.hidden{display:none}
     .lock-icon{font-size:64px;margin-bottom:8px;filter:drop-shadow(0 0 30px rgba(255,159,10,0.5));animation:pulse-lock 2s ease-in-out infinite}
@@ -203,76 +269,6 @@
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
     html.light .glass::before,html.light .fg-card::before,html.light .cycle-card::before,html.light .chart-glass::before,html.light .port-hero::before,html.light .port-pnl::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent)}
     html.light .tooltip{background:rgba(10,10,30,0.85)}
-
-    /* ── info ikonka u MVRV / Puell ── */
-    .metric-sig-wrap{display:inline-flex;align-items:center;gap:6px}
-    .metric-info-btn{
-      width:18px;height:18px;border-radius:999px;
-      border:0.5px solid rgba(255,255,255,0.28);
-      background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.35),transparent 55%),rgba(0,0,0,0.55);
-      display:inline-flex;align-items:center;justify-content:center;
-      color:var(--text2);font-size:11px;font-weight:700;
-      cursor:pointer;outline:none;
-      transition:background .15s,transform .12s,border-color .15s,color .15s;
-    }
-    .metric-info-btn:hover{
-      background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.4),transparent 55%),rgba(0,0,0,0.75);
-      border-color:rgba(255,255,255,0.7);color:#fff;transform:translateY(-1px);
-    }
-    .metric-info-btn:active{transform:translateY(0);opacity:.85}
-    .metric-info-btn.hidden{display:none}
-
-    /* ── modal s vysvětlením strategie ── */
-    .metric-help-overlay{
-      position:fixed;inset:0;z-index:120;
-      display:none;align-items:center;justify-content:center;
-      padding:24px 16px;
-      background:radial-gradient(circle at 20% 0,rgba(10,132,255,0.22),transparent 65%),rgba(0,0,10,0.86);
-      opacity:0;transition:opacity .18s ease-out;
-    }
-    .metric-help-overlay.show{display:flex;opacity:1}
-    .metric-help-dialog{
-      width:100%;max-width:360px;
-      background:linear-gradient(145deg,rgba(10,10,25,0.96),rgba(10,10,35,0.96));
-      border-radius:22px;
-      border:0.6px solid rgba(255,255,255,0.18);
-      box-shadow:0 22px 60px rgba(0,0,0,0.75),0 0 0 1px rgba(255,255,255,0.03);
-      padding:18px 18px 16px;
-      position:relative;color:var(--text);
-    }
-    .metric-help-accent{
-      position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-      background:radial-gradient(circle at 0 0,rgba(255,159,10,0.25),transparent 55%),
-                 radial-gradient(circle at 100% 0,rgba(255,69,58,0.15),transparent 55%);
-      opacity:.55;mix-blend-mode:soft-light;
-    }
-    .metric-help-dialog-inner{position:relative;z-index:1}
-    .metric-help-chip{
-      font-size:10px;font-weight:600;letter-spacing:1.6px;
-      text-transform:uppercase;color:var(--text3);margin-bottom:6px;
-    }
-    .metric-help-title{
-      font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;
-    }
-    .metric-help-state{
-      font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;
-    }
-    .metric-help-text{
-      font-size:13px;line-height:1.5;color:var(--text2);margin-bottom:14px;
-    }
-    .metric-help-actions{display:flex;justify-content:flex-end;gap:8px}
-    .metric-help-close{
-      border-radius:999px;border:0.5px solid rgba(255,255,255,0.3);
-      background:rgba(255,255,255,0.02);
-      padding:8px 16px;font-size:13px;font-weight:600;
-      color:var(--text2);cursor:pointer;outline:none;
-      transition:background .15s,color .15s,border-color .15s,transform .12s;
-    }
-    .metric-help-close:hover{
-      background:rgba(255,255,255,0.08);color:#fff;
-      border-color:rgba(255,255,255,0.6);transform:translateY(-.5px);
-    }
-    .metric-help-close:active{transform:translateY(0);opacity:.9}
   </style>
 </head>
 <body>
@@ -354,7 +350,7 @@
       </div>
       <div class="ts" id="portTs"></div>
       <div class="src" id="portSrc"></div>
-      <div class="ver">v2.2</div>
+      <div class="ver">v2.3</div>
     </div>
     <div id="portEdit" style="display:none">
       <div class="port-setup">
@@ -421,12 +417,7 @@
           <div class="metric-val" id="mvrvVal"><span class="sk" style="width:60px;height:22px;display:inline-block"> </span></div>
           <div class="metric-sig-wrap">
             <div class="metric-sig sig-hold" id="mvrvSig">…</div>
-            <button
-              type="button"
-              class="metric-info-btn hidden"
-              data-metric="mvrv"
-              aria-label="Vysvětlení strategie pro MVRV"
-              onclick="openMetricHelp('mvrv')">i</button>
+            <button type="button" class="metric-info-btn" data-metric="mvrv" aria-label="Vysvětlení strategie pro MVRV" onclick="openMetricHelp('mvrv')">i</button>
           </div>
           <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mvrvBar" style="width:0%"></div></div>
           <div class="metric-src" id="mvrvSrc"></div>
@@ -436,12 +427,7 @@
           <div class="metric-val" id="puellVal"><span class="sk" style="width:60px;height:22px;display:inline-block"> </span></div>
           <div class="metric-sig-wrap">
             <div class="metric-sig sig-hold" id="puellSig">…</div>
-            <button
-              type="button"
-              class="metric-info-btn hidden"
-              data-metric="puell"
-              aria-label="Vysvětlení strategie pro Puell Multiple"
-              onclick="openMetricHelp('puell')">i</button>
+            <button type="button" class="metric-info-btn" data-metric="puell" aria-label="Vysvětlení strategie pro Puell Multiple" onclick="openMetricHelp('puell')">i</button>
           </div>
           <div class="metric-bar-wrap"><div class="metric-bar-fill" id="puellBar" style="width:0%"></div></div>
           <div class="metric-src" id="puellSrc"></div>
@@ -455,7 +441,7 @@
 
     <div class="ts" id="ts">Připojuji se…</div>
     <div class="src" id="src"></div>
-    <div class="ver">v2.2</div>
+    <div class="ver">v2.3</div>
   </div>
 
   <div class="chart-view" id="chartView">
@@ -487,11 +473,10 @@
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
-    <div class="ver">v2.2</div>
+    <div class="ver">v2.3</div>
   </div>
 </div>
 
-<!-- MODAL S VYSVĚTLENÍM STRATEGIE -->
 <div class="metric-help-overlay" id="metricHelp">
   <div class="metric-help-dialog" role="dialog" aria-modal="true" aria-labelledby="metricHelpTitle">
     <div class="metric-help-accent"></div>
@@ -526,7 +511,6 @@ let savedBTC=null,buyPrice=null;
 let portUnlocked=false;
 let isDark=true;
 
-/* ══ THEME ══ */
 function getAutoTheme(){const h=new Date().getHours();return(h>=7&&h<20)?'light':'dark'}
 function applyTheme(mode,save=true){
   isDark=(mode==='dark');
@@ -541,7 +525,6 @@ function initTheme(){
   setInterval(()=>{if(!localStorage.getItem('btc_theme')){const a=getAutoTheme(),c=isDark?'dark':'light';if(a!==c)applyTheme(a,false)}},60000)
 }
 
-/* ══ WEBAUTHN ══ */
 const WA_KEY='btc_faceID_cred';
 function b64url(buf){return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'')}
 function fromB64url(s){return Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0))}
@@ -554,7 +537,6 @@ function showLock(){$('faceLock').classList.remove('hidden');$('lockIcon').textC
 function hideLock(){$('faceLock').classList.add('hidden');if(activeTab==='portfolio'){$('tabPort').classList.add('active');$('tabMarket').classList.remove('active');$('marketView').style.display='none';$('portView').classList.add('show');renderPortfolio();$('hdrSub').textContent='Moje investice'}}
 function resetFaceID(){localStorage.removeItem(WA_KEY);portUnlocked=false;$('lockErr').textContent='Registrace smazána. Klepni pro novou.'}
 
-/* ══ TABS + PORTFOLIO ══ */
 function loadSaved(){const s=localStorage.getItem('btc_portfolio');if(s){savedBTC=parseFloat(s);if(isNaN(savedBTC))savedBTC=null}const b=localStorage.getItem('btc_buyprice');if(b){buyPrice=parseFloat(b);if(isNaN(buyPrice))buyPrice=null}}
 function switchTab(tab){if(tab==='portfolio'&&!portUnlocked){activeTab='portfolio';$('tabPort').classList.add('active');$('tabMarket').classList.remove('active');showLock();return}activeTab=tab;$('tabPort').classList.toggle('active',tab==='portfolio');$('tabMarket').classList.toggle('active',tab==='market');$('marketView').style.display=tab==='market'?'':'none';$('portView').classList.toggle('show',tab==='portfolio');$('chartView').classList.remove('show');if(tab==='portfolio')renderPortfolio();$('hdrSub').textContent=tab==='market'?'Aktuální cena':'Moje investice'}
 function renderPortfolio(){if(savedBTC===null){$('portSetup').style.display='';$('portDash').style.display='none';$('portEdit').style.display='none'}else{$('portSetup').style.display='none';$('portDash').style.display='';$('portEdit').style.display='none';updatePortValues();if(buyPrice!==null){$('buyPriceInput').value=buyPrice;renderPnL()}}}
@@ -566,11 +548,9 @@ function cancelEdit(){$('portEdit').style.display='none';$('portDash').style.dis
 function applyBuyPrice(){const v=parseFloat($('buyPriceInput').value);if(isNaN(v)||v<=0)return;buyPrice=v;localStorage.setItem('btc_buyprice',v.toString());renderPnL()}
 function renderPnL(){if(buyPrice===null||savedBTC===null||currentUSD===0)return;const inv=savedBTC*buyPrice,cur=savedBTC*currentUSD,diff=cur-inv,p=((diff)/inv)*100,isUp=diff>=0,c=isUp?'var(--green)':'var(--red)';$('pnlInvested').textContent=fmtUSD(inv);$('pnlInvested').style.color='var(--text2)';$('pnlCurrent').textContent=fmtUSD(cur);$('pnlCurrent').style.color='var(--text2)';$('pnlDiff').textContent=(isUp?'+':'')+fmtUSD(diff);$('pnlDiff').style.color=c;$('pnlPct').textContent=(isUp?'+':'')+p.toFixed(2)+'%';$('pnlPct').style.color=c;$('pnlGrid').style.display='grid'}
 
-/* ══ DATA ══ */
 async function loadFX(){try{const r=await fetch('https://api.frankfurter.app/latest?from=USD&to=CZK');const j=await r.json();fxRate=j.rates.CZK;$('src').textContent='Kurz ČNB · 1 USD = '+fxRate.toFixed(3)+' Kč'}catch(e){fxRate=23.5}}
 async function loadFearGreed(){try{const r=await fetch('https://api.alternative.me/fng/?limit=1');const j=await r.json();const val=parseInt(j.data[0].value),cls=j.data[0].value_classification;const moods={'Extreme Fear':'Extrémní strach','Fear':'Strach','Neutral':'Neutrál','Greed':'Chamtivost','Extreme Greed':'Extrémní chamtivost'};const color=val<=25?'#FF453A':val<=45?'#FF9F0A':val<=55?'#FFD60A':val<=75?'#30D158':'#34C759';$('fgVal').textContent=val;$('fgVal').style.color=color;$('fgMood').textContent=moods[cls]||cls;$('fgMood').style.color=color;$('fgBarFill').style.width=val+'%';$('fgBarFill').style.background=color;$('fgArc').setAttribute('stroke-dasharray',(val/100)*188+' 188');$('fgArc').setAttribute('stroke',color)}catch(e){$('fgMood').textContent='Nedostupné'}}
 
-/* ══ MVRV – z v2.0 (funguje) ══ */
 async function loadMVRV(){
   let val=null,src='';
   if(val===null){try{
@@ -601,7 +581,6 @@ async function loadMVRV(){
   $('mvrvSrc').textContent=src;
 }
 
-/* ══ PUELL – opravená verze v2.2 ══ */
 async function loadPuell(){
   let val=null,src='';
   try{
@@ -641,7 +620,6 @@ async function loadPuell(){
   $('puellSrc').textContent=src;
 }
 
-/* ══ texty pro nápovědu (ikonka „i“) ══ */
 const metricHelpTexts = {
   mvrv: {
     label:'MVRV Z‑Score',
@@ -655,11 +633,11 @@ const metricHelpTexts = {
     },
     'Střední':{
       title:'MVRV Z‑Score – Střední',
-      text:'Standardní střední stav bez silného překoupení nebo přeprodanosti. Obvykle není potřeba dělat velké úpravy pozice, vhodné je dál sledovat ostatní metriky a vývoj trendu.'
+      text:'Střední hodnota znamená vyrovnaný stav trhu bez jasného extrému. Strategie: držet současnou pozici, nepřidávat agresivně, sledovat potvrzení trendu z dalších indikátorů a případně jen pomalu akumulovat při poklesech.'
     },
     'Neutrál':{
       title:'MVRV Z‑Score – Neutrál',
-      text:'Trh je z pohledu MVRV relativně vyvážený. Můžeš pokračovat v dlouhodobé strategii (např. DCA) a nechat se vést spíše širším kontextem než samotným MVRV.'
+      text:'Neutrální hodnota znamená, že trh není výrazně levný ani drahý. Strategie: DCA nebo držení pozice, bez spěchu, s důrazem na čekání na silnější odchylku pro akumulaci nebo realizaci zisků.'
     },
     'Opatrně':{
       title:'MVRV Z‑Score – Opatrně',
@@ -686,11 +664,11 @@ const metricHelpTexts = {
     },
     'Střední':{
       title:'Puell Multiple – Střední',
-      text:'Standardní střední pásmo, kde Puell Multiple nemá výrazný býčí ani medvědí bias. Vhodné je řídit se celkovým plánem a kombinovat s dalšími ukazateli.'
+      text:'Střední hodnota u Puell znamená běžný stav bez výrazného cyklického extrému. Strategie: držet nebo jemně akumulovat, nehonit trh, sledovat potvrzení z trendu a kombinovat s on-chain kontextem.'
     },
     'Neutrál':{
       title:'Puell Multiple – Neutrál',
-      text:'Trh vypadá z pohledu minerských příjmů relativně vyváženě. Můžeš pokračovat v nastavené strategii a sleduj, zda se indikátor neposune do extrémnějších zón.'
+      text:'Neutrální hodnota u Puell znamená, že minerské příjmy jsou poblíž normálu. Strategie: pokračovat v plánu, případně držet pozici, a vyčkat na extrémnější hodnoty pro jasnější akční krok.'
     },
     'Opatrně':{
       title:'Puell Multiple – Opatrně',
@@ -707,17 +685,9 @@ const metricHelpTexts = {
   }
 };
 
-// stavy, kdy ikonku nechceme zobrazit (výchozí „střední / neutrální“)
-const defaultStates=['Střední','Neutrál','Neutrální'];
-
 function applyMetricHelpButton(metricId,sigText){
   const btn=document.querySelector(`.metric-info-btn[data-metric="${metricId}"]`);
   if(!btn)return;
-  if(defaultStates.includes(sigText)){
-    btn.classList.add('hidden');
-    btn.dataset.state='';
-    return;
-  }
   btn.classList.remove('hidden');
   btn.dataset.state=sigText;
 }
@@ -758,7 +728,6 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape')closeMetricHelp();
 });
 
-/* ══ renderMetric + error (rozšířeno o info ikonku) ══ */
 function renderMetric(id,val,tiers){
   const tier=tiers.find(t=>val<=t.max)||tiers[tiers.length-1];
   const el=$(`${id}Val`);
@@ -811,7 +780,6 @@ function setupTooltip(canvas,pad,w,xOf,yOf,n){const tip=$('tooltip');function sh
 
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&portUnlocked)portUnlocked=false;if(document.visibilityState==='visible'){loadFX();if(!wsReady)connectWS();if(activeTab==='portfolio'&&!portUnlocked)showLock()}});
 
-/* ── Start ── */
 initTheme();
 loadSaved();
 loadFX().then(()=>{connectWS();loadSparkData();loadFearGreed();loadMVRV();loadPuell();updateHalving()});
