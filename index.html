@@ -110,17 +110,19 @@
     .sig-hold{background:rgba(255,214,10,0.12);color:#FFD60A;border:0.5px solid rgba(255,214,10,0.25)}
     .sig-sell{background:rgba(255,69,58,0.12);color:var(--red);border:0.5px solid rgba(255,69,58,0.25)}
     .metric-info-btn{
-      width:18px;height:18px;border-radius:999px;
-      border:0.5px solid rgba(255,255,255,0.28);
-      background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.35),transparent 55%),rgba(0,0,0,0.55);
+      width:20px;height:20px;border-radius:999px;
+      border:0.5px solid rgba(255,255,255,0.22);
+      background:linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03)),rgba(0,0,0,0.35);
       display:inline-flex;align-items:center;justify-content:center;
-      color:var(--text2);font-size:11px;font-weight:700;
+      color:var(--text2);font-size:12px;font-weight:800;
       cursor:pointer;outline:none;
-      transition:background .15s,transform .12s,border-color .15s,color .15s;
+      transition:background .15s,transform .12s,border-color .15s,color .15s,box-shadow .15s;
+      box-shadow:0 2px 8px rgba(0,0,0,0.18);
+      line-height:1;
     }
     .metric-info-btn:hover{
-      background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.4),transparent 55%),rgba(0,0,0,0.75);
-      border-color:rgba(255,255,255,0.7);color:#fff;transform:translateY(-1px);
+      background:linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.05)),rgba(0,0,0,0.45);
+      border-color:rgba(255,255,255,0.5);color:#fff;transform:translateY(-1px);
     }
     .metric-info-btn:active{transform:translateY(0);opacity:.85}
     .metric-info-btn.hidden{display:none}
@@ -139,18 +141,22 @@
       position:fixed;inset:0;z-index:120;
       display:none;align-items:center;justify-content:center;
       padding:24px 16px;
-      background:radial-gradient(circle at 20% 0,rgba(10,132,255,0.22),transparent 65%),rgba(0,0,10,0.86);
+      background:rgba(0,0,0,0.56);
       opacity:0;transition:opacity .18s ease-out;
+      backdrop-filter:blur(12px) saturate(130%);
+      -webkit-backdrop-filter:blur(12px) saturate(130%);
     }
     .metric-help-overlay.show{display:flex;opacity:1}
     .metric-help-dialog{
       width:100%;max-width:360px;
-      background:linear-gradient(145deg,rgba(10,10,25,0.96),rgba(10,10,35,0.96));
+      background:var(--glass-bg);
       border-radius:22px;
-      border:0.6px solid rgba(255,255,255,0.18);
-      box-shadow:0 22px 60px rgba(0,0,0,0.75),0 0 0 1px rgba(255,255,255,0.03);
+      border:0.6px solid var(--glass-border);
+      box-shadow:0 22px 60px var(--shadow),0 0 0 1px rgba(255,255,255,0.03);
       padding:18px 18px 16px;
       position:relative;color:var(--text);
+      backdrop-filter:blur(34px) saturate(180%);
+      -webkit-backdrop-filter:blur(34px) saturate(180%);
     }
     .metric-help-accent{
       position:absolute;inset:0;border-radius:inherit;pointer-events:none;
@@ -351,7 +357,7 @@
       </div>
       <div class="ts" id="portTs"></div>
       <div class="src" id="portSrc"></div>
-      <div class="ver">v2.4</div>
+      <div class="ver">v2.5</div>
     </div>
     <div id="portEdit" style="display:none">
       <div class="port-setup">
@@ -444,7 +450,7 @@
 
     <div class="ts" id="ts">Připojuji se…</div>
     <div class="src" id="src"></div>
-    <div class="ver">v2.4</div>
+    <div class="ver">v2.5</div>
   </div>
 
   <div class="chart-view" id="chartView">
@@ -476,7 +482,7 @@
       </div>
     </div>
     <div class="ts" id="chartTs"></div>
-    <div class="ver">v2.4</div>
+    <div class="ver">v2.5</div>
   </div>
 </div>
 
@@ -519,7 +525,9 @@ function applyTheme(mode,save=true){
   isDark=(mode==='dark');
   if(isDark){document.documentElement.classList.remove('light');$('themeBtn').textContent='☀️';$('themeColor').setAttribute('content','#000000')}
   else{document.documentElement.classList.add('light');$('themeBtn').textContent='🌙';$('themeColor').setAttribute('content','#f0f4ff')}
-  if(save)localStorage.setItem('btc_theme',mode)
+  if(save)localStorage.setItem('btc_theme',mode);
+  const overlay=$('metricHelp');
+  if(overlay&&overlay.classList.contains('show')){overlay.classList.remove('show');overlay.offsetHeight;overlay.classList.add('show')}
 }
 function toggleTheme(){applyTheme(isDark?'light':'dark')}
 function initTheme(){
@@ -713,9 +721,9 @@ function openMetricHelp(metricId){
   };
 
   chip.textContent=label.toUpperCase();
-  titleEl.textContent=config.title;
+  titleEl.textContent=config.title || `${label} – strategie`;
   stateEl.textContent=sig && sig!=='–' ? `Aktuální signál: ${sig}` : '';
-  textEl.textContent=config.text;
+  textEl.textContent=(config.text && config.text.trim()) ? config.text : 'Tento signál pomáhá orientovat se, zda spíše akumulovat, držet nebo realizovat zisky. Konečné rozhodnutí vždy kombinuj s vlastním risk managementem.';
 
   overlay.classList.add('show');
 }
