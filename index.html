@@ -752,3 +752,57 @@ function drawChart(){
   const W=wrap.clientWidth,H=200;
   canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';
   const ctx=canvas.getContext
+  ('2d');
+  ctx.scale(dpr,dpr);
+  if(!chartData||chartData.length<2)return;
+  const prices=chartData.map(p=>p[1]);
+  const mn=Math.min(...prices),mx=Math.max(...prices),range=mx-mn||1;
+  const n=chartData.length,pad={t:10,r:10,b:30,l:10};
+  const w=W-pad.l-pad.r,h=H-pad.t-pad.b;
+  const xOf=i=>pad.l+(i/(n-1))*w;
+  const yOf=v=>pad.t+h-(((v-mn)/range)*h);
+  const isUp=prices[n-1]>=prices[0];
+  const color=isUp?'48,209,88':'255,69,58';
+  const gr=ctx.createLinearGradient(0,pad.t,0,pad.t+h);
+  gr.addColorStop(0,'rgba('+color+',0.25)');gr.addColorStop(1,'rgba('+color+',0)');
+  ctx.beginPath();ctx.moveTo(xOf(0),yOf(prices[0]));
+  for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(prices[i-1]),cpx,yOf(prices[i]),xOf(i),yOf(prices[i]))}
+  ctx.lineTo(xOf(n-1),H);ctx.lineTo(xOf(0),H);ctx.closePath();ctx.fillStyle=gr;ctx.fill();
+  ctx.beginPath();ctx.moveTo(xOf(0),yOf(prices[0]));
+  for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(prices[i-1]),cpx,yOf(prices[i]),xOf(i),yOf(prices[i]))}
+  ctx.strokeStyle='rgba('+color+',1)';ctx.lineWidth=2;ctx.stroke();
+  const pct2=(prices[n-1]-prices[0])/prices[0]*100;
+  const cc=isUp?'var(--green)':'var(--red)';
+  $('chartChange').textContent=(pct2>=0?'+':'')+pct2.toFixed(2)+'%';
+  $('chartChange').className='chart-change '+(isUp?'up':'dn');
+  $('chartTs').textContent='Data: CoinGecko';
+  canvas.onmousemove=canvas.ontouchmove=function(ev){
+    ev.preventDefault();
+    const rect=canvas.getBoundingClientRect();
+    const cx=(ev.touches?ev.touches[0].clientX:ev.clientX)-rect.left;
+    const idx=Math.round((cx/W)*(n-1));
+    if(idx<0||idx>=n)return;
+    const px=prices[idx],dt=new Date(chartData[idx][0]);
+    const label=chartMode==='czk'?fmt(Math.round(px))+' Kc':'$'+fmt(Math.round(px));
+    tt.textContent=dt.toLocaleDateString('cs-CZ',{day:'numeric',month:'short'})+' - '+label;
+    tt.style.display='block';tt.style.left=xOf(idx)+'px';tt.style.top='4px';
+  };
+  canvas.onmouseleave=canvas.ontouchend=()=>{tt.style.display='none'};
+}
+
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden){loadFX();if(!wsReady)connectWS()}
+});
+
+initTheme();
+loadSaved();
+loadFX().then(()=>{connectWS();loadSparkData();loadFearGreed();loadMVRV();loadPuell();updateHalving()});
+setInterval(loadFX,3600000);
+setInterval(loadSparkData,300000);
+setInterval(loadFearGreed,3600000);
+setInterval(loadMVRV,3600000);
+setInterval(loadPuell,3600000);
+setInterval(updateHalving,60000);
+</script>
+</body>
+</html>
