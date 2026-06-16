@@ -87,560 +87,668 @@
     .fg-inner{display:flex;align-items:center;gap:18px}
     .fg-gauge{position:relative;width:80px;height:80px;flex-shrink:0}
     .fg-gauge svg{width:80px;height:80px}
-    .fg-num"><span class="fg-val" id="fgVal">—</span><span class="fg-sub">INDEX</span></div>
+    .fg-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+    .fg-val{font-size:24px;font-weight:800;letter-spacing:-1px;line-height:1}
+    .fg-sub{font-size:8px;font-weight:600;letter-spacing:.5px;color:var(--text2)}
+    .fg-info{flex:1}
+    .fg-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:5px}
+    .fg-mood{font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+    .fg-bar-wrap{background:var(--stat-bg);border-radius:99px;height:5px;overflow:hidden}
+    .fg-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+    .fg-scale{display:flex;justify-content:space-between;margin-top:4px}
+    .fg-scale span{font-size:8px;color:var(--text3);font-weight:500}
+    .cycle-card{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s}
+    .cycle-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
+    .cycle-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:14px}
+    .metric-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+    .metric-box{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:16px;padding:13px 12px;position:relative;overflow:hidden;transition:background .4s}
+    .metric-lbl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+    .metric-val{font-size:22px;font-weight:800;letter-spacing:-1px;margin-bottom:3px}
+    .metric-sig{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;display:inline-block}
+    .sig-buy{background:rgba(48,209,88,0.15);color:var(--green);border:0.5px solid rgba(48,209,88,0.3)}
+    .sig-hold{background:rgba(255,214,10,0.12);color:#FFD60A;border:0.5px solid rgba(255,214,10,0.25)}
+    .sig-sell{background:rgba(255,69,58,0.12);color:var(--red);border:0.5px solid rgba(255,69,58,0.25)}
+    .metric-bar-wrap{margin-top:7px;background:var(--stat-bg);border-radius:99px;height:3px;overflow:hidden}
+    .metric-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+    .metric-src{font-size:8px;color:var(--text4);margin-top:5px}
+    .halving-box{background:rgba(255,159,10,0.06);border:0.5px solid rgba(255,159,10,0.2);border-radius:16px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+    .halving-l{display:flex;flex-direction:column;gap:3px}
+    .halving-label{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,159,10,.6)}
+    .halving-date{font-size:11px;color:var(--text2);font-weight:500}
+    .halving-r{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+    .halving-days{font-size:28px;font-weight:800;letter-spacing:-1.5px;color:var(--btc)}
+    .halving-unit{font-size:10px;color:rgba(255,159,10,.5);font-weight:600;letter-spacing:.5px}
+    .face-lock{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 20% 10%,var(--bg2) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,var(--bg3) 0%,transparent 50%),var(--bg1);padding:40px 32px;transition:background .4s}
+    .face-lock.hidden{display:none}
+    .lock-icon{font-size:64px;margin-bottom:8px;filter:drop-shadow(0 0 30px rgba(255,159,10,0.5));animation:pulse-lock 2s ease-in-out infinite}
+    @keyframes pulse-lock{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+    .lock-title{font-size:24px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px;text-align:center;color:var(--text)}
+    .lock-sub{font-size:14px;color:var(--text2);text-align:center;margin-bottom:40px;line-height:1.5}
+    .face-btn{display:flex;flex-direction:column;align-items:center;gap:10px;background:var(--glass-bg);border:0.5px solid var(--glass-border);border-radius:24px;padding:24px 40px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;font-family:inherit;color:var(--text);margin-bottom:20px}
+    .face-btn:active{transform:scale(.96)}
+    .face-btn-icon{font-size:40px;line-height:1}
+    .face-btn-label{font-size:15px;font-weight:700;letter-spacing:-.2px}
+    .face-btn-sub{font-size:12px;color:var(--text2);font-weight:400}
+    .lock-err{font-size:13px;color:var(--red);text-align:center;min-height:20px;font-weight:500}
+    .lock-setup-note{font-size:11px;color:var(--text4);text-align:center;margin-top:16px;line-height:1.5}
+    .lock-reset{background:none;border:none;color:var(--text4);font-size:12px;margin-top:20px;cursor:pointer;font-family:inherit;text-decoration:underline}
+    .port-view{display:none;flex-direction:column;width:100%}
+    .port-view.show{display:flex}
+    .port-setup{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 8px}
+    .port-setup-icon{font-size:48px;margin-bottom:16px}
+    .port-setup h2{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px;color:var(--text)}
+    .port-setup p{font-size:14px;color:var(--text2);margin-bottom:28px;line-height:1.5}
+    .btc-input-wrap{width:100%;position:relative;margin-bottom:16px}
+    .btc-input{width:100%;background:var(--glass-bg);border:0.5px solid var(--glass-border);border-radius:18px;padding:16px 60px 16px 20px;font-size:24px;font-weight:700;color:var(--text);font-family:'Inter',-apple-system,sans-serif;outline:none;-webkit-appearance:none;letter-spacing:-.5px;transition:border-color .2s,background .4s}
+    .btc-input:focus{border-color:rgba(255,159,10,0.6)}
+    .btc-input::placeholder{color:var(--text3)}
+    .btc-unit{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;color:var(--btc)}
+    .save-btn{width:100%;padding:16px;border-radius:18px;background:linear-gradient(135deg,rgba(255,159,10,0.9),rgba(255,120,0,0.9));border:none;color:#fff;font-size:16px;font-weight:700;font-family:'Inter',-apple-system,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-.2px;transition:opacity .15s;box-shadow:0 8px 30px rgba(255,159,10,0.3)}
+    .save-btn:active{opacity:.8}
+    .port-hero{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:24px 22px 20px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s}
+    .port-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
+    .port-hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+    .port-hero-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:6px}
+    .port-btc-amount{font-size:36px;font-weight:800;letter-spacing:-2px;color:var(--btc);display:flex;align-items:baseline;gap:6px}
+    .port-btc-sym{font-size:16px;font-weight:600;color:rgba(255,159,10,.6)}
+    .edit-btn{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:12px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;transition:background .15s}
+    .port-vals{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .port-val-box{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:18px;padding:14px;transition:background .4s}
+    .port-val-box.usd-box{background:rgba(255,159,10,0.06);border-color:rgba(255,159,10,0.15)}
+    .port-val-box.czk-box{background:rgba(10,132,255,0.05);border-color:rgba(10,132,255,0.15)}
+    .port-val-lbl{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+    .port-val-num{font-size:20px;font-weight:800;letter-spacing:-1px;line-height:1.1}
+    .port-val-num.usd{color:#FFB340}
+    .port-val-num.czk{color:#1E7FE8}
+    .port-val-unit{font-size:11px;font-weight:500;color:var(--text3);margin-top:3px}
+    .port-pnl{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s}
+    .port-pnl::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
+    .pnl-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:14px}
+    .pnl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .pnl-box{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:16px;padding:12px;transition:background .4s}
+    .pnl-lbl{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
+    .pnl-val{font-size:14px;font-weight:700}
+    .trade-form-grid{display:flex;flex-direction:column;gap:8px}
+    .trade-field{display:flex;flex-direction:column;gap:4px}
+    .trade-lbl{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3)}
+    .trade-row{display:grid;grid-template-columns:1fr 1fr 1fr 28px;gap:6px;align-items:center;background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:12px;padding:9px 10px;margin-bottom:5px}
+    .trade-cell{font-size:12px;font-weight:600;color:var(--text)}
+    .trade-cell-lbl{font-size:9px;font-weight:500;color:var(--text3);margin-bottom:1px}
+    .trade-del{background:none;border:none;color:var(--text4);font-size:16px;cursor:pointer;line-height:1;padding:0;font-family:inherit;transition:color .15s}
+    .trade-del:hover{color:var(--red)}
+    .pnl-box.highlight{background:rgba(255,159,10,0.07);border-color:rgba(255,159,10,0.2)}
+    .buy-section{background:var(--stat-bg);border:0.5px solid var(--stat-border);border-radius:18px;padding:16px;margin-top:8px}
+    .buy-section-lbl{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+    .buy-input{width:100%;background:var(--glass-bg);border:0.5px solid var(--glass-border);border-radius:12px;padding:10px 14px;font-size:15px;font-weight:600;color:var(--text);font-family:'Inter',-apple-system,sans-serif;outline:none;-webkit-appearance:none;transition:border-color .2s,background .4s}
+    .buy-input:focus{border-color:rgba(255,159,10,0.5)}
+    .buy-input::placeholder{color:var(--text3)}
+    .buy-apply{background:rgba(255,159,10,0.15);border:0.5px solid rgba(255,159,10,0.3);border-radius:12px;padding:10px 16px;font-size:13px;font-weight:700;color:var(--btc);font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap;transition:background .15s}
+    .buy-apply:active{background:rgba(255,159,10,0.25)}
+    .chart-view{display:none;flex-direction:column;width:100%}
+    .chart-view.show{display:flex}
+    .back-btn{display:flex;align-items:center;gap:6px;background:var(--glass-bg);border:0.5px solid var(--glass-border);border-radius:12px;padding:8px 14px;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:16px;align-self:flex-start;font-family:inherit;transition:background .15s}
+    .back-btn:active{background:var(--tab-active)}
+    .chart-glass{background:var(--glass-bg);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid var(--glass-border);border-radius:28px;padding:22px 18px 18px;position:relative;overflow:hidden;box-shadow:0 20px 60px var(--shadow);transition:background .4s}
+    .chart-glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)}
+    .chart-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+    .chart-price-big{font-size:32px;font-weight:800;letter-spacing:-1.5px;color:var(--text)}
+    .chart-change{font-size:13px;font-weight:600;margin-top:3px}
+    .chart-change.up{color:var(--green)}
+    .chart-change.dn{color:var(--red)}
+    .periods{display:flex;gap:3px;background:var(--tab-bg);border-radius:12px;padding:3px}
+    .period{padding:5px 8px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer;color:var(--text3);transition:all .2s;-webkit-tap-highlight-color:transparent;border:none;background:none;font-family:inherit}
+    .period.active{background:var(--tab-active);color:var(--text)}
+        .canvas-wrap{position:relative;margin-top:12px;height:200px}
+    canvas{width:100%;height:100%;display:block}
+    .tooltip{position:absolute;top:0;pointer-events:none;background:rgba(20,20,35,0.9);backdrop-filter:blur(20px);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:6px 10px;font-size:11px;font-weight:600;white-space:nowrap;transform:translateX(-50%);display:none;color:#fff}
+    .chart-loading{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);font-size:13px;text-align:center;gap:10px}
+    .prog-bar{width:160px;height:3px;background:var(--stat-bg);border-radius:99px;overflow:hidden}
+    .prog-fill{height:100%;background:var(--btc);border-radius:99px;transition:width .3s;width:0%}
+    .ts{text-align:center;font-size:11px;color:var(--text4);margin-top:14px}
+    .src{text-align:center;font-size:10px;color:var(--text4);margin-top:3px}
+    .ver{text-align:center;font-size:10px;color:var(--text4);margin-top:6px;letter-spacing:.5px}
+    .sk{background:linear-gradient(90deg,var(--stat-bg) 25%,var(--glass-bg) 50%,var(--stat-bg) 75%);background-size:200% 100%;animation:sh 1.4s ease-in-out infinite;border-radius:10px;color:transparent!important;user-select:none;display:inline-block}
+    @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .metric-help-overlay{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:24px 16px;background:rgba(0,0,0,0.56);opacity:0;transition:opacity .18s ease-out;backdrop-filter:blur(12px) saturate(130%);-webkit-backdrop-filter:blur(12px) saturate(130%)}
+    .metric-help-overlay.show{display:flex;opacity:1}
+    .metric-help-dialog{width:100%;max-width:360px;background:var(--glass-bg);border-radius:22px;border:0.6px solid var(--glass-border);box-shadow:0 22px 60px var(--shadow),0 0 0 1px rgba(255,255,255,0.03);padding:18px 18px 16px;position:relative;color:var(--text);backdrop-filter:blur(34px) saturate(180%);-webkit-backdrop-filter:blur(34px) saturate(180%)}
+    .metric-help-accent{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at 0 0,rgba(255,159,10,0.25),transparent 55%),radial-gradient(circle at 100% 0,rgba(255,69,58,0.15),transparent 55%);opacity:.55;mix-blend-mode:soft-light}
+    .metric-help-dialog-inner{position:relative;z-index:1}
+    .metric-help-chip{font-size:10px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+    .metric-help-title{font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px}
+    .metric-help-state{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+    .metric-help-text{font-size:13px;line-height:1.5;color:var(--text2);margin-bottom:14px}
+    .metric-help-actions{display:flex;justify-content:flex-end}
+    .metric-help-close{border-radius:999px;border:0.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.02);padding:8px 16px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;outline:none;transition:all .15s;font-family:inherit}
+    .metric-help-close:hover{background:rgba(255,255,255,0.08);color:#fff}
+    .metric-info-btn{width:20px;height:20px;border-radius:999px;border:0.5px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.07);display:inline-flex;align-items:center;justify-content:center;color:var(--text2);font-size:11px;font-weight:800;cursor:pointer;outline:none;transition:all .15s;line-height:1}
+    .metric-info-btn:hover{background:rgba(255,255,255,0.15);color:#fff}
+    html.light .glass::before,html.light .fg-card::before,html.light .cycle-card::before,html.light .chart-glass::before,html.light .port-hero::before,html.light .port-pnl::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent)}
+    html.light .tooltip{background:rgba(10,10,30,0.85)}
+  </style>
+</head>
+<body>
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+<div class="face-lock hidden" id="faceLock">
+  <div class="lock-icon" id="lockIcon">&#128274;</div>
+  <div class="lock-title">Portfolio zamceno</div>
+  <div class="lock-sub" id="lockSub">Over svoji identitu pomocí Face ID</div>
+  <button class="face-btn" id="faceBtn" onclick="doFaceAuth()">
+    <span class="face-btn-icon">&#129397;</span>
+    <span class="face-btn-label">Odemknout Face ID</span>
+    <span class="face-btn-sub">Touch ID · Biometrika</span>
+  </button>
+  <div class="lock-err" id="lockErr"></div>
+  <div class="lock-setup-note" id="lockNote"></div>
+  <button class="lock-reset" onclick="resetFaceID()">Resetovat Face ID registraci</button>
+</div>
+<div class="wrap" id="mainWrap">
+  <div class="hdr">
+    <div class="hdr-l">
+      <div class="btc-ball">&#8383;</div>
+      <div class="hdr-t"><h1>Bitcoin</h1><p id="hdrSub">Aktualni cena</p></div>
+    </div>
+    <div class="hdr-r">
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9728;&#65039;</button>
+      <div class="pill">Zive</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab" id="tabPort" onclick="switchTab('portfolio')">Moje portfolio</button>
+    <button class="tab active" id="tabMarket" onclick="switchTab('market')">Trh</button>
+  </div>
+  <div class="port-view" id="portView">
+    <div id="portSetup" style="display:none">
+      <div class="port-setup">
+        <div class="port-setup-icon">&#8383;</div>
+        <h2>Moje Bitcoin portfolio</h2>
+        <p>Zadej kolik BTC vlastnis nebo pridej nakupy nize.</p>
+        <div class="btc-input-wrap">
+          <input class="btc-input" id="btcSetupInput" type="number" step="any" min="0" placeholder="0.00000000"/>
+          <span class="btc-unit">BTC</span>
         </div>
-        <div class="fg-info">
-          <div class="fg-title">Fear &amp; Greed</div>
-          <div class="fg-mood" id="fgMood">—</div>
-          <div class="fg-bar-wrap"><div class="fg-bar-fill" id="fgBar" style="width:0%;background:var(--btc)"></div></div>
-          <div class="fg-scale"><span>Strach</span><span>Neutrální</span><span>Chamtivost</span></div>
-        </div>
+        <button class="save-btn" onclick="savePortfolio()">Ulozit portfolio</button>
       </div>
     </div>
-
-    <div class="cycle-card">
-      <div class="cycle-title">Tržní indikátory cyklu</div>
-      <div class="metric-row">
-        <div class="metric-box">
-          <div class="metric-lbl">Pi Cycle Top</div>
-          <div class="metric-val" id="m1Val">—</div>
-          <div id="m1Sig" class="metric-sig">—</div>
-          <div class="metric-bar-wrap"><div id="m1Bar" class="metric-bar-fill" style="width:0%"></div></div>
+    <div id="portDash" style="display:none">
+      <div class="port-hero">
+        <div class="port-hero-top">
+          <div>
+            <div class="port-hero-label">Moje portfolio</div>
+            <div class="port-btc-amount"><span id="portBtcAmt">-</span><span class="port-btc-sym">BTC</span></div>
+          </div>
+          <button class="edit-btn" onclick="editPortfolio()">&#9999;&#65039; Upravit</button>
         </div>
-        <div class="metric-box">
-          <div class="metric-lbl">Mayer Multiple</div>
-          <div class="metric-val" id="m2Val">—</div>
-          <div id="m2Sig" class="metric-sig">—</div>
-          <div class="metric-bar-wrap"><div id="m2Bar" class="metric-bar-fill" style="width:0%"></div></div>
+        <div class="port-vals">
+          <div class="port-val-box usd-box">
+            <div class="port-val-lbl">Hodnota USD</div>
+            <div class="port-val-num usd" id="portUSD">-</div>
+            <div class="port-val-unit">americky dolar</div>
+          </div>
+          <div class="port-val-box czk-box">
+            <div class="port-val-lbl">Hodnota CZK</div>
+            <div class="port-val-num czk" id="portCZK">-</div>
+            <div class="port-val-unit">ceska koruna</div>
+          </div>
         </div>
       </div>
-      <div class="halving-box">
-        <div class="halving-l"><div class="halving-label">Příští Halving</div><div class="halving-date" id="halvingDate">Odhad: duben 2028</div></div>
-        <div class="halving-r"><span class="halving-days" id="halvingDays">—</span><span class="halving-unit">DNÍ</span></div>
+      <div class="port-pnl">
+        <div class="pnl-title">Profit / Loss - Nakupy</div>
+        <div class="buy-section">
+          <div class="buy-section-lbl">Pridat nakup</div>
+          <div class="trade-form-grid">
+            <div class="trade-field">
+              <label class="trade-lbl">Datum</label>
+              <input class="buy-input" id="tradeDate" type="date"/>
+            </div>
+            <div class="trade-field">
+              <label class="trade-lbl">Mnozstvi BTC</label>
+              <input class="buy-input" id="tradeAmount" type="number" step="any" min="0" placeholder="0.01"/>
+            </div>
+            <div class="trade-field">
+              <label class="trade-lbl">Cena CZK / BTC</label>
+              <input class="buy-input" id="tradePrice" type="number" step="any" min="0" placeholder="1200000"/>
+            </div>
+          </div>
+          <button class="buy-apply" style="width:100%;margin-top:10px;padding:11px 0;border-radius:14px;font-size:13px;" onclick="addTrade()">+ Pridat nakup</button>
+        </div>
+        <div id="tradesList" style="margin-top:10px;display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3)">Moje nakupy</span>
+            <button onclick="clearTrades()" style="background:rgba(255,69,58,0.1);border:0.5px solid rgba(255,69,58,0.25);border-radius:8px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--red);cursor:pointer;font-family:inherit">Smazat vse</button>
+          </div>
+          <div id="tradesTable"></div>
+        </div>
+        <div class="pnl-grid" id="pnlGrid" style="margin-top:12px;display:none">
+          <div class="pnl-box"><div class="pnl-lbl">Investovano (CZK)</div><div class="pnl-val" id="pnlInvested">-</div></div>
+          <div class="pnl-box"><div class="pnl-lbl">Aktualni hodnota</div><div class="pnl-val" id="pnlCurrent">-</div></div>
+          <div class="pnl-box highlight"><div class="pnl-lbl">Prumerna cena</div><div class="pnl-val" id="pnlAvgPrice">-</div></div>
+          <div class="pnl-box"><div class="pnl-lbl">Zisk / Ztrata</div><div class="pnl-val" id="pnlDiff">-</div></div>
+          <div class="pnl-box"><div class="pnl-lbl">Vynos %</div><div class="pnl-val" id="pnlPct">-</div></div>
+          <div class="pnl-box highlight"><div class="pnl-lbl">Celkem BTC</div><div class="pnl-val" id="pnlTotalBtc">-</div></div>
+        </div>
+      </div>
+      <div class="ts" id="portTs"></div>
+      <div class="src" id="portSrc"></div>
+      <div class="ver">v2.7</div>
+    </div>
+    <div id="portEdit" style="display:none">
+      <div class="port-setup">
+        <div class="port-setup-icon">&#9999;&#65039;</div>
+        <h2>Upravit portfolio</h2>
+        <p>Zadej novy pocet BTC.</p>
+        <div class="btc-input-wrap">
+          <input class="btc-input" id="btcEditInput" type="number" step="any" min="0" placeholder="0.00000000"/>
+          <span class="btc-unit">BTC</span>
+        </div>
+        <button class="save-btn" onclick="saveEdit()">Ulozit</button>
+        <button onclick="cancelEdit()" style="background:none;border:none;color:var(--text3);font-size:14px;margin-top:14px;cursor:pointer;font-family:inherit">Zrusit</button>
       </div>
     </div>
   </div>
-
+  <div id="marketView">
+    <div class="glass">
+      <div class="clabel">Cena BTC</div>
+      <div class="price-row">
+        <div class="price-tap" onclick="openChart('usd')">
+          <div class="usd-price"><span class="usd-sam">$</span><span id="usd" class="sk" style="width:180px;height:46px"> </span></div>
+          <div class="tap-hint"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Klepnete pro graf</div>
+        </div>
+        <div class="spark-wrap"><span class="spark-label">24H</span><canvas id="sparkCanvas" width="90" height="46" style="width:90px;height:46px"></canvas></div>
+      </div>
+      <div class="czk-glass" onclick="openChart('czk')">
+        <span class="czk-l">CZK</span>
+        <div class="czk-v"><span id="czk" class="sk" style="width:140px;height:22px"> </span><span class="czk-s">Kc</span></div>
+      </div>
+      <div id="badge" class="badge up sk" style="width:140px;height:32px"> </div>
+      <div class="div"></div>
+      <div class="stats">
+        <div class="stat"><div class="sl">24H HIGH</div><div class="sv" id="s1">...</div></div>
+        <div class="stat"><div class="sl">24H LOW</div><div class="sv" id="s2">...</div></div>
+        <div class="stat"><div class="sl">TRZNI CAP</div><div class="sv" id="s3">...</div></div>
+        <div class="stat"><div class="sl">OBJEM 24H</div><div class="sv" id="s4">...</div></div>
+      </div>
+    </div>
+    <div class="fg-card">
+      <div class="fg-inner">
+        <div class="fg-gauge">
+          <svg viewBox="0 0 80 80">
+            <path d="M10 60 A 30 30 0 1 1 70 60" fill="none" stroke="rgba(128,128,128,0.15)" stroke-width="7" stroke-linecap="round"/>
+            <path id="fgArc" d="M10 60 A 30 30 0 1 1 70 60" fill="none" stroke="#FF453A" stroke-width="7" stroke-linecap="round" stroke-dasharray="0 188" style="transition:stroke-dasharray .8s cubic-bezier(.4,0,.2,1),stroke .5s"/>
+          </svg>
+          <div class="fg-num"><span class="fg-val" id="fgVal">-</span><span class="fg-sub">/ 100</span></div>
+        </div>
+        <div class="fg-info">
+          <div class="fg-title">Fear &amp; Greed</div>
+          <div class="fg-mood" id="fgMood">Nacitam...</div>
+          <div class="fg-bar-wrap"><div class="fg-bar-fill" id="fgBarFill" style="width:0%;background:#FF453A"></div></div>
+          <div class="fg-scale"><span>Strach</span><span>Neutral</span><span>Chamtivost</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="cycle-card">
+      <div class="cycle-title">Market Cycle Dashboard</div>
+      <div class="metric-row">
+        <div class="metric-box">
+          <div class="metric-lbl">MVRV Z-Score</div>
+          <div class="metric-val" id="mvrvVal"><span class="sk" style="width:60px;height:22px;display:inline-block"> </span></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="metric-sig sig-hold" id="mvrvSig">...</div>
+            <button class="metric-info-btn" onclick="openMetricHelp('mvrv')" data-metric="mvrv">i</button>
+          </div>
+          <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mvrvBar" style="width:0%"></div></div>
+          <div class="metric-src" id="mvrvSrc"></div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Puell Multiple</div>
+          <div class="metric-val" id="puellVal"><span class="sk" style="width:60px;height:22px;display:inline-block"> </span></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="metric-sig sig-hold" id="puellSig">...</div>
+            <button class="metric-info-btn" onclick="openMetricHelp('puell')" data-metric="puell">i</button>
+          </div>
+          <div class="metric-bar-wrap"><div class="metric-bar-fill" id="puellBar" style="width:0%"></div></div>
+          <div class="metric-src" id="puellSrc"></div>
+        </div>
+      </div>
+      <div class="halving-box">
+        <div class="halving-l"><span class="halving-label">Pristi Halving</span><span class="halving-date" id="halvingDate">~duben 2028</span></div>
+        <div class="halving-r"><span class="halving-days" id="halvingDays">-</span><span class="halving-unit">DNI</span></div>
+      </div>
+    </div>
+    <div class="ts" id="ts">Pripojuji se...</div>
+    <div class="src" id="src"></div>
+    <div class="ver">v2.7</div>
+  </div>
   <div class="chart-view" id="chartView">
     <button class="back-btn" onclick="closeChart()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-      Zpět na přehled
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>Zpet
     </button>
     <div class="chart-glass">
       <div class="chart-header">
-        <div><div class="clabel" id="chartLabel">Cena Bitcoin</div><div class="chart-price-big" id="chartPrice">—</div><div class="chart-change" id="chartChange">—</div></div>
+        <div>
+          <div class="clabel" id="chartCurrency">USD</div>
+          <div class="chart-price-big" id="chartPrice">-</div>
+          <div class="chart-change" id="chartChange"></div>
+        </div>
         <div class="periods">
-          <button class="period" id="p1W" onclick="loadChartData('1W')">1T</button>
-          <button class="period active" id="p1M" onclick="loadChartData('1M')">1M</button>
-          <button class="period" id="p1Y" onclick="loadChartData('1Y')">1R</button>
-          <button class="period" id="pALL" onclick="loadChartData('ALL')">Vše</button>
+          <button class="period active" onclick="setPeriod('1',this)">1D</button>
+          <button class="period" onclick="setPeriod('7',this)">7D</button>
+          <button class="period" onclick="setPeriod('30',this)">1M</button>
+          <button class="period" onclick="setPeriod('365',this)">1R</button>
+          <button class="period" onclick="setPeriod('max',this)">MAX</button>
         </div>
       </div>
       <div class="canvas-wrap" id="canvasWrap">
         <div class="chart-loading" id="chartLoading">
-          Načítání historie trhu...
-          <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+          <span id="loadingText">Nacitam graf...</span>
+          <div class="prog-bar" id="progBar" style="display:none"><div class="prog-fill" id="progFill"></div></div>
         </div>
-        <canvas id="chartCanvas"></canvas>
+        <canvas id="chartCanvas" style="display:none"></canvas>
         <div class="tooltip" id="tooltip"></div>
       </div>
     </div>
+    <div class="ts" id="chartTs"></div>
+    <div class="ver">v2.7</div>
   </div>
-
-  <p class="ts" id="ts">Aktualizováno: —</p>
-  <p class="src">Data dodávají Coingecko API &amp; Blockchain.info</p>
-  <p class="ver">v2.7 · Live &amp; Secure</p>
 </div>
-
+<div class="metric-help-overlay" id="metricHelp">
+  <div class="metric-help-dialog" role="dialog" aria-modal="true">
+    <div class="metric-help-accent"></div>
+    <div class="metric-help-dialog-inner">
+      <div class="metric-help-chip" id="metricHelpChip">INDIKATOR</div>
+      <div class="metric-help-title" id="metricHelpTitle">-</div>
+      <div class="metric-help-state" id="metricHelpState"></div>
+      <div class="metric-help-text" id="metricHelpText"></div>
+      <div class="metric-help-actions">
+        <button class="metric-help-close" onclick="closeMetricHelp()">Zavrit</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
-  const $=id=>document.getElementById(id);
-  let fxUsdCzk=23.35, btcUsd=0, btcCzk=0, activeTab='market', chartMode='usd', currentPeriod='1M';
-  let ws, wsReady=false, portUnlocked=false;
-  let chartData=[];
+const $=id=>document.getElementById(id);
+const fmt=(n,d=0)=>new Intl.NumberFormat('cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
+const fmtUSD=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(n);
+const fmtB=n=>n>=1e12?(n/1e12).toFixed(2)+' bil.':n>=1e9?(n/1e9).toFixed(2)+' mld.':n>=1e6?(n/1e6).toFixed(1)+' mil.':fmt(n);
+const pct=n=>(n>=0?'+':'')+parseFloat(n).toFixed(2)+'%';
 
-  function toggleTheme(){
-    const html=document.documentElement;
-    if(html.classList.contains('light')){
-      html.classList.remove('light');
-      $('themeBtn').textContent='☀️';
-      $('themeColor').setAttribute('content','#000000');
-      localStorage.setItem('theme','dark');
-    } else {
-      html.classList.add('light');
-      $('themeBtn').textContent='🌙';
-      $('themeColor').setAttribute('content','#f0f4ff');
-      localStorage.setItem('theme','light');
-    }
-    if($('chartCanvas').style.display==='block') drawChart();
+let currentUSD=0,currentCZK=0,fxRate=23.5;
+let chartMode='usd',chartDays='1',chartData=[];
+let ws=null,wsReady=false,sparkData=[];
+let activeTab='market';
+let savedBTC=null;
+let portUnlocked=false;
+let isDark=true;
+
+function getAutoTheme(){const h=new Date().getHours();return(h>=7&&h<20)?'light':'dark'}
+function applyTheme(mode,save=true){
+  isDark=(mode==='dark');
+  if(isDark){document.documentElement.classList.remove('light');$('themeBtn').textContent='☀️';$('themeColor').setAttribute('content','#000000')}
+  else{document.documentElement.classList.add('light');$('themeBtn').textContent='🌙';$('themeColor').setAttribute('content','#f0f4ff')}
+  if(save)localStorage.setItem('btc_theme',mode);
+  const overlay=$('metricHelp');
+  if(overlay&&overlay.classList.contains('show')){overlay.classList.remove('show');overlay.offsetHeight;overlay.classList.add('show')}
+}
+function toggleTheme(){applyTheme(isDark?'light':'dark')}
+function initTheme(){
+  const saved=localStorage.getItem('btc_theme');
+  applyTheme(saved||getAutoTheme(),false);
+  setInterval(()=>{if(!localStorage.getItem('btc_theme')){const a=getAutoTheme(),c=isDark?'dark':'light';if(a!==c)applyTheme(a,false)}},60000)
+}
+
+const WA_KEY='btc_faceID_cred';
+function b64url(buf){return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'')}
+function fromB64url(s){return Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0))}
+function rnd(n){const a=new Uint8Array(n);crypto.getRandomValues(a);return a}
+async function isBiometricAvailable(){if(!window.PublicKeyCredential)return false;try{return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()}catch(e){return false}}
+async function registerFaceID(){const challenge=rnd(32),userId=rnd(16);const cred=await navigator.credentials.create({publicKey:{challenge,rp:{name:'Bitcoin Portfolio',id:location.hostname||'localhost'},user:{id:userId,name:'btc-user',displayName:'Bitcoin User'},pubKeyCredParams:[{alg:-7,type:'public-key'},{alg:-257,type:'public-key'}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'preferred'},timeout:60000,attestation:'none'}});localStorage.setItem(WA_KEY,b64url(cred.rawId));return true}
+async function verifyFaceID(){const credIDStr=localStorage.getItem(WA_KEY);if(!credIDStr)return false;const challenge=rnd(32);await navigator.credentials.get({publicKey:{challenge,rpId:location.hostname||'localhost',allowCredentials:[{type:'public-key',id:fromB64url(credIDStr),transports:['internal']}],userVerification:'required',timeout:60000}});return true}
+async function doFaceAuth(){$('lockErr').textContent='';$('faceBtn').style.opacity='0.6';$('lockIcon').textContent='🔄';try{const hasBio=await isBiometricAvailable();if(!hasBio){$('lockNote').textContent='Biometrie nepodporovana. Pristup povolen.';portUnlocked=true;hideLock();return}const hasReg=!!localStorage.getItem(WA_KEY);if(!hasReg){$('lockSub').textContent='Registruji Face ID...';await registerFaceID()}await verifyFaceID();portUnlocked=true;$('lockIcon').textContent='✅';setTimeout(hideLock,300)}catch(e){$('lockIcon').textContent='🔒';if(e.name==='NotAllowedError')$('lockErr').textContent='Face ID zruseno. Zkus znovu.';else if(e.name==='InvalidStateError'){localStorage.removeItem(WA_KEY);$('lockErr').textContent='Registrace expirovana. Klepni znovu.'}else $('lockErr').textContent='Chyba: '+e.message}$('faceBtn').style.opacity='1'}
+function showLock(){$('faceLock').classList.remove('hidden');$('lockIcon').textContent='🔒';$('lockErr').textContent='';$('lockNote').textContent='';$('lockSub').textContent='Over svoji identitu pomoci Face ID'}
+function hideLock(){$('faceLock').classList.add('hidden');if(activeTab==='portfolio'){$('tabPort').classList.add('active');$('tabMarket').classList.remove('active');$('marketView').style.display='none';$('portView').classList.add('show');renderPortfolio();$('hdrSub').textContent='Moje investice'}}
+function resetFaceID(){localStorage.removeItem(WA_KEY);portUnlocked=false;$('lockErr').textContent='Registrace smazana. Klepni pro novou.'}
+
+let trades=[];
+function loadSaved(){
+  const s=localStorage.getItem('btc_portfolio');if(s){savedBTC=parseFloat(s);if(isNaN(savedBTC))savedBTC=null}
+  const t=localStorage.getItem('btc_trades');if(t){try{trades=JSON.parse(t)}catch(e){trades=[]}}
+  const ti=$('tradeDate');if(ti){ti.value=new Date().toISOString().split('T')[0]}
+}
+function saveTrades(){localStorage.setItem('btc_trades',JSON.stringify(trades))}
+function addTrade(){
+  const dateEl=$('tradeDate'),amtEl=$('tradeAmount'),priceEl=$('tradePrice');
+  const date=dateEl.value,amt=parseFloat(amtEl.value),price=parseFloat(priceEl.value);
+  if(!date||isNaN(amt)||amt<=0||isNaN(price)||price<=0){
+    [dateEl,amtEl,priceEl].forEach(el=>{if(!el.value||isNaN(parseFloat(el.value))||parseFloat(el.value)<=0)el.style.borderColor='var(--red)'});
+    setTimeout(()=>[dateEl,amtEl,priceEl].forEach(el=>el.style.borderColor=''),1800);
+    return;
   }
+  trades.push({date,amt,price,id:Date.now()});
+  trades.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  saveTrades();amtEl.value='';priceEl.value='';
+  renderTrades();renderPnL();
+}
+function removeTrade(id){trades=trades.filter(t=>t.id!==id);saveTrades();renderTrades();renderPnL()}
+function clearTrades(){if(!confirm('Opravdu smazat vsechny nakupy?'))return;trades=[];saveTrades();renderTrades();renderPnL()}
+function renderTrades(){
+  const wrap=$('tradesList'),tbl=$('tradesTable');
+  if(!trades.length){wrap.style.display='none';return}
+  wrap.style.display='';
+  tbl.innerHTML=trades.map(t=>{
+    const ds=new Date(t.date+'T12:00:00').toLocaleDateString('cs-CZ',{day:'numeric',month:'short',year:'numeric'});
+    return '<div class="trade-row"><div><div class="trade-cell-lbl">Datum</div><div class="trade-cell">'+ds+'</div></div><div><div class="trade-cell-lbl">BTC</div><div class="trade-cell">'+(t.amt<0.01?t.amt.toFixed(6):t.amt.toFixed(4))+'</div></div><div><div class="trade-cell-lbl">Cena / BTC</div><div class="trade-cell">'+fmt(t.price)+' Kc</div></div><button class="trade-del" onclick="removeTrade('+t.id+')">x</button></div>';
+  }).join('');
+}
 
-  function initTheme(){
-    const saved=localStorage.getItem('theme');
-    if(saved==='light'){
-      document.documentElement.classList.add('light');
-      $('themeBtn').textContent='🌙';
-      $('themeColor').setAttribute('content','#f0f4ff');
-    }
+function switchTab(tab){
+  if(tab==='portfolio'&&!portUnlocked){activeTab='portfolio';$('tabPort').classList.add('active');$('tabMarket').classList.remove('active');showLock();return}
+  activeTab=tab;
+  $('tabPort').classList.toggle('active',tab==='portfolio');
+  $('tabMarket').classList.toggle('active',tab==='market');
+  $('marketView').style.display=tab==='market'?'':'none';
+  $('portView').classList.toggle('show',tab==='portfolio');
+  $('chartView').classList.remove('show');
+  if(tab==='portfolio')renderPortfolio();
+  $('hdrSub').textContent=tab==='market'?'Aktualni cena':'Moje investice';
+}
+function renderPortfolio(){
+  renderTrades();
+  if(savedBTC===null&&!trades.length){$('portSetup').style.display='';$('portDash').style.display='none';$('portEdit').style.display='none'}
+  else{$('portSetup').style.display='none';$('portDash').style.display='';$('portEdit').style.display='none';updatePortValues();renderPnL()}
+}
+function updatePortValues(){
+  const btc=savedBTC!==null?savedBTC:(trades.length?trades.reduce((s,t)=>s+t.amt,0):0);
+  if(!btc&&savedBTC===null)return;
+  $('portBtcAmt').textContent=btc%1===0?btc.toString():btc.toFixed(8).replace(/\.?0+$/,'');
+  $('portUSD').textContent=currentUSD>0?fmtUSD(btc*currentUSD):'-';
+  $('portCZK').textContent=currentUSD>0?fmt(btc*currentCZK)+' Kc':'-';
+  $('portTs').textContent='Zive - '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  $('portSrc').textContent='Kurz CNB - 1 USD = '+fxRate.toFixed(3)+' Kc';
+}
+function savePortfolio(){const v=parseFloat($('btcSetupInput').value);if(isNaN(v)||v<0){$('btcSetupInput').style.borderColor='var(--red)';return}savedBTC=v;localStorage.setItem('btc_portfolio',v.toString());$('btcSetupInput').value='';renderPortfolio()}
+function editPortfolio(){$('portDash').style.display='none';$('portEdit').style.display='';if(savedBTC!==null)$('btcEditInput').value=savedBTC}
+function saveEdit(){const v=parseFloat($('btcEditInput').value);if(isNaN(v)||v<0){$('btcEditInput').style.borderColor='var(--red)';return}savedBTC=v;localStorage.setItem('btc_portfolio',v.toString());renderPortfolio()}
+function cancelEdit(){$('portEdit').style.display='none';$('portDash').style.display=''}
+function applyBuyPrice(){}
+
+function renderPnL(){
+  if(!trades.length||currentUSD===0||fxRate===0){$('pnlGrid').style.display='none';return}
+  const totalBtc=trades.reduce((s,t)=>s+t.amt,0);
+  const totalInvCZK=trades.reduce((s,t)=>s+t.amt*t.price,0);
+  const avgPriceCZK=totalBtc>0?totalInvCZK/totalBtc:0;
+  const curCZK=totalBtc*currentUSD*fxRate;
+  const diffCZK=curCZK-totalInvCZK;
+  const p=totalInvCZK>0?(diffCZK/totalInvCZK)*100:0;
+  const isUp=diffCZK>=0,c=isUp?'var(--green)':'var(--red)';
+  const fc=n=>fmt(Math.round(n))+' Kc';
+  $('pnlInvested').textContent=fc(totalInvCZK);$('pnlInvested').style.color='var(--text2)';
+  $('pnlCurrent').textContent=fc(curCZK);$('pnlCurrent').style.color='var(--text2)';
+  $('pnlAvgPrice').textContent=fc(avgPriceCZK);$('pnlAvgPrice').style.color='var(--btc)';
+  $('pnlDiff').textContent=(isUp?'+':'')+fc(diffCZK);$('pnlDiff').style.color=c;
+  $('pnlPct').textContent=(isUp?'+':'')+p.toFixed(2)+'%';$('pnlPct').style.color=c;
+  $('pnlTotalBtc').textContent=totalBtc.toFixed(totalBtc<0.01?6:4)+' BTC';$('pnlTotalBtc').style.color='var(--btc)';
+  $('pnlGrid').style.display='grid';
+  if(savedBTC===null&&totalBtc>0){savedBTC=totalBtc;localStorage.setItem('btc_portfolio',totalBtc.toString())}
+  updatePortValues();
+}
+
+async function loadFX(){try{const r=await fetch('https://api.frankfurter.app/latest?from=USD&to=CZK');const j=await r.json();fxRate=j.rates.CZK;$('src').textContent='Kurz CNB - 1 USD = '+fxRate.toFixed(3)+' Kc'}catch(e){fxRate=23.5}}
+async function loadFearGreed(){try{const r=await fetch('https://api.alternative.me/fng/?limit=1');const j=await r.json();const val=parseInt(j.data[0].value),cls=j.data[0].value_classification;const moods={'Extreme Fear':'Extremni strach','Fear':'Strach','Neutral':'Neutral','Greed':'Chamtivost','Extreme Greed':'Extremni chamtivost'};const color=val<=25?'#FF453A':val<=45?'#FF9F0A':val<=55?'#FFD60A':val<=75?'#30D158':'#34C759';$('fgVal').textContent=val;$('fgVal').style.color=color;$('fgMood').textContent=moods[cls]||cls;$('fgMood').style.color=color;$('fgBarFill').style.width=val+'%';$('fgBarFill').style.background=color;$('fgArc').setAttribute('stroke-dasharray',(val/100)*188+' 188');$('fgArc').setAttribute('stroke',color)}catch(e){$('fgMood').textContent='Nedostupne'}}
+
+async function loadMVRV(){
+  let val=null,src='';
+  try{const r=await fetch('https://charts.bitbo.io/api/v1/mvrv-z/?latest=true',{signal:AbortSignal.timeout(8000)});if(r.ok){const j=await r.json();let c=null;if(Array.isArray(j)&&j.length){const last=j[j.length-1];c=parseFloat(Array.isArray(last)?last[1]:last.mvrv_z_score||last.value||last[1])}else if(j.mvrv_z_score!==undefined)c=parseFloat(j.mvrv_z_score);else if(j.value!==undefined)c=parseFloat(j.value);if(c!==null&&!isNaN(c)){val=c;src='bitbo.io'}}}catch(e){}
+  if(val===null){try{const r=await fetch('https://charts.bgeometrics.com/data/mvrv_z_score.json',{signal:AbortSignal.timeout(8000)});if(r.ok){const j=await r.json();const arr=Array.isArray(j)?j:(j.data||j.values||[]);if(arr.length){const last=arr[arr.length-1];const c=parseFloat(Array.isArray(last)?last[1]:last.value||last.v);if(!isNaN(c)){val=c;src='bgeometrics.com'}}}}catch(e){}}
+  if(val===null){val=2.1;src='zaloha'}
+  renderMetric('mvrv',val,[
+    {max:-0.1,sig:'Akumuluj',cls:'sig-buy',bar:5,c:'var(--green)'},
+    {max:2,sig:'Drz',cls:'sig-hold',bar:25,c:'#FFD60A'},
+    {max:4,sig:'Stredni',cls:'sig-hold',bar:50,c:'#FF9F0A'},
+    {max:6,sig:'Opatrne',cls:'sig-sell',bar:75,c:'var(--red)'},
+    {max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:95,c:'var(--red)'}
+  ]);
+  $('mvrvSrc').textContent=src;
+}
+
+async function loadPuell(){
+  let val=null,src='';
+  try{const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=400&interval=daily',{signal:AbortSignal.timeout(12000)});if(r.ok){const j=await r.json();const prices=j.prices;if(prices&&prices.length>=100){const HALVING=1713484800000;const last=prices[prices.length-1];const todayIss=last[1]*(last[0]>=HALVING?450:900);const slice=prices.slice(-365);const ma=slice.reduce((s,p)=>s+p[1]*(p[0]>=HALVING?450:900),0)/slice.length;if(ma>0&&isFinite(todayIss/ma)){val=parseFloat((todayIss/ma).toFixed(3));src='vypocet CoinGecko'}}}}catch(e){}
+  if(val===null||isNaN(val)){val=1.42;src='zaloha'}
+  renderMetric('puell',val,[
+    {max:0.5,sig:'Akumuluj',cls:'sig-buy',bar:8,c:'var(--green)'},
+    {max:1.0,sig:'Drz',cls:'sig-hold',bar:25,c:'#FFD60A'},
+    {max:2.0,sig:'Neutral',cls:'sig-hold',bar:45,c:'#FFD60A'},
+    {max:4.0,sig:'Opatrne',cls:'sig-sell',bar:70,c:'#FF9F0A'},
+    {max:Infinity,sig:'Vrchol?',cls:'sig-sell',bar:92,c:'var(--red)'}
+  ]);
+  $('puellSrc').textContent=src;
+}
+
+function renderMetric(id,val,tiers){
+  const tier=tiers.find(t=>val<=t.max)||tiers[tiers.length-1];
+  const el=$(id+'Val');if(!el)return;
+  el.innerHTML='';el.textContent=val.toFixed(2);el.style.color=tier.c;
+  const s=$(id+'Sig');if(s){s.textContent=tier.sig;s.className='metric-sig '+tier.cls}
+  const bar=$(id+'Bar');if(bar){bar.style.width=tier.bar+'%';bar.style.background=tier.c}
+  applyMetricHelpButton(id,tier.sig);
+}
+
+const metricHelpTexts={
+  mvrv:{label:'MVRV Z-Score',
+    'Akumuluj':{title:'MVRV - Akumuluj',text:'On-chain hodnota indikuje levnou fazi trhu. Vhodne pro postupne prikupovani (DCA). Spise pravidelne nez vse najednou.'},
+    'Drz':{title:'MVRV - Drz',text:'Trh neni ani levny, ani prepaleny. Drz soucasnou pozici a cekej na jasnejsi signal k nakupu nebo realizaci zisku.'},
+    'Stredni':{title:'MVRV - Stredni',text:'Standardni stav bez silneho extremu. Pokracuj v nastavene strategii a sleduj ostatni metriky.'},
+    'Neutral':{title:'MVRV - Neutral',text:'Trh je z pohledu MVRV vyvazeny. Vhodne pro DCA strategii bez drastickych zmen pozice.'},
+    'Opatrne':{title:'MVRV - Opatrne',text:'MVRV se blizi prekouperym zonam. Uvazuj o postupne realizaci zisku a omez nove nakupy.'},
+    'Vrchol?':{title:'MVRV - Potencialni vrchol',text:'Historicky podobne hodnoty predchazely lokalnim vrcholum. Vhodna je postupna realizace zisku a konzervativnejsi pristup.'},
+    default:{title:'MVRV Z-Score',text:'Nizsi hodnoty nahraji akumulaci, vyssi spise realizaci zisku. Kombinuj vzdy s dalsimi indikatory.'}
+  },
+  puell:{label:'Puell Multiple',
+    'Akumuluj':{title:'Puell - Akumuluj',text:'Minerske prijmy jsou nizko voci historii - chladnejsi faze trhu. Vhodne pro akumulaci s dlouhodobym horizontem.'},
+    'Drz':{title:'Puell - Drz',text:'Aktualni uroven neindikuje extrem. Drz soucasnou pozici a sleduj dalsi vyvoj.'},
+    'Stredni':{title:'Puell - Stredni',text:'Bezny stav bez vyznamneho cyklickeho extremu. Ric se celkovym planem.'},
+    'Neutral':{title:'Puell - Neutral',text:'Minerske prijmy jsou pobliz normalu. Pokracuj v nastavene strategii.'},
+    'Opatrne':{title:'Puell - Opatrne',text:'Hodnoty se blizi zvysenemu pasmu. Zvaz redukci casti pozice a omez nove nakupy.'},
+    'Vrchol?':{title:'Puell - Potencialni vrchol',text:'Historicky se tyto urovne objevuji blizko vrcholu. Uvazuj o postupnem prodeji a ochrane zisku.'},
+    default:{title:'Puell Multiple',text:'Nizke hodnoty Puell doprovazi akumulacni faze, vysoke spise pozdni fazi cyklu.'}
   }
+};
+function applyMetricHelpButton(metricId,sigText){
+  const btn=document.querySelector('.metric-info-btn[data-metric="'+metricId+'"]');
+  if(btn)btn.dataset.state=sigText;
+}
+function openMetricHelp(metricId){
+  const overlay=$('metricHelp');
+  const btn=document.querySelector('.metric-info-btn[data-metric="'+metricId+'"]');
+  const meta=metricHelpTexts[metricId]||{};
+  const sig=(btn&&btn.dataset.state)||'';
+  const cfg=meta[sig]||meta.default||{title:metricId,text:'Tento signal pomaha orientovat se v cyklu.'};
+  $('metricHelpChip').textContent=(meta.label||metricId).toUpperCase();
+  $('metricHelpTitle').textContent=cfg.title;
+  $('metricHelpState').textContent=sig?'Aktualni signal: '+sig:'';
+  $('metricHelpText').textContent=cfg.text;
+  overlay.style.display='flex';
+  requestAnimationFrame(()=>overlay.classList.add('show'));
+}
+function closeMetricHelp(){
+  const o=$('metricHelp');o.classList.remove('show');
+  setTimeout(()=>{if(!o.classList.contains('show'))o.style.display='none'},200);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMetricHelp()});
+document.getElementById('metricHelp').addEventListener('click',e=>{if(e.target.id==='metricHelp')closeMetricHelp()});
 
-  function switchTab(t){
-    activeTab=t;
-    if(t==='market'){
-      $('tabMarket').classList.add('active');
-      $('tabPort').classList.remove('active');
-      $('marketView').style.display='block';
-      $('portView').classList.remove('show');
-      $('chartView').classList.remove('show');
-    } else {
-      $('tabPort').classList.add('active');
-      $('tabMarket').classList.remove('active');
-      $('marketView').style.display='none';
-      $('chartView').classList.remove('show');
-      $('portView').classList.add('show');
-      if(!portUnlocked){
-        showLock();
-      } else {
-        renderPortfolio();
-      }
-    }
+function updateHalving(){const next=new Date('2028-04-19T00:00:00Z'),now=new Date(),diff=next-now;if(diff>0){$('halvingDays').textContent=Math.floor(diff/86400000).toLocaleString('cs-CZ');$('halvingDate').textContent='~'+next.toLocaleDateString('cs-CZ',{month:'long',year:'numeric'})}else{$('halvingDays').textContent='0';$('halvingDate').textContent='Halving probehl!'}}
+
+async function loadSparkData(){try{const r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1&interval=hourly');if(!r.ok)return;const j=await r.json();sparkData=j.prices.map(p=>p[1]);drawSpark()}catch(e){}}
+function drawSpark(){if(sparkData.length<2)return;const canvas=$('sparkCanvas'),dpr=window.devicePixelRatio||1,W=90,H=46;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);const mn=Math.min(...sparkData),mx=Math.max(...sparkData),range=mx-mn||1;const n=sparkData.length,pad=3,w=W-pad*2,h=H-pad*2;const xOf=i=>pad+(i/(n-1))*w,yOf=v=>pad+h-(((v-mn)/range)*h);const isUp=sparkData[n-1]>=sparkData[0],color=isUp?'48,209,88':'255,69,58';const gr=ctx.createLinearGradient(0,pad,0,pad+h);gr.addColorStop(0,'rgba('+color+',0.3)');gr.addColorStop(1,'rgba('+color+',0)');ctx.beginPath();ctx.moveTo(xOf(0),yOf(sparkData[0]));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]))}ctx.lineTo(xOf(n-1),H);ctx.lineTo(xOf(0),H);ctx.closePath();ctx.fillStyle='rgba('+color+',0.15)';ctx.fill();ctx.beginPath();ctx.moveTo(xOf(0),yOf(sparkData[0]));for(let i=1;i<n;i++){const cpx=(xOf(i-1)+xOf(i))/2;ctx.bezierCurveTo(cpx,yOf(sparkData[i-1]),cpx,yOf(sparkData[i]),xOf(i),yOf(sparkData[i]))}ctx.strokeStyle='rgba('+color+',1)';ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(xOf(n-1),yOf(sparkData[n-1]),2.5,0,Math.PI*2);ctx.fillStyle='rgba('+color+',1)';ctx.fill()}
+
+function connectWS(){
+  if(ws){try{ws.close()}catch(e){}}
+  ws=new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
+  ws.onopen=()=>{wsReady=true;$('ts').textContent='Pripojeno...'};
+  ws.onmessage=e=>{try{
+    const d=JSON.parse(e.data);
+    currentUSD=parseFloat(d.c);currentCZK=currentUSD*fxRate;
+    const ch=parseFloat(d.P),hi=parseFloat(d.h),lo=parseFloat(d.l),vol=parseFloat(d.q);
+    const uel=$('usd'),cel=$('czk'),bad=$('badge');
+    uel.className='';uel.style='';uel.textContent=fmt(currentUSD);
+    cel.className='';cel.style='';cel.textContent=fmt(currentCZK);
+    bad.className='badge '+(ch>=0?'up':'dn');bad.style='';
+    bad.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+(ch>=0?'M5 15l7-7 7 7':'M19 9l-7 7-7-7')+'"/></svg>'+pct(ch)+' za 24h';
+    $('s1').textContent='$'+fmt(hi);$('s2').textContent='$'+fmt(lo);
+    $('s3').textContent='$'+fmtB(currentUSD*19700000);$('s4').textContent='$'+fmtB(vol);
+    $('ts').textContent='Zive - '+new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    if(activeTab==='portfolio')updatePortValues();
+    if(chartMode&&$('chartView').classList.contains('show')){$('chartPrice').textContent=(chartMode==='czk'?fmt(currentCZK)+' Kc':'$'+fmt(currentUSD))}
+  }catch(e){}};
+  ws.onerror=()=>{wsReady=false};
+  ws.onclose=()=>{wsReady=false;setTimeout(connectWS,3000)};
+}
+
+function openChart(mode){
+  chartMode=mode;chartDays='1';
+  $('marketView').style.display='none';
+  $('portView').classList.remove('show');
+  $('chartView').classList.add('show');
+  $('chartCurrency').textContent=mode.toUpperCase();
+  $('chartPrice').textContent=mode==='czk'?fmt(currentCZK)+' Kc':'$'+fmt(currentUSD);
+  document.querySelectorAll('.period').forEach((b,i)=>{b.classList.toggle('active',i===0)});
+  loadChart();
+}
+function closeChart(){
+  $('chartView').classList.remove('show');
+  if(activeTab==='portfolio'){$('portView').classList.add('show')}
+  else{$('marketView').style.display=''}
+}
+function setPeriod(days,btn){
+  chartDays=days;
+  document.querySelectorAll('.period').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  loadChart();
+}
+async function loadChart(){
+  const canvas=$('chartCanvas'),loading=$('chartLoading'),tt=$('tooltip');
+  canvas.style.display='none';loading.style.display='flex';tt.style.display='none';
+  $('loadingText').textContent='Nacitam graf...';$('progBar').style.display='none';
+  try{
+    const days=chartDays==='max'?'max':chartDays;
+    const interval=chartDays==='1'?'hourly':chartDays<=30?'daily':'daily';
+    let url='https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days='+days;
+    if(chartDays!=='max')url+='&interval='+interval;
+    const r=await fetch(url,{signal:AbortSignal.timeout(15000)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    chartData=j.prices;
+    if(chartMode==='czk')chartData=chartData.map(p=>[p[0],p[1]*fxRate]);
+    loading.style.display='none';canvas.style.display='block';
+    drawChart();
+  }catch(e){
+    loading.innerHTML='<span style="color:var(--red)">Chyba nacteni grafu</span>';
   }
-
-  function showLock(){
-    $('faceLock').classList.remove('hidden');
-    $('mainWrap').style.opacity='0';
-    $('lockErr').textContent='';
-    const hasCred=localStorage.getItem('faceid_registered')==='true';
-    if(!hasCred){
-      $('lockSub').innerHTML='Vytvoř si bezpečný biometrický zámek pro své portfolio.<br/>Tvá data zůstanou bezpečně uložena v klíči zařízení.';
-      $('faceBtn').innerHTML='<span class="face-btn-icon">🔒</span><span class="face-btn-label">Zaregistrovat Face ID</span><span class="face-btn-sub">Vytvořit šifrovaný přístup</span>';
-      $('lockNote').textContent='Aplikace nepřenáší biometrická data na žádný server. Vše probíhá lokálně v bezpečném čipu.';
-    } else {
-      $('lockSub').textContent='Ověř svoji identitu pomocí Face ID / Touch ID';
-      $('faceBtn').innerHTML='<span class="face-btn-icon">🫥</span><span class="face-btn-label">Odemknout Face ID</span><span class="face-btn-sub">Biometrické ověření</span>';
-      $('lockNote').textContent='';
-      setTimeout(doFaceAuth, 300);
-    }
-  }
-
-  async function doFaceAuth(){
-    $('lockErr').textContent='';
-    const hasCred=localStorage.getItem('faceid_registered')==='true';
-    if(!hasCred){
-      try {
-        const challenge=new Uint8Array(32);
-        window.crypto.getRandomValues(challenge);
-        const userId=new Uint8Array(16);
-        window.crypto.getRandomValues(userId);
-        const crOpt={
-          publicKey: {
-            challenge: challenge,
-            rp: { name: "Bitcoin Dashboard Secure" },
-            user: { id: userId, name: "user@btc.local", displayName: "Btc User" },
-            pubKeyCredParams: [{type: "public-key", alg: -7}, {type: "public-key", alg: -257}],
-            timeout: 60000,
-            authenticatorSelection: { userVerification: "required" },
-            attestation: "none"
-          }
-        };
-        const cred=await navigator.credentials.create(crOpt);
-        if(cred){
-          localStorage.setItem('faceid_registered','true');
-          portUnlocked=true;
-          $('faceLock').classList.add('hidden');
-          $('mainWrap').style.opacity='1';
-          renderPortfolio();
-        }
-      } catch(e){
-        $('lockErr').textContent='Registrace selhala: '+e.message;
-      }
-    } else {
-      try {
-        const challenge=new Uint8Array(32);
-        window.crypto.getRandomValues(challenge);
-        const allowOpt={
-          publicKey: {
-            challenge: challenge,
-            timeout: 60000,
-            userVerification: "required"
-          }
-        };
-        const assertion=await navigator.credentials.get(allowOpt);
-        if(assertion){
-          portUnlocked=true;
-          $('faceLock').classList.add('hidden');
-          $('mainWrap').style.opacity='1';
-          renderPortfolio();
-        }
-      } catch(e){
-        $('lockErr').textContent='Ověření selhalo. Zkus to znovu.';
-      }
-    }
-  }
-
-  function resetFaceID(){
-    if(confirm('Opravdu chceš resetovat registraci Face ID pro toto portfolio?')){
-      localStorage.removeItem('faceid_registered');
-      portUnlocked=false;
-      showLock();
-    }
-  }
-
-  function renderPortfolio(){
-    const btcStr=localStorage.getItem('portfolio_btc');
-    if(!btcStr){
-      $('portSetup').style.display='block';
-      $('portDash').style.display='none';
-    } else {
-      $('portSetup').style.display='none';
-      $('portDash').style.display='block';
-      const amt=parseFloat(btcStr);
-      $('portBtcAmt').textContent=amt.toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:8});
-      updatePortfolioValues();
-    }
-  }
-
-  function savePortfolio(){
-    const val=$('btcSetupInput').value;
-    if(val && parseFloat(val)>=0){
-      localStorage.setItem('portfolio_btc',parseFloat(val).toString());
-      renderPortfolio();
-    }
-  }
-
-  function editPortfolio(){
-    const current=localStorage.getItem('portfolio_btc')||'0';
-    $('btcSetupInput').value=current;
-    $('portSetup').style.display='block';
-    $('portDash').style.display='none';
-  }
-
-  function updatePortfolioValues(){
-    const btcStr=localStorage.getItem('portfolio_btc');
-    if(!btcStr || !btcUsd) return;
-    const amt=parseFloat(btcStr);
-    const uVal=amt*btcUsd;
-    const cVal=amt*btcCzk;
-    $('portUSD').textContent='$'+uVal.toLocaleString('cs-CZ',{maximumFractionDigits:0});
-    $('portCZK').textContent=cVal.toLocaleString('cs-CZ',{maximumFractionDigits:0})+' Kč';
-    renderTrades();
-  }
-
-  function getTrades(){
-    try{return JSON.parse(localStorage.getItem('portfolio_trades')||'[]')}catch(e){return []}
-  }
-
-  function saveTrades(t){
-    localStorage.setItem('portfolio_trades',JSON.stringify(t));
-  }
-
-  function addTrade(){
-    const d=$('tradeDate').value;
-    const a=parseFloat($('tradeAmount').value);
-    const p=parseFloat($('tradePrice').value);
-    if(!d||isNaN(a)||a<=0||isNaN(p)||p<=0){
-      alert('Vyplň všechna pole správně.');
-      return;
-    }
-    const t=getTrades();
-    t.push({id:Date.now(),date:d,amount:a,price:p});
-    saveTrades(t);
-    $('tradeAmount').value='';
-    $('tradePrice').value='';
-    renderTrades();
-  }
-
-  function removeTrade(id){
-    let t=getTrades();
-    t=t.filter(x=>x.id!==id);
-    saveTrades(t);
-    renderTrades();
-  }
-
-  function renderTrades(){
-    const trades=getTrades();
-    const container=$('tradesList');
-    if(trades.length===0){
-      container.innerHTML='<div style="text-align:center;font-size:12px;color:var(--text3);padding:20px 0;">Žádné evidované nákupy. Přidej svůj první nákup výše pro sledování zisku.</div>';
-      return;
-    }
-    let totalCzkCost=0, totalBtc=0;
-    let html='<div style="margin-top:16px;margin-bottom:10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text2)">Historie nákupů</div>';
-    trades.sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach(t=>{
-      const cost=t.amount*t.price;
-      const currentVal=t.amount*btcCzk;
-      const pnlCzk=currentVal-cost;
-      totalCzkCost+=cost;
-      totalBtc+=t.amount;
-      const pnlClass=pnlCzk>=0?'var(--green)':'var(--red)';
-      const pnlSign=pnlCzk>=0?'+':'';
-      const formattedDate=new Date(t.date).toLocaleDateString('cs-CZ',{day:'numeric',month:'numeric',year:'2-digit'});
-      html+=`<div class="trade-row">
-        <div>
-          <div class="trade-cell-lbl">${formattedDate}</div>
-          <div class="trade-cell" style="color:var(--btc)">${t.amount} BTC</div>
-        </div>
-        <div>
-          <div class="trade-cell-lbl">Nákupní kurz</div>
-          <div class="trade-cell">${Math.round(t.price).toLocaleString('cs-CZ')} Kč</div>
-        </div>
-        <div style="text-align:right">
-          <div class="trade-cell-lbl">Zisk / Ztráta</div>
-          <div class="trade-cell" style="color:${pnlClass}">${pnlSign}${Math.round(pnlCzk).toLocaleString('cs-CZ')} Kč</div>
-        </div>
-        <div style="text-align:right">
-          <button class="trade-del" onclick="removeTrade(${t.id})">×</button>
-        </div>
-      </div>`;
-    });
-    if(totalBtc>0 && btcCzk>0){
-      const totalCurrentVal=totalBtc*btcCzk;
-      const totalPnlCzk=totalCurrentVal-totalCzkCost;
-      const totalPnlPct=(totalPnlCzk/totalCzkCost)*100;
-      const avgPrice=totalCzkCost/totalBtc;
-      const pnlClass=totalPnlCzk>=0?'var(--green)':'var(--red)';
-      const pnlSign=totalPnlCzk>=0?'+':'';
-      html=`<div class="pnl-grid" style="margin-bottom:14px;">
-        <div class="pnl-box"><div class="pnl-lbl">Průměrný nákup</div><div class="pnl-val">${Math.round(avgPrice).toLocaleString('cs-CZ')} Kč</div></div>
-        <div class="pnl-box highlight"><div class="pnl-lbl">Celkový profit</div><div class="pnl-val" style="color:${pnlClass}">${pnlSign}${Math.round(totalPnlPct*10)/10}%</div></div>
-      </div>`+html;
-    }
-    container.innerHTML=html;
-  }
-
-  function fmt(v){
-    if(v>=100000) return v.toLocaleString('cs-CZ',{maximumFractionDigits:0});
-    if(v>=1000) return v.toLocaleString('cs-CZ',{maximumFractionDigits:1});
-    return v.toLocaleString('cs-CZ',{maximumFractionDigits:2});
-  }
-
-  async function loadFX(){
-    try{
-      const r=await fetch('https://open.er-api.com/v6/latest/USD');
-      const d=await r.json();
-      if(d && d.rates && d.rates.CZK) fxUsdCzk=d.rates.CZK;
-    }catch(e){}
-  }
-
-  async function loadCoreData(){
-    try{
-      const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_high=true&include_24hr_low=true&include_24hr_change=true');
-      const d=await r.json();
-      if(d && d.bitcoin){
-        btcUsd=d.bitcoin.usd;
-        btcCzk=btcUsd*fxUsdCzk;
-        $('btcPrice').textContent='$'+fmt(btcUsd);
-        $('btcPriceCzk').textContent=fmt(btcCzk)+' Kč';
-        const ch=d.bitcoin.usd_24h_change||0;
-        const b=$('btcBadge');
-        b.className='badge '+(ch>=0?'up':'dn');
-        b.innerHTML=(ch>=0?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>')+Math.abs(ch).toFixed(2)+'%';
-        $('statHigh').textContent='$'+fmt(d.bitcoin.usd_24h_high||0);
-        $('statLow').textContent='$'+fmt(d.bitcoin.usd_24h_low||0);
-        $('ts').textContent='Aktualizováno: '+new Date().toLocaleTimeString('cs-CZ');
-        updatePortfolioValues();
-      }
-    }catch(e){}
-  }
-
-  async function loadFearGreed(){
-    try{
-      const r=await fetch('https://api.alternative.me/fng/');
-      const d=await r.json();
-      if(d && d.data && d.data[0]){
-        const v=parseInt(d.data[0].value);
-        $('fgVal').textContent=v;
-        $('fgBar').style.width=v+'%';
-        $('fgCircle').setAttribute('stroke-dasharray',`${v}, 100`);
-        let mood='Neutrální';
-        if(v<=25){mood='Extrémní Strach';$('fgBar').style.backgroundColor='#FF453A'}
-        else if(v<45){mood='Strach';$('fgBar').style.backgroundColor='#FF9F0A'}
-        else if(v<=55){mood='Neutrální';$('fgBar').style.backgroundColor='#FFD60A'}
-        else if(v<=75){mood='Chamtivost';$('fgBar').style.backgroundColor='#30D158'}
-        else {mood='Extrémní Chamtivost';$('fgBar').style.backgroundColor='#BF5AF2'}
-        $('fgMood').textContent=mood;
-      }
-    }catch(e){}
-  }
-
-  async function loadCycleMetrics(){
-    try {
-      if(!btcUsd) return;
-      const days=Math.max(0,Math.ceil((new Date('2028-04-17')-new Date())/(1000*60*60*24)));
-      $('halvingDays').textContent=days;
-      const m2=1.35;
-      $('m2Val').textContent=m2.toFixed(2);
-      const m2Sig=$('m2Sig');
-      m2Sig.textContent='HOLD';m2Sig.className='metric-sig sig-hold';$('m2Bar').style.width='55%';$('m2Bar').style.backgroundColor='#FFD60A';
-      const m1Val=0.68;
-      $('m1Val').textContent=(m1Val*100).toFixed(0)+'%';
-      const m1Sig=$('m1Sig');
-      m1Sig.textContent='BUY ACCUMULATE';m1Sig.className='metric-sig sig-buy';$('m1Bar').style.width='35%';$('m1Bar').style.backgroundColor='#30D158';
-    } catch(e){}
-  }
-
-  function connectWS(){
-    if(ws)try{ws.close()}catch(e){}
-    ws=new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
-    ws.onopen=()=>{wsReady=true};
-    ws.onmessage=e=>{
-      try{
-        const d=JSON.parse(e.data);
-        if(d && d.c){
-          btcUsd=parseFloat(d.c);
-          btcCzk=btcUsd*fxUsdCzk;
-          if(activeTab==='market' && $('marketView').style.display!=='none'){
-            $('btcPrice').textContent='$'+fmt(btcUsd);
-            $('btcPriceCzk').textContent=fmt(btcCzk)+' Kč';
-          }
-          if(activeTab==='portfolio' && portUnlocked) updatePortfolioValues();
-          $('ts').textContent='Aktualizováno: Živě';
-        }
-      }catch(err){}
-    };
-    ws.onclose=()=>{wsReady=false;setTimeout(connectWS,5000)};
-    ws.onerror=()=>{wsReady=false};
-  }
-
-  function openChart(mode='usd'){
-    chartMode=mode;
-    $('marketView').style.display='none';
-    $('portView').classList.remove('show');
-    $('chartView').classList.add('show');
-    $('chartLabel').textContent=mode==='usd'?'Cena Bitcoin (USD)':'Cena Bitcoin (CZK)';
-    loadChartData(currentPeriod);
-  }
-
-  function closeChart(){
-    $('chartView').classList.remove('show');
-    switchTab(activeTab);
-  }
-
-  async function loadChartData(period){
-    currentPeriod=period;
-    ['p1W','p1M','p1Y','pALL'].forEach(p=>$(p).classList.remove('active'));
-    $('p'+period).classList.add('active');
-    const canvas=$('chartCanvas');
-    canvas.style.display='none';
-    $('chartLoading').style.display='flex';
-    const fill=$('progFill');
-    fill.style.width='20%';
-    let days=30;
-    if(period==='1W') days=7;
-    if(period==='1Y') days=365;
-    if(period==='ALL') days=365*6;
-    fill.style.width='50%';
-    try{
-      const r=await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${days}&interval=daily`);
-      const d=await r.json();
-      fill.style.width='90%';
-      if(d && d.prices){
-        chartData=d.prices.map(p=>({t:p[0],v:modeValue(p[1])}));
-        fill.style.width='100%';
-        setTimeout(()=>{
-          $('chartLoading').style.display='none';
-          canvas.style.display='block';
-          drawChart();
-        },200);
-      }
-    }catch(e){
-      $('chartLoading').textContent='Chyba stahování dat grafu.';
-    }
-  }
-
-  function modeValue(usdVal){
-    return chartMode==='usd'?usdVal:usdVal*fxUsdCzk;
-  }
-
-  function drawChart(){
-    const canvas=$('chartCanvas');
-    const ctx=canvas.getContext('2d');
-    const rect=canvas.parentNode.getBoundingClientRect();
-    const w=rect.width;const h=200;
-    canvas.width=w*window.devicePixelRatio;canvas.height=h*window.devicePixelRatio;
-    canvas.style.width=w+'px';canvas.style.height=h+'px';
-    ctx.scale(window.devicePixelRatio,window.devicePixelRatio);
-    if(chartData.length===0) return;
-    const vals=chartData.map(d=>d.v);
-    const min=Math.min(...vals), max=Math.max(...vals), rng=max-min;
-    const pad={t:15,b:15,l:10,r:10};
-    const n=chartData.length;
-    const xOf=idx=>pad.l+((w-pad.l-pad.r)/(n-1))*idx;
-    const yOf=val=>pad.t+(h-pad.t-pad.b)*(1-((val-min)/(rng||1)));
-    ctx.clearRect(0,0,w,h);
-    const isLight=document.documentElement.classList.contains('light');
-    const grad=ctx.createLinearGradient(0,0,0,h);
-    grad.addColorStop(0,isLight?'rgba(255,159,10,0.35)':'rgba(255,159,10,0.22)');
-    grad.addColorStop(1,'transparent');
-    ctx.beginPath();
-    ctx.moveTo(xOf(0),h);
-    for(let i=0;i<n;i++) ctx.lineTo(xOf(i),yOf(chartData[i].v));
-    ctx.lineTo(xOf(n-1),h);
-    ctx.closePath();
-    ctx.fillStyle=grad;
-    ctx.fill();
-    ctx.beginPath();
-    for(let i=0;i<n;i++){
-      if(i===0) ctx.moveTo(xOf(i),yOf(chartData[i].v));
-      else ctx.lineTo(xOf(i),yOf(chartData[i].v));
-    }
-    ctx.strokeStyle='#FF9F0A';ctx.lineWidth=2.5;ctx.stroke();
-    const last=chartData[n-1].v, first=chartData[0].v, diff=last-first, pct=first>0?(diff/first)*100:0;
-    const sign=diff>=0?'+':'';
-    $('chartPrice').textContent=(chartMode==='usd'?'$':'')+fmt(last)+(chartMode==='czk'?' Kč':'');
-    const ch=$('chartChange');
-    ch.textContent=`${sign}${pct.toFixed(2)}% za období`;
-    ch.className='chart-change '+(diff>=0?'up':'dn');
-    setupTracking(canvas,pad,w,xOf,yOf,n);
-  }
-
-  function setupTracking(canvas,pad,w,xOf,yOf,n){
-    const tip=$('tooltip');
-    function show(cx){
-      const rect=canvas.getBoundingClientRect(),x=cx-rect.left;
-      const idx=Math.max(0,Math.min(n-1,Math.round(((x-pad.l)/w)*(n-1))));
-      const pt=chartData[idx];
-      if(!pt) return;
-      const sym=chartMode==='czk'?' Kč':'',pre=chartMode==='usd'?'$':'';
-      tip.textContent=pre+fmt(pt.v)+sym;
-      tip.style.display='block';
-      tip.style.left=xOf(idx)+'px';
-      tip.style.top=(yOf(pt.v)-34)+'px';
-      $('chartPrice').textContent=pre+fmt(pt.v)+sym;
-    }
-    function hide(){
-      tip.style.display='none';
-      const last=chartData[n-1];
-      if(last)$('chartPrice').textContent=(chartMode==='usd'?'$':'')+fmt(last.v)+(chartMode==='czk'?' Kč':'');
-    }
-    canvas.ontouchstart=e=>{e.preventDefault();show(e.touches[0].clientX)};
-    canvas.ontouchmove=e=>{e.preventDefault();show(e.touches[0].clientX)};
-    canvas.ontouchend=()=>setTimeout(hide,1500);
-    canvas.onmousemove=e=>show(e.clientX);
-    canvas.onmouseleave=()=>hide();
-  }
-
-  document.addEventListener('visibilitychange',()=>{
-    if(document.visibilityState==='hidden' && portUnlocked) portUnlocked=false;
-    if(document.visibilityState==='visible'){
-      loadFX();
-      if(!wsReady) connectWS();
-      if(activeTab==='portfolio' && !portUnlocked) showLock();
-    }
-  });
-
-  window.addEventListener('resize',()=>{if($('chartCanvas').style.display==='block') drawChart()});
-
-  window.onload=async()=>{
-    initTheme();
-    $('tradeDate').valueAsDate=new Date();
-    await loadFX();
-    await loadCoreData();
-    connectWS();
-    loadFearGreed();
-    loadCycleMetrics();
-    setInterval(loadCoreData,45000);
-    setInterval(loadFearGreed,300000);
-  };
-</script>
-</body>
-</html>
+}
+function drawChart(){
+  const canvas=$('chartCanvas'),wrap=$('canvasWrap'),tt=$('tooltip');
+  const dpr=window.devicePixelRatio||1;
+  const W=wrap.clientWidth,H=200;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';
+  const ctx=canvas.getContext
