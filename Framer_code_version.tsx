@@ -68,10 +68,6 @@ interface NavbarGroup {
 interface GlobalStyleGroup {
     siteColor: string
     siteColorCustom: string
-    showColorSwitcher: boolean
-    switcherLabel: string
-    switcherResetLabel: string
-    switcherPosition: string
     bgColor: string
     textColor: string
     textMutedColor: string
@@ -302,7 +298,6 @@ const COLOR_PRESETS: { key: string; title: string; color: string }[] = [
 
 const SITE_COLOR_CUSTOM = "custom"
 const SITE_COLOR_PICK = "pick"
-const SWITCHER_STORAGE_KEY = "lbc-site-color"
 
 function presetColor(key: string): string {
     const hit = COLOR_PRESETS.filter((preset) => preset.key === key)[0]
@@ -1929,45 +1924,6 @@ const CSS_TEXT = `
   .lbc-spool-reel { animation: none !important; }
 }
 
-/* ---- one-click color switcher (optional, shown to visitors) ---- */
-.lbc-color-switcher { position: fixed; bottom: 26px; z-index: 205; display: flex; flex-direction: column; gap: 12px; }
-.lbc-color-switcher.pos-right { right: 26px; align-items: flex-end; }
-.lbc-color-switcher.pos-left { left: 26px; align-items: flex-start; }
-.lbc-color-switcher-toggle {
-  width: 52px; height: 52px; border-radius: 50%; cursor: pointer; padding: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.65); border: 1px solid rgba(255,255,255,0.6);
-  backdrop-filter: blur(18px) saturate(180%); -webkit-backdrop-filter: blur(18px) saturate(180%);
-  box-shadow: 0 8px 26px color-mix(in srgb, var(--lbc-card-shadow) 26%, transparent);
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-.lbc-color-switcher-toggle:hover { transform: translateY(-2px) scale(1.04); }
-.lbc-color-switcher-current { width: 23px; height: 23px; border-radius: 50%; background: var(--lbc-accent); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.75); }
-.lbc-color-switcher-panel {
-  display: none; flex-wrap: wrap; gap: 10px; width: 178px; padding: 14px; border-radius: 20px;
-  background: rgba(255,255,255,0.72); border: 1px solid rgba(255,255,255,0.6);
-  backdrop-filter: blur(22px) saturate(180%); -webkit-backdrop-filter: blur(22px) saturate(180%);
-  box-shadow: 0 18px 44px color-mix(in srgb, var(--lbc-card-shadow) 20%, transparent);
-}
-.lbc-color-switcher.is-open .lbc-color-switcher-panel { display: flex; }
-.lbc-color-swatch { width: 26px; height: 26px; border-radius: 50%; cursor: pointer; padding: 0; border: 2px solid transparent; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); transition: transform .2s ease; }
-.lbc-color-swatch:hover { transform: scale(1.12); }
-.lbc-color-swatch.is-active { border-color: var(--lbc-text); }
-.lbc-color-switcher-reset {
-  width: 100%; padding: 7px 10px; border-radius: 999px; cursor: pointer; font-size: 0.78rem;
-  font-family: var(--lbc-body-font); color: var(--lbc-text-muted);
-  background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.08);
-}
-.lbc-color-switcher-reset:hover { color: var(--lbc-accent); }
-@media (max-width: 700px) {
-  .lbc-color-switcher { bottom: 18px; }
-  .lbc-color-switcher.pos-right { right: 16px; }
-  .lbc-color-switcher.pos-left { left: 16px; }
-  .lbc-color-switcher-toggle { width: 46px; height: 46px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .lbc-color-switcher-toggle, .lbc-color-swatch { transition: none !important; }
-}
 `
 
 /**
@@ -2017,10 +1973,6 @@ export default function AbcLabSite(props: Props) {
     const {
         siteColor,
         siteColorCustom,
-        showColorSwitcher,
-        switcherLabel,
-        switcherResetLabel,
-        switcherPosition,
         bgColor,
         textColor,
         textMutedColor,
@@ -2212,10 +2164,6 @@ export default function AbcLabSite(props: Props) {
     }>({ open: false, index: 0 })
     const [reduceMotion, setReduceMotion] = React.useState(false)
     const [heroAutoplayPaused, setHeroAutoplayPaused] = React.useState(false)
-
-    // live color switcher: the visitor's pick beats every setting below it
-    const [visitorColor, setVisitorColor] = React.useState("")
-    const [switcherOpen, setSwitcherOpen] = React.useState(false)
 
     const toggleMenu = () => setMenuOpen((v) => !v)
     const closeMenu = () => setMenuOpen(false)
@@ -2484,22 +2432,15 @@ export default function AbcLabSite(props: Props) {
     const useDefaultColors = resetColors === true
 
     // Which single color is currently driving the whole site, if any.
-    // Priority: visitor's live pick > Reset Colors > Site Color preset /
-    // picker > nothing (= the individual color controls stay in charge).
+    // Priority: Reset Colors > Site Color preset / picker > nothing
+    // (= the individual color controls stay in charge).
     const themeColor = React.useMemo(() => {
-        if (showColorSwitcher !== false && visitorColor) return visitorColor
         if (useDefaultColors) return DEFAULT_ACCENT_COLOR
         if (siteColor === SITE_COLOR_PICK)
             return siteColorCustom || DEFAULT_ACCENT_COLOR
         if (!siteColor || siteColor === SITE_COLOR_CUSTOM) return ""
         return presetColor(siteColor)
-    }, [
-        showColorSwitcher,
-        visitorColor,
-        useDefaultColors,
-        siteColor,
-        siteColorCustom,
-    ])
+    }, [useDefaultColors, siteColor, siteColorCustom])
 
     const palette = React.useMemo(
         () => (themeColor ? buildPalette(themeColor) : null),
@@ -2515,28 +2456,6 @@ export default function AbcLabSite(props: Props) {
     )
 
     const resolvedAccent = themed("accent", accentColor, DEFAULT_ACCENT_COLOR)
-
-    React.useEffect(() => {
-        if (showColorSwitcher === false) return
-        try {
-            const saved = window.localStorage.getItem(SWITCHER_STORAGE_KEY)
-            if (saved) setVisitorColor(saved)
-        } catch (err) {
-            // private mode / storage disabled - the switcher still works,
-            // the pick just won't survive a reload
-        }
-    }, [showColorSwitcher])
-
-    const pickVisitorColor = React.useCallback((color: string) => {
-        setVisitorColor(color)
-        setSwitcherOpen(false)
-        try {
-            if (color) window.localStorage.setItem(SWITCHER_STORAGE_KEY, color)
-            else window.localStorage.removeItem(SWITCHER_STORAGE_KEY)
-        } catch (err) {
-            // ignore - storage is a nice-to-have here
-        }
-    }, [])
 
     const rootStyle: React.CSSProperties & Record<string, any> = {
         position: "relative",
@@ -2599,60 +2518,6 @@ export default function AbcLabSite(props: Props) {
                 Skip to content
             </a>
 
-            {/* --------- ONE-CLICK COLOR SWITCHER --------- */}
-            {showColorSwitcher === true && (
-                <div
-                    className={`lbc-color-switcher ${
-                        switcherPosition === "left" ? "pos-left" : "pos-right"
-                    } ${switcherOpen ? "is-open" : ""}`}
-                >
-                    <div
-                        className="lbc-color-switcher-panel"
-                        role="group"
-                        aria-label={switcherLabel || "Site color"}
-                    >
-                        {COLOR_PRESETS.map((preset) => (
-                            <button
-                                key={preset.key}
-                                type="button"
-                                title={preset.title}
-                                aria-label={preset.title}
-                                aria-pressed={
-                                    visitorColor.toLowerCase() ===
-                                    preset.color.toLowerCase()
-                                }
-                                className={`lbc-color-swatch ${
-                                    visitorColor.toLowerCase() ===
-                                    preset.color.toLowerCase()
-                                        ? "is-active"
-                                        : ""
-                                }`}
-                                style={{ background: preset.color }}
-                                onClick={() => pickVisitorColor(preset.color)}
-                            />
-                        ))}
-                        {visitorColor && (
-                            <button
-                                type="button"
-                                className="lbc-color-switcher-reset"
-                                onClick={() => pickVisitorColor("")}
-                            >
-                                {t(switcherResetLabel, "Original color")}
-                            </button>
-                        )}
-                    </div>
-                    <button
-                        type="button"
-                        className="lbc-color-switcher-toggle"
-                        aria-expanded={switcherOpen}
-                        aria-label={switcherLabel || "Site color"}
-                        title={switcherLabel || "Site color"}
-                        onClick={() => setSwitcherOpen((open) => !open)}
-                    >
-                        <span className="lbc-color-switcher-current" />
-                    </button>
-                </div>
-            )}
 
             {/* --------- NAVBAR --------- */}
             {visible(showNavbar) && (
@@ -3655,38 +3520,6 @@ addPropertyControls(AbcLabSite, {
                 hidden: (props: GlobalStyleGroup) =>
                     props.siteColor !== SITE_COLOR_PICK,
                 description: "The one color the whole site is built from.",
-            },
-            showColorSwitcher: {
-                type: ControlType.Boolean,
-                title: "Color Switcher",
-                defaultValue: false,
-                enabledTitle: "Show",
-                disabledTitle: "Hide",
-                description:
-                    "Adds a floating button on the live site so visitors can recolor the whole page with one click. Their choice is remembered in their browser and overrides the settings above.",
-            },
-            switcherPosition: {
-                type: ControlType.Enum,
-                title: "└ Position",
-                defaultValue: "right",
-                options: ["right", "left"],
-                optionTitles: ["Bottom Right", "Bottom Left"],
-                hidden: (props: GlobalStyleGroup) =>
-                    props.showColorSwitcher !== true,
-            },
-            switcherLabel: {
-                type: ControlType.String,
-                title: "└ Label",
-                defaultValue: "Site color",
-                hidden: (props: GlobalStyleGroup) =>
-                    props.showColorSwitcher !== true,
-            },
-            switcherResetLabel: {
-                type: ControlType.String,
-                title: "└ Reset Label",
-                defaultValue: "Original color",
-                hidden: (props: GlobalStyleGroup) =>
-                    props.showColorSwitcher !== true,
             },
             resetColors: {
                 type: ControlType.Boolean,
