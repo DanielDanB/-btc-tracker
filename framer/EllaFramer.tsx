@@ -501,8 +501,8 @@ const globalCSS = (c, t, fx) => {
   .booking-actions { display: flex; gap: 12px; flex-wrap: wrap; }
   .booking-note { color: var(--gray); font-size: 14px; }
   .cal-embed { width: 100%; min-height: 320px; border-radius: ${t.cardRadius}px; overflow: auto; border: 1px solid ${withAlpha(accent, 0.2)}; background: var(--card); }
-  .cal-embed > * { width: 100%; }
-  .cal-embed iframe { width: 100%; min-height: 100%; border: 0; display: block; }
+  .cal-embed > * { display: block; width: 100%; height: 100%; min-height: inherit; }
+  .cal-embed iframe { width: 100%; height: 100%; min-height: inherit; border: 0; display: block; }
   .cal-placeholder { display: flex; align-items: center; justify-content: center; text-align: center; padding: 32px 24px; color: var(--gray); font-size: 15px; min-height: 320px; }
   .ella-root .contact-inner.booking-full { grid-template-columns: 1fr; }
   .form-feedback { margin-top: 12px; font-size: 14px; }
@@ -623,6 +623,9 @@ function useCalBooking(booking, accent) {
         idRef.current = `cal-embed-${Math.random().toString(36).slice(2, 10)}`
     }
     const containerId = idRef.current
+    // Embed se smí vložit jen jednou; opakované volání pro stejný kontejner
+    // knihovna ignoruje a mazání jejího obsahu by ho zabilo natrvalo.
+    const initedKeyRef = useRef(null)
 
     const link = (booking.calLink || "")
         .trim()
@@ -662,31 +665,38 @@ function useCalBooking(booking, accent) {
             },
         }
         const selector = `#${containerId}`
-        const hasIframe = () => {
+        // Embed vkládá vlastní element (<cal-inline>) se shadow DOM, iframe
+        // uvnitř tedy nemusí být vidět – stačí nám, že kontejner není prázdný.
+        const isEmpty = () => {
             const el = document.getElementById(containerId)
-            return !!el && !!el.querySelector("iframe")
+            return !el || el.childElementCount === 0
         }
         const namespacedApi = () =>
             (window.Cal && window.Cal.ns && window.Cal.ns[namespace]) || null
+
+        const key = `${link}|${namespace}|${booking.layout}|${booking.theme}`
+        const alreadyInited = initedKeyRef.current === key
 
         // Přesně v pořadí, v jakém to vydává generátor Cal.com:
         // init(namespace) → inline → ui.
         Cal("init", namespace, { origin })
         const api = namespacedApi() || Cal
 
-        if (showsInline) {
+        if (showsInline && !alreadyInited) {
+            initedKeyRef.current = key
             const el = document.getElementById(containerId)
-            if (el) el.innerHTML = ""
+            // Vyčistit jen při přepnutí na jinou událost, ne při každém běhu.
+            if (el && el.childElementCount > 0) el.innerHTML = ""
             api("inline", { elementOrSelector: selector, calLink: link, config })
         }
         api("ui", uiOptions)
 
-        // Starší verze embed.js namespace neznají – když se do chvilky nic
-        // nevykreslí, zkusíme ještě API bez namespace.
+        // Starší verze embed.js namespace neznají – když je kontejner pořád
+        // prázdný, zkusíme ještě API bez namespace.
         let retry
-        if (showsInline) {
+        if (showsInline && !alreadyInited) {
             retry = setTimeout(() => {
-                if (hasIframe() || typeof window.Cal !== "function") return
+                if (!isEmpty() || typeof window.Cal !== "function") return
                 window.Cal("init", { origin })
                 window.Cal("inline", {
                     elementOrSelector: selector,
@@ -697,12 +707,7 @@ function useCalBooking(booking, accent) {
             }, 2500)
         }
 
-        return () => {
-            clearTimeout(retry)
-            if (!showsInline) return
-            const el = document.getElementById(containerId)
-            if (el) el.innerHTML = ""
-        }
+        return () => clearTimeout(retry)
     }, [
         active,
         showsInline,
@@ -718,18 +723,31 @@ function useCalBooking(booking, accent) {
     ])
 
     // Když embed nedojede (blokovaný skript, CSP, plátno Frameru), nabídneme
-    // aspoň odkaz na stránku události, aby se šlo objednat vždycky.
+    // aspoň odkaz na stránku události, aby se šlo objednat vždycky. Jakmile se
+    // kalendář objeví (klidně později), nabídku zase schováme.
     useEffect(() => {
         if (!showsInline) {
             setEmbedBlocked(false)
             return
         }
         setEmbedBlocked(false)
-        const timer = setTimeout(() => {
-            const el = document.getElementById(containerId)
-            setEmbedBlocked(!!el && !el.querySelector("iframe"))
-        }, 8000)
-        return () => clearTimeout(timer)
+        const el = document.getElementById(containerId)
+        if (!el) return
+
+        const check = () => setEmbedBlocked(el.childElementCount === 0)
+        const timer = setTimeout(check, 8000)
+        const observer =
+            typeof MutationObserver !== "undefined"
+                ? new MutationObserver(() => {
+                      if (el.childElementCount > 0) setEmbedBlocked(false)
+                  })
+                : null
+        if (observer) observer.observe(el, { childList: true })
+
+        return () => {
+            clearTimeout(timer)
+            if (observer) observer.disconnect()
+        }
     }, [showsInline, link, containerId])
 
     const buttonAttrs = showsButton
