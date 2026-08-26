@@ -87,6 +87,11 @@ Nastavení: do `Cal.com link` vlož svůj odkaz ve tvaru `uzivatel/udalost`
 (např. `ella/strihani`) – zvládne i celou adresu `https://cal.com/ella/strihani`.
 Dokud odkaz nevyplníš, komponenta místo kalendáře ukáže nápovědu.
 
+Kalendář se vkládá přes oficiální embed Cal.com s namespace (stejně, jak ho vydává
+jejich generátor); pokud by tvoje instance běžela na starší verzi embedu, komponenta
+si po chvíli sama zkusí i starší tvar API. Vložený kalendář je ve výchozím stavu přes
+celou šířku (`Full width calendar`) – měsíční pohled potřebuje místo.
+
 Dál si nastavíš `Layout` (měsíc / týden / sloupec), `Calendar theme`,
 `Calendar height`, `Full width calendar`, `Hide event details` a text tlačítka
 `Button text` s poznámkou `Button note`. Barva kalendáře přebírá akcentní barvu

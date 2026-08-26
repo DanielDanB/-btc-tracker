@@ -630,13 +630,20 @@ function useCalBooking(booking, accent) {
         .replace(/^\/+|\/+$/g, "")
     const active = booking.mode !== "form" && !!link
     const showsInline = active && booking.mode === "inline"
-    const showsButton = active && (booking.mode === "popup" || booking.mode === "both")
+    const showsButton =
+        active && (booking.mode === "popup" || booking.mode === "both")
     const brand = toHex(
         booking.useAccentColor === false ? booking.brandColor : accent,
         "#ff3d81"
     )
     const origin = (booking.origin || "https://cal.com").replace(/\/+$/, "")
     const bookingUrl = link ? `${origin}/${link}` : ""
+    // Cal.com dnes generuje embed kód s namespace odvozeným od události.
+    const namespace =
+        (link.split("/").pop() || "booking")
+            .toLowerCase()
+            .replace(/[^a-z0-9-]/g, "-")
+            .slice(0, 40) || "booking"
 
     const [embedBlocked, setEmbedBlocked] = useState(false)
 
@@ -645,29 +652,53 @@ function useCalBooking(booking, accent) {
         const Cal = ensureCalLoader(booking.embedJsUrl)
         if (!Cal) return
 
-        // Pořadí podle dokumentace Cal.com: init → inline → ui.
-        Cal("init", { origin })
-
-        if (showsInline) {
-            const el = document.getElementById(containerId)
-            if (el) el.innerHTML = ""
-            Cal("inline", {
-                elementOrSelector: `#${containerId}`,
-                calLink: link,
-                config: calConfig(booking),
-            })
-        }
-
-        Cal("ui", {
+        const config = calConfig(booking)
+        const uiOptions = {
             hideEventTypeDetails: !!booking.hideEventTypeDetails,
             layout: booking.layout || "month_view",
             cssVarsPerTheme: {
                 light: { "cal-brand": brand },
                 dark: { "cal-brand": brand },
             },
-        })
+        }
+        const selector = `#${containerId}`
+        const hasIframe = () => {
+            const el = document.getElementById(containerId)
+            return !!el && !!el.querySelector("iframe")
+        }
+        const namespacedApi = () =>
+            (window.Cal && window.Cal.ns && window.Cal.ns[namespace]) || null
+
+        // Přesně v pořadí, v jakém to vydává generátor Cal.com:
+        // init(namespace) → inline → ui.
+        Cal("init", namespace, { origin })
+        const api = namespacedApi() || Cal
+
+        if (showsInline) {
+            const el = document.getElementById(containerId)
+            if (el) el.innerHTML = ""
+            api("inline", { elementOrSelector: selector, calLink: link, config })
+        }
+        api("ui", uiOptions)
+
+        // Starší verze embed.js namespace neznají – když se do chvilky nic
+        // nevykreslí, zkusíme ještě API bez namespace.
+        let retry
+        if (showsInline) {
+            retry = setTimeout(() => {
+                if (hasIframe() || typeof window.Cal !== "function") return
+                window.Cal("init", { origin })
+                window.Cal("inline", {
+                    elementOrSelector: selector,
+                    calLink: link,
+                    config,
+                })
+                window.Cal("ui", uiOptions)
+            }, 2500)
+        }
 
         return () => {
+            clearTimeout(retry)
             if (!showsInline) return
             const el = document.getElementById(containerId)
             if (el) el.innerHTML = ""
@@ -676,6 +707,7 @@ function useCalBooking(booking, accent) {
         active,
         showsInline,
         link,
+        namespace,
         containerId,
         origin,
         booking.embedJsUrl,
@@ -685,7 +717,8 @@ function useCalBooking(booking, accent) {
         brand,
     ])
 
-    // Když skript nedojede (blokovaný, CSP, offline), nabídneme odkaz na Cal.com.
+    // Když embed nedojede (blokovaný skript, CSP, plátno Frameru), nabídneme
+    // aspoň odkaz na stránku události, aby se šlo objednat vždycky.
     useEffect(() => {
         if (!showsInline) {
             setEmbedBlocked(false)
@@ -695,13 +728,14 @@ function useCalBooking(booking, accent) {
         const timer = setTimeout(() => {
             const el = document.getElementById(containerId)
             setEmbedBlocked(!!el && !el.querySelector("iframe"))
-        }, 6000)
+        }, 8000)
         return () => clearTimeout(timer)
     }, [showsInline, link, containerId])
 
     const buttonAttrs = showsButton
         ? {
               "data-cal-link": link,
+              "data-cal-namespace": namespace,
               "data-cal-config": JSON.stringify(calConfig(booking)),
           }
         : {}
@@ -715,6 +749,7 @@ function useCalBooking(booking, accent) {
         link,
         bookingUrl,
         embedBlocked,
+        namespace,
     }
 }
 
@@ -1656,15 +1691,17 @@ function Contact({ data, booking, cal }) {
                                     }}
                                 />
                                 {cal.embedBlocked && cal.bookingUrl && (
-                                    <a
-                                        className="btn btn-primary"
-                                        href={cal.bookingUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {booking.buttonText ||
-                                            "Check availability"}
-                                    </a>
+                                    <div className="booking-actions">
+                                        <a
+                                            className="btn btn-primary"
+                                            href={cal.bookingUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {booking.buttonText ||
+                                                "Check availability"}
+                                        </a>
+                                    </div>
                                 )}
                             </>
                         ))}
@@ -1867,7 +1904,7 @@ const DEFAULTS = {
         brandColor: "#ff3d81",
         hideEventTypeDetails: false,
         height: 640,
-        fullWidth: false,
+        fullWidth: true,
         buttonText: "Check availability",
         note: "",
         ctaOpensBooking: true,
@@ -1959,10 +1996,10 @@ function resolveBooking(contact, legacy, accent) {
         hideEventTypeDetails: flag(
             c.calHideDetails,
             old.hideEventTypeDetails,
-            false
+            DEFAULTS.booking.hideEventTypeDetails
         ),
         height: pick(c.calHeight, old.height, DEFAULTS.booking.height),
-        fullWidth: flag(c.calFullWidth, old.fullWidth, false),
+        fullWidth: flag(c.calFullWidth, old.fullWidth, DEFAULTS.booking.fullWidth),
         buttonText: pick(
             c.calButtonText,
             old.buttonText,
