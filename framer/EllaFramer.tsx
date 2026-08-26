@@ -500,8 +500,9 @@ const globalCSS = (c, t, fx) => {
   .booking-side { display: flex; flex-direction: column; gap: 16px; }
   .booking-actions { display: flex; gap: 12px; flex-wrap: wrap; }
   .booking-note { color: var(--gray); font-size: 14px; }
-  .cal-embed { width: 100%; min-height: 320px; border-radius: ${t.cardRadius}px; overflow: hidden; border: 1px solid ${withAlpha(accent, 0.2)}; background: var(--card); }
+  .cal-embed { width: 100%; min-height: 320px; border-radius: ${t.cardRadius}px; overflow: auto; border: 1px solid ${withAlpha(accent, 0.2)}; background: var(--card); }
   .cal-embed > * { width: 100%; }
+  .cal-embed iframe { width: 100%; min-height: 100%; border: 0; display: block; }
   .cal-placeholder { display: flex; align-items: center; justify-content: center; text-align: center; padding: 32px 24px; color: var(--gray); font-size: 15px; min-height: 320px; }
   .ella-root .contact-inner.booking-full { grid-template-columns: 1fr; }
   .form-feedback { margin-top: 12px; font-size: 14px; }
@@ -616,8 +617,17 @@ function calConfig(booking) {
  * a atributy pro tlačítka, která mají otevřít rezervaci v popupu.
  */
 function useCalBooking(booking, accent) {
-    const inlineRef = useRef(null)
-    const link = (booking.calLink || "").trim().replace(/^https?:\/\/(app\.)?cal\.com\//i, "")
+    // Cal.com embed očekává selektor jako řetězec, ne DOM uzel.
+    const idRef = useRef(null)
+    if (!idRef.current) {
+        idRef.current = `cal-embed-${Math.random().toString(36).slice(2, 10)}`
+    }
+    const containerId = idRef.current
+
+    const link = (booking.calLink || "")
+        .trim()
+        .replace(/^https?:\/\/(app\.)?cal\.com\//i, "")
+        .replace(/^\/+|\/+$/g, "")
     const active = booking.mode !== "form" && !!link
     const showsInline = active && booking.mode === "inline"
     const showsButton = active && (booking.mode === "popup" || booking.mode === "both")
@@ -625,12 +635,29 @@ function useCalBooking(booking, accent) {
         booking.useAccentColor === false ? booking.brandColor : accent,
         "#ff3d81"
     )
+    const origin = (booking.origin || "https://cal.com").replace(/\/+$/, "")
+    const bookingUrl = link ? `${origin}/${link}` : ""
+
+    const [embedBlocked, setEmbedBlocked] = useState(false)
 
     useEffect(() => {
         if (!active) return
         const Cal = ensureCalLoader(booking.embedJsUrl)
         if (!Cal) return
-        Cal("init", { origin: booking.origin || "https://cal.com" })
+
+        // Pořadí podle dokumentace Cal.com: init → inline → ui.
+        Cal("init", { origin })
+
+        if (showsInline) {
+            const el = document.getElementById(containerId)
+            if (el) el.innerHTML = ""
+            Cal("inline", {
+                elementOrSelector: `#${containerId}`,
+                calLink: link,
+                config: calConfig(booking),
+            })
+        }
+
         Cal("ui", {
             hideEventTypeDetails: !!booking.hideEventTypeDetails,
             layout: booking.layout || "month_view",
@@ -639,31 +666,38 @@ function useCalBooking(booking, accent) {
                 dark: { "cal-brand": brand },
             },
         })
+
+        return () => {
+            if (!showsInline) return
+            const el = document.getElementById(containerId)
+            if (el) el.innerHTML = ""
+        }
     }, [
         active,
-        booking.origin,
+        showsInline,
+        link,
+        containerId,
+        origin,
         booking.embedJsUrl,
         booking.layout,
+        booking.theme,
         booking.hideEventTypeDetails,
         brand,
     ])
 
+    // Když skript nedojede (blokovaný, CSP, offline), nabídneme odkaz na Cal.com.
     useEffect(() => {
-        if (!showsInline) return
-        const el = inlineRef.current
-        if (!el) return
-        const Cal = ensureCalLoader(booking.embedJsUrl)
-        if (!Cal) return
-        el.innerHTML = ""
-        Cal("inline", {
-            elementOrSelector: el,
-            calLink: link,
-            config: calConfig(booking),
-        })
-        return () => {
-            el.innerHTML = ""
+        if (!showsInline) {
+            setEmbedBlocked(false)
+            return
         }
-    }, [showsInline, link, booking.layout, booking.theme, booking.embedJsUrl])
+        setEmbedBlocked(false)
+        const timer = setTimeout(() => {
+            const el = document.getElementById(containerId)
+            setEmbedBlocked(!!el && !el.querySelector("iframe"))
+        }, 6000)
+        return () => clearTimeout(timer)
+    }, [showsInline, link, containerId])
 
     const buttonAttrs = showsButton
         ? {
@@ -672,7 +706,16 @@ function useCalBooking(booking, accent) {
           }
         : {}
 
-    return { active, showsInline, showsButton, inlineRef, buttonAttrs, link }
+    return {
+        active,
+        showsInline,
+        showsButton,
+        containerId,
+        buttonAttrs,
+        link,
+        bookingUrl,
+        embedBlocked,
+    }
 }
 
 /* ------------------------------------------------------------------ */
@@ -1588,7 +1631,7 @@ function Contact({ data, booking, cal }) {
                         ) : (
                             <div className="booking-actions">
                                 <a
-                                    href="#contact"
+                                    href={cal.bookingUrl || "#contact"}
                                     className="btn btn-primary"
                                     {...cal.buttonAttrs}
                                 >
@@ -1603,11 +1646,27 @@ function Contact({ data, booking, cal }) {
                                 {CAL_LINK_HINT}
                             </div>
                         ) : (
-                            <div
-                                className="cal-embed"
-                                ref={cal.inlineRef}
-                                style={{ minHeight: booking.height }}
-                            />
+                            <>
+                                <div
+                                    className="cal-embed"
+                                    id={cal.containerId}
+                                    style={{
+                                        height: booking.height,
+                                        minHeight: booking.height,
+                                    }}
+                                />
+                                {cal.embedBlocked && cal.bookingUrl && (
+                                    <a
+                                        className="btn btn-primary"
+                                        href={cal.bookingUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {booking.buttonText ||
+                                            "Check availability"}
+                                    </a>
+                                )}
+                            </>
                         ))}
                     {booking.note && showBookingButton && !linkMissing && (
                         <p className="booking-note">{booking.note}</p>

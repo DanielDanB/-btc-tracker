@@ -100,8 +100,12 @@ se schovají – Formspree potřebuješ jen pro režimy s formulářem.
 
 Pro self-hosted Cal.com vyplň `Cal.com origin` a `Embed script URL`.
 Skript Cal.com se načítá jen tehdy, když je rezervace zapnutá a odkaz vyplněný –
-ve výchozím stavu web nic externího nestahuje. Na plátně Frameru se embed nemusí
-načíst, funguje v Preview a na publikovaném webu.
+ve výchozím stavu web nic externího nestahuje.
+
+Kdyby se embed nenačetl (blokovaný skript, přísné CSP, plátno Frameru), zobrazí se
+místo kalendáře tlačítko s odkazem na tvou stránku na Cal.com, takže se návštěvník
+objedná vždycky. Stejně tak tlačítko v režimu *Cal.com button* má v `href` přímo
+adresu události – když skript funguje, otevře se popup, když ne, otevře se Cal.com.
 
 ### 🧩 Další
 - `Sections` – zapnutí/vypnutí služeb, galerie, video sekce, ceníku, O nás, kontaktu, patičky
