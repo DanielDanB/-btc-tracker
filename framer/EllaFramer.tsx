@@ -553,6 +553,8 @@ const globalCSS = (c, t, fx) => {
 /* Cal.com – rezervační kalendář                                       */
 /* ------------------------------------------------------------------ */
 
+const COMPONENT_VERSION = "v5 · Cal.com + Themes"
+
 const CAL_DEFAULT_EMBED_JS = "https://app.cal.com/embed/embed.js"
 
 const CAL_LINK_HINT =
@@ -1869,6 +1871,49 @@ function useWidthClass(ref) {
     return widthClass
 }
 
+/**
+ * Poskládá nastavení rezervace z polí sekce Contact (a z dřívější samostatné
+ * skupiny booking, aby staré instance komponenty nepřestaly fungovat).
+ */
+function resolveBooking(contact, legacy, accent) {
+    const c = contact || {}
+    const old = legacy || {}
+    const pick = (value, fallback, dflt) => {
+        if (value !== undefined && value !== "") return value
+        if (fallback !== undefined && fallback !== "") return fallback
+        return dflt
+    }
+    const flag = (value, fallback, dflt) => {
+        if (typeof value === "boolean") return value
+        if (typeof fallback === "boolean") return fallback
+        return dflt
+    }
+    return {
+        mode: pick(c.bookingMode, old.mode, DEFAULTS.booking.mode),
+        calLink: pick(c.calLink, old.calLink, ""),
+        origin: pick(c.calOrigin, old.origin, DEFAULTS.booking.origin),
+        embedJsUrl: pick(c.calEmbedJsUrl, old.embedJsUrl, ""),
+        layout: pick(c.calLayout, old.layout, DEFAULTS.booking.layout),
+        theme: pick(c.calTheme, old.theme, DEFAULTS.booking.theme),
+        useAccentColor: flag(c.calBrandUseAccent, old.useAccentColor, true),
+        brandColor: pick(c.calBrandColor, old.brandColor, accent),
+        hideEventTypeDetails: flag(
+            c.calHideDetails,
+            old.hideEventTypeDetails,
+            false
+        ),
+        height: pick(c.calHeight, old.height, DEFAULTS.booking.height),
+        fullWidth: flag(c.calFullWidth, old.fullWidth, false),
+        buttonText: pick(
+            c.calButtonText,
+            old.buttonText,
+            DEFAULTS.booking.buttonText
+        ),
+        note: pick(c.calNote, old.note, ""),
+        ctaOpensBooking: flag(c.ctaOpensBooking, old.ctaOpensBooking, true),
+    }
+}
+
 function merge(defaults, value) {
     return { ...defaults, ...(value || {}) }
 }
@@ -1896,7 +1941,9 @@ export default function EllaHairSalonPage(props) {
     )
     const videoSettings = merge(DEFAULTS.videoSettings, props.videoSettings)
     const logo = merge(DEFAULTS.logo, props.logo)
-    const booking = merge(DEFAULTS.booking, props.booking)
+    // Rezervace se nastavuje ve skupině "Contact & booking"; starší instance
+    // komponenty mohly mít hodnoty ještě v samostatné skupině "booking".
+    const booking = resolveBooking(props.contact, props.booking, colors.accent)
     const cal = useCalBooking(booking, colors.accent)
     // Tlačítka „Book Now“ otevřou rezervaci, pokud je zapnutá.
     const ctaBookingAttrs =
@@ -2064,6 +2111,15 @@ export default function EllaHairSalonPage(props) {
 
 const VIDEO_FILE_TYPES = ["mp4", "webm", "ogv", "mov", "m4v"]
 
+/** Cal.com pole dávají smysl jen mimo čistý formulářový režim. */
+const usesFormOnly = (p = {}) => (p?.bookingMode || "form") === "form"
+
+/** Pole formuláře se schovají, když web sbírá rezervace jen přes Cal.com. */
+const hidesForm = (p = {}) => {
+    const mode = p?.bookingMode || "form"
+    return mode !== "form" && mode !== "both"
+}
+
 /** Barevné pickery se skrývají, když je zapnuté hotové téma. */
 const usingPreset = (p = {}) => (p?.preset || "custom") !== "custom"
 
@@ -2074,114 +2130,11 @@ const videoControl = (title = "Video") => ({
 })
 
 addPropertyControls(EllaHairSalonPage, {
-    /* ---------------- BOOKING (Cal.com) ---------------- */
-    booking: {
-        type: ControlType.Object,
-        title: "📅 Booking (Cal.com)",
-        controls: {
-            mode: {
-                type: ControlType.Enum,
-                title: "Mode",
-                options: ["form", "inline", "popup", "both"],
-                optionTitles: [
-                    "Contact form",
-                    "Cal.com calendar",
-                    "Cal.com button",
-                    "Form + Cal.com button",
-                ],
-                defaultValue: DEFAULTS.booking.mode,
-            },
-            calLink: {
-                type: ControlType.String,
-                title: "Cal.com link",
-                defaultValue: DEFAULTS.booking.calLink,
-                placeholder: "username/haircut",
-                hidden: (p = {}) => p?.mode === "form",
-            },
-            buttonText: {
-                type: ControlType.String,
-                title: "Button text",
-                defaultValue: DEFAULTS.booking.buttonText,
-                hidden: (p = {}) => p?.mode !== "popup" && p?.mode !== "both",
-            },
-            note: {
-                type: ControlType.String,
-                title: "Button note",
-                displayTextArea: true,
-                defaultValue: DEFAULTS.booking.note,
-                hidden: (p = {}) => p?.mode !== "popup" && p?.mode !== "both",
-            },
-            ctaOpensBooking: {
-                type: ControlType.Boolean,
-                title: "CTA opens booking",
-                defaultValue: DEFAULTS.booking.ctaOpensBooking,
-                hidden: (p = {}) => p?.mode !== "popup" && p?.mode !== "both",
-            },
-            layout: {
-                type: ControlType.Enum,
-                title: "Layout",
-                options: ["month_view", "week_view", "column_view"],
-                optionTitles: ["Month", "Week", "Column"],
-                defaultValue: DEFAULTS.booking.layout,
-                hidden: (p = {}) => p?.mode === "form",
-            },
-            theme: {
-                type: ControlType.Enum,
-                title: "Calendar theme",
-                options: ["auto", "dark", "light"],
-                optionTitles: ["Auto", "Dark", "Light"],
-                displaySegmentedControl: true,
-                defaultValue: DEFAULTS.booking.theme,
-                hidden: (p = {}) => p?.mode === "form",
-            },
-            useAccentColor: {
-                type: ControlType.Boolean,
-                title: "Brand = accent",
-                defaultValue: DEFAULTS.booking.useAccentColor,
-                hidden: (p = {}) => p?.mode === "form",
-            },
-            brandColor: {
-                type: ControlType.Color,
-                title: "Brand color",
-                defaultValue: DEFAULTS.booking.brandColor,
-                hidden: (p = {}) => p?.mode === "form" || p?.useAccentColor !== false,
-            },
-            height: {
-                type: ControlType.Number,
-                title: "Calendar height",
-                min: 320,
-                max: 1200,
-                step: 20,
-                defaultValue: DEFAULTS.booking.height,
-                hidden: (p = {}) => p?.mode !== "inline",
-            },
-            fullWidth: {
-                type: ControlType.Boolean,
-                title: "Full width calendar",
-                defaultValue: DEFAULTS.booking.fullWidth,
-                hidden: (p = {}) => p?.mode !== "inline",
-            },
-            hideEventTypeDetails: {
-                type: ControlType.Boolean,
-                title: "Hide event details",
-                defaultValue: DEFAULTS.booking.hideEventTypeDetails,
-                hidden: (p = {}) => p?.mode === "form",
-            },
-            origin: {
-                type: ControlType.String,
-                title: "Cal.com origin",
-                defaultValue: DEFAULTS.booking.origin,
-                placeholder: "https://cal.com",
-                hidden: (p = {}) => p?.mode === "form",
-            },
-            embedJsUrl: {
-                type: ControlType.String,
-                title: "Embed script URL",
-                defaultValue: DEFAULTS.booking.embedJsUrl,
-                placeholder: "https://app.cal.com/embed/embed.js",
-                hidden: (p = {}) => p?.mode === "form",
-            },
-        },
+    /* Podle tohohle pole poznáš, jestli Framer načetl tuhle verzi kódu. */
+    version: {
+        type: ControlType.String,
+        title: "Version",
+        defaultValue: COMPONENT_VERSION,
     },
 
     /* ---------------- BARVY ---------------- */
@@ -3326,8 +3279,114 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- KONTAKT ---------------- */
     contact: {
         type: ControlType.Object,
-        title: "Contact",
+        title: "Contact & booking",
         controls: {
+            bookingMode: {
+                type: ControlType.Enum,
+                title: "📅 Booking",
+                options: ["form", "inline", "popup", "both"],
+                optionTitles: [
+                    "Contact form",
+                    "Cal.com calendar",
+                    "Cal.com button",
+                    "Form + Cal.com button",
+                ],
+                defaultValue: DEFAULTS.booking.mode,
+            },
+            calLink: {
+                type: ControlType.String,
+                title: "Cal.com link",
+                defaultValue: DEFAULTS.booking.calLink,
+                placeholder: "username/haircut",
+                hidden: usesFormOnly,
+            },
+            calButtonText: {
+                type: ControlType.String,
+                title: "Booking button",
+                defaultValue: DEFAULTS.booking.buttonText,
+                hidden: (p = {}) =>
+                    p?.bookingMode !== "popup" && p?.bookingMode !== "both",
+            },
+            calNote: {
+                type: ControlType.String,
+                title: "Booking note",
+                displayTextArea: true,
+                defaultValue: DEFAULTS.booking.note,
+                hidden: (p = {}) =>
+                    p?.bookingMode !== "popup" && p?.bookingMode !== "both",
+            },
+            ctaOpensBooking: {
+                type: ControlType.Boolean,
+                title: "CTA opens booking",
+                defaultValue: DEFAULTS.booking.ctaOpensBooking,
+                hidden: (p = {}) =>
+                    p?.bookingMode !== "popup" && p?.bookingMode !== "both",
+            },
+            calLayout: {
+                type: ControlType.Enum,
+                title: "Calendar layout",
+                options: ["month_view", "week_view", "column_view"],
+                optionTitles: ["Month", "Week", "Column"],
+                defaultValue: DEFAULTS.booking.layout,
+                hidden: usesFormOnly,
+            },
+            calTheme: {
+                type: ControlType.Enum,
+                title: "Calendar theme",
+                options: ["auto", "dark", "light"],
+                optionTitles: ["Auto", "Dark", "Light"],
+                displaySegmentedControl: true,
+                defaultValue: DEFAULTS.booking.theme,
+                hidden: usesFormOnly,
+            },
+            calBrandUseAccent: {
+                type: ControlType.Boolean,
+                title: "Brand = accent",
+                defaultValue: DEFAULTS.booking.useAccentColor,
+                hidden: usesFormOnly,
+            },
+            calBrandColor: {
+                type: ControlType.Color,
+                title: "Brand color",
+                defaultValue: DEFAULTS.booking.brandColor,
+                hidden: (p = {}) =>
+                    usesFormOnly(p) || p?.calBrandUseAccent !== false,
+            },
+            calHeight: {
+                type: ControlType.Number,
+                title: "Calendar height",
+                min: 320,
+                max: 1200,
+                step: 20,
+                defaultValue: DEFAULTS.booking.height,
+                hidden: (p = {}) => p?.bookingMode !== "inline",
+            },
+            calFullWidth: {
+                type: ControlType.Boolean,
+                title: "Full width calendar",
+                defaultValue: DEFAULTS.booking.fullWidth,
+                hidden: (p = {}) => p?.bookingMode !== "inline",
+            },
+            calHideDetails: {
+                type: ControlType.Boolean,
+                title: "Hide event details",
+                defaultValue: DEFAULTS.booking.hideEventTypeDetails,
+                hidden: usesFormOnly,
+            },
+            calOrigin: {
+                type: ControlType.String,
+                title: "Cal.com origin",
+                defaultValue: DEFAULTS.booking.origin,
+                placeholder: "https://cal.com",
+                hidden: usesFormOnly,
+            },
+            calEmbedJsUrl: {
+                type: ControlType.String,
+                title: "Embed script URL",
+                defaultValue: DEFAULTS.booking.embedJsUrl,
+                placeholder: "https://app.cal.com/embed/embed.js",
+                hidden: usesFormOnly,
+            },
             eyebrow: { type: ControlType.String, defaultValue: "Contact" },
             heading: {
                 type: ControlType.String,
@@ -3369,52 +3428,62 @@ addPropertyControls(EllaHairSalonPage, {
             namePlaceholder: {
                 type: ControlType.String,
                 title: "Name placeholder",
+                hidden: hidesForm,
                 defaultValue: "Your name",
             },
             emailPlaceholder: {
                 type: ControlType.String,
                 title: "Email placeholder",
+                hidden: hidesForm,
                 defaultValue: "Your email",
             },
             phonePlaceholder: {
                 type: ControlType.String,
                 title: "Phone placeholder",
+                hidden: hidesForm,
                 defaultValue: "Phone",
             },
             messagePlaceholder: {
                 type: ControlType.String,
                 title: "Message placeholder",
+                hidden: hidesForm,
                 defaultValue: "Your message",
             },
             submitText: {
                 type: ControlType.String,
                 title: "Button text",
+                hidden: hidesForm,
                 defaultValue: "Send message",
             },
             sendingText: {
                 type: ControlType.String,
                 title: "Sending text",
+                hidden: hidesForm,
                 defaultValue: "Sending...",
             },
             formspreeEndpoint: {
                 type: ControlType.String,
                 title: "Formspree endpoint",
+                hidden: hidesForm,
                 defaultValue: "",
                 placeholder: "https://formspree.io/f/xxxxabcd",
             },
             emailSubject: {
                 type: ControlType.String,
                 title: "Email subject",
+                hidden: hidesForm,
                 defaultValue: "New booking request",
             },
             successMessage: {
                 type: ControlType.String,
                 title: "Success message",
+                hidden: hidesForm,
                 defaultValue: "Thank you. Your request has been sent.",
             },
             errorMessage: {
                 type: ControlType.String,
                 title: "Error message",
+                hidden: hidesForm,
                 defaultValue:
                     "Sorry, something went wrong. Please try again.",
             },

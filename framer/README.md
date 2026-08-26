@@ -73,7 +73,8 @@ Volitelně jde nastavit **jiný kurzor nad odkazy a tlačítky**. Na dotykových
 zařízeních se vlastní kurzor automaticky nepoužije.
 
 ### 📅 Booking – rezervace přes Cal.com
-`Booking → Mode` určuje, co je dole v sekci Kontakt:
+Nastavení je ve skupině **`Contact & booking`** – hned první pole `📅 Booking`
+(tam, kde je i Formspree). `📅 Booking` určuje, co je dole v sekci Kontakt:
 
 | Režim | Co se zobrazí |
 |---|---|
@@ -93,6 +94,9 @@ webu (`Brand = accent`), jde ji ale přepnout na vlastní.
 
 Když je zapnutý některý z Cal.com režimů s tlačítkem, `CTA opens booking`
 zajistí, že i tlačítka **Book Now** v hlavičce a v hero sekci otevřou rezervaci.
+
+Jakmile zvolíš některý z Cal.com režimů, pole formuláře (včetně `Formspree endpoint`)
+se schovají – Formspree potřebuješ jen pro režimy s formulářem.
 
 Pro self-hosted Cal.com vyplň `Cal.com origin` a `Embed script URL`.
 Skript Cal.com se načítá jen tehdy, když je rezervace zapnutá a odkaz vyplněný –
@@ -131,10 +135,10 @@ takže na publikovaném webu je hero přes celý displej.
 - Formulář odesílá přes [Formspree](https://formspree.io) – bez vyplněného endpointu
   se zobrazí upozornění místo odeslání. Pokud používáš jen Cal.com, formulář
   můžeš nechat vypnutý (`Booking → Mode`).
-- Kdyby se v panelu Frameru neobjevila nová skupina (třeba `📅 Booking (Cal.com)`),
-  jde o starší verzi souboru – přepiš celý obsah code file. Dřív navíc chyběla
-  pojistka v `hidden()`: u skupiny, kterou instance komponenty ještě neměla uloženou,
-  callback spadl a Framer celou skupinu nevykreslil. To je opravené.
+- Úplně první pole v panelu je **`Version`** – musí v něm být `v5 · Cal.com + Themes`.
+  Když tam není (nebo pole chybí), Framer pořád používá starší kód: otevři code file,
+  označ všechno (⌘A) a vlož celý nový obsah. Když má code file červenou chybu,
+  Framer si drží poslední funkční verzi a panel se nezmění.
 - Mobilní menu je v DOM jen když je otevřené. Dřív bylo odsunuté za pravý okraj
   (`right: -100%`) a na publikovaném webu kvůli tomu stránka po zúžení přetékala
   do strany – proto je zavřená zásuvka teď úplně odmontovaná.
