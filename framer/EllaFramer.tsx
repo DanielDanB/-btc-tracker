@@ -340,8 +340,10 @@ const globalCSS = (c, t, fx) => {
   .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--pink); }
   .hamburger.active span:nth-child(2) { opacity: 0; }
   .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--pink); }
-  .nav-mobile { position: fixed; top: 0; right: -100%; width: min(80vw, 340px); height: 100vh; background: ${c.mobileMenuBackground}; border-left: 1px solid ${withAlpha(accent, 0.2)}; z-index: 105; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 36px; transition: right 0.4s ease; box-shadow: -10px 0 40px rgba(0,0,0,0.6); }
-  .nav-mobile.active { right: 0; }
+  .nav-backdrop { position: fixed; inset: 0; z-index: 104; background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.4s ease; border: 0; padding: 0; }
+  .nav-backdrop.active { opacity: 1; }
+  .nav-mobile { position: fixed; top: 0; right: 0; width: min(80vw, 340px); max-width: 100%; height: 100vh; background: ${c.mobileMenuBackground}; border-left: 1px solid ${withAlpha(accent, 0.2)}; z-index: 105; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 36px; transform: translateX(100%); transition: transform 0.4s ease; box-shadow: -10px 0 40px rgba(0,0,0,0.6); }
+  .nav-mobile.active { transform: translateX(0); }
   .nav-mobile ul { list-style: none; text-align: center; display: flex; flex-direction: column; gap: 28px; }
   .nav-mobile a { color: var(--white); text-decoration: none; font-size: 20px; font-weight: 600; }
   .nav-mobile a:hover { color: var(--pink); }
@@ -420,6 +422,13 @@ const globalCSS = (c, t, fx) => {
   .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--gray); }
   .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px ${withAlpha(accent, 0.15)}; }
   .contact-form button { align-self: flex-start; margin-top: 6px; }
+  .booking-side { display: flex; flex-direction: column; gap: 16px; }
+  .booking-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .booking-note { color: var(--gray); font-size: 14px; }
+  .cal-embed { width: 100%; min-height: 320px; border-radius: ${t.cardRadius}px; overflow: hidden; border: 1px solid ${withAlpha(accent, 0.2)}; background: var(--card); }
+  .cal-embed > * { width: 100%; }
+  .cal-placeholder { display: flex; align-items: center; justify-content: center; text-align: center; padding: 32px 24px; color: var(--gray); font-size: 15px; min-height: 320px; }
+  .ella-root .contact-inner.booking-full { grid-template-columns: 1fr; }
   .form-feedback { margin-top: 12px; font-size: 14px; }
   .form-feedback.success { color: ${c.successColor}; }
   .form-feedback.error { color: ${c.errorColor}; }
@@ -463,6 +472,130 @@ const globalCSS = (c, t, fx) => {
     .ella-root *, .ella-root *::before, .ella-root *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
   }
 `
+}
+
+/* ------------------------------------------------------------------ */
+/* Cal.com – rezervační kalendář                                       */
+/* ------------------------------------------------------------------ */
+
+const CAL_DEFAULT_EMBED_JS = "https://app.cal.com/embed/embed.js"
+
+const CAL_LINK_HINT =
+    "Add your Cal.com link in Booking → Cal.com link (for example ella/haircut)."
+
+/** Oficiální Cal.com embed loader – doplní window.Cal a načte embed.js. */
+function ensureCalLoader(embedJsUrl) {
+    if (typeof window === "undefined" || typeof document === "undefined") {
+        return null
+    }
+    if (window.Cal) return window.Cal
+
+    const src = embedJsUrl || CAL_DEFAULT_EMBED_JS
+    const push = (target, args) => target.q.push(args)
+
+    const cal = function () {
+        const api = window.Cal
+        const args = arguments
+        if (!api.loaded) {
+            api.ns = {}
+            api.q = api.q || []
+            const script = document.createElement("script")
+            script.src = src
+            script.async = true
+            document.head.appendChild(script)
+            api.loaded = true
+        }
+        if (args[0] === "init") {
+            const namespaced = function () {
+                push(namespaced, arguments)
+            }
+            const namespace = args[1]
+            namespaced.q = namespaced.q || []
+            if (typeof namespace === "string") {
+                api.ns[namespace] = api.ns[namespace] || namespaced
+                push(api.ns[namespace], args)
+                push(api, ["initNamespace", namespace])
+            } else {
+                push(api, args)
+            }
+            return
+        }
+        push(api, args)
+    }
+    cal.q = []
+    window.Cal = cal
+    return window.Cal
+}
+
+function calConfig(booking) {
+    const config = { layout: booking.layout || "month_view" }
+    if (booking.theme && booking.theme !== "auto") config.theme = booking.theme
+    return config
+}
+
+/**
+ * Připraví Cal.com embed: načte skript, nastaví branding a případně
+ * vloží kalendář přímo do stránky. Vrací ref pro inline kontejner
+ * a atributy pro tlačítka, která mají otevřít rezervaci v popupu.
+ */
+function useCalBooking(booking, accent) {
+    const inlineRef = useRef(null)
+    const link = (booking.calLink || "").trim().replace(/^https?:\/\/(app\.)?cal\.com\//i, "")
+    const active = booking.mode !== "form" && !!link
+    const showsInline = active && booking.mode === "inline"
+    const showsButton = active && (booking.mode === "popup" || booking.mode === "both")
+    const brand = toHex(
+        booking.useAccentColor === false ? booking.brandColor : accent,
+        "#ff3d81"
+    )
+
+    useEffect(() => {
+        if (!active) return
+        const Cal = ensureCalLoader(booking.embedJsUrl)
+        if (!Cal) return
+        Cal("init", { origin: booking.origin || "https://cal.com" })
+        Cal("ui", {
+            hideEventTypeDetails: !!booking.hideEventTypeDetails,
+            layout: booking.layout || "month_view",
+            cssVarsPerTheme: {
+                light: { "cal-brand": brand },
+                dark: { "cal-brand": brand },
+            },
+        })
+    }, [
+        active,
+        booking.origin,
+        booking.embedJsUrl,
+        booking.layout,
+        booking.hideEventTypeDetails,
+        brand,
+    ])
+
+    useEffect(() => {
+        if (!showsInline) return
+        const el = inlineRef.current
+        if (!el) return
+        const Cal = ensureCalLoader(booking.embedJsUrl)
+        if (!Cal) return
+        el.innerHTML = ""
+        Cal("inline", {
+            elementOrSelector: el,
+            calLink: link,
+            config: calConfig(booking),
+        })
+        return () => {
+            el.innerHTML = ""
+        }
+    }, [showsInline, link, booking.layout, booking.theme, booking.embedJsUrl])
+
+    const buttonAttrs = showsButton
+        ? {
+              "data-cal-link": link,
+              "data-cal-config": JSON.stringify(calConfig(booking)),
+          }
+        : {}
+
+    return { active, showsInline, showsButton, inlineRef, buttonAttrs, link }
 }
 
 /* ------------------------------------------------------------------ */
@@ -891,8 +1024,38 @@ const DEFAULT_NAV_LINKS = [
     { label: "Contact", href: "#contact" },
 ]
 
-function Header({ logo, ctaText, ctaHref, navLinks, showCta }) {
+function Header({ logo, ctaText, ctaHref, navLinks, showCta, bookingAttrs }) {
     const [menuOpen, setMenuOpen] = useState(false)
+    // Zavřená zásuvka se vůbec nevykresluje – jinak by zvětšovala šířku
+    // publikované stránky (fixed prvky neořízne overflow ancestora).
+    const [menuMounted, setMenuMounted] = useState(false)
+    const [menuSlidIn, setMenuSlidIn] = useState(false)
+
+    useEffect(() => {
+        if (menuOpen) {
+            setMenuMounted(true)
+            let inner = 0
+            const outer = requestAnimationFrame(() => {
+                inner = requestAnimationFrame(() => setMenuSlidIn(true))
+            })
+            return () => {
+                cancelAnimationFrame(outer)
+                cancelAnimationFrame(inner)
+            }
+        }
+        setMenuSlidIn(false)
+        const timer = setTimeout(() => setMenuMounted(false), 420)
+        return () => clearTimeout(timer)
+    }, [menuOpen])
+
+    useEffect(() => {
+        if (!menuOpen) return
+        function onKey(e) {
+            if (e.key === "Escape") setMenuOpen(false)
+        }
+        window.addEventListener("keydown", onKey)
+        return () => window.removeEventListener("keydown", onKey)
+    }, [menuOpen])
     const safeNavLinks =
         Array.isArray(navLinks) &&
         navLinks.length > 0 &&
@@ -925,7 +1088,11 @@ function Header({ logo, ctaText, ctaHref, navLinks, showCta }) {
                         ))}
                     </ul>
                     {showCta && (
-                        <a href={ctaHref || "#contact"} className="btn btn-primary">
+                        <a
+                            href={ctaHref || "#contact"}
+                            className="btn btn-primary"
+                            {...bookingAttrs}
+                        >
                             {ctaText}
                         </a>
                     )}
@@ -941,31 +1108,45 @@ function Header({ logo, ctaText, ctaHref, navLinks, showCta }) {
                     <span />
                 </button>
             </div>
-            <nav className={`nav-mobile ${menuOpen ? "active" : ""}`}>
-                <ul>
-                    {safeNavLinks.map((l, i) => (
-                        <li key={`m-${l.href}-${i}`}>
-                            <a href={l.href} onClick={() => setMenuOpen(false)}>
-                                {l.label}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-                {showCta && (
-                    <a
-                        href={ctaHref || "#contact"}
-                        className="btn btn-primary"
+            {menuMounted && (
+                <>
+                    <button
+                        type="button"
+                        aria-label="Close menu"
+                        className={`nav-backdrop ${menuSlidIn ? "active" : ""}`}
                         onClick={() => setMenuOpen(false)}
-                    >
-                        {ctaText}
-                    </a>
-                )}
-            </nav>
+                    />
+                    <nav className={`nav-mobile ${menuSlidIn ? "active" : ""}`}>
+                        <ul>
+                            {safeNavLinks.map((l, i) => (
+                                <li key={`m-${l.href}-${i}`}>
+                                    <a
+                                        href={l.href}
+                                        onClick={() => setMenuOpen(false)}
+                                    >
+                                        {l.label}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                        {showCta && (
+                            <a
+                                href={ctaHref || "#contact"}
+                                className="btn btn-primary"
+                                onClick={() => setMenuOpen(false)}
+                                {...bookingAttrs}
+                            >
+                                {ctaText}
+                            </a>
+                        )}
+                    </nav>
+                </>
+            )}
         </header>
     )
 }
 
-function Hero({ data, videoSettings, showGlow, showScrollIndicator }) {
+function Hero({ data, videoSettings, showGlow, showScrollIndicator, bookingAttrs }) {
     return (
         <section className="hero" id="hero">
             <div className="container hero-inner">
@@ -985,6 +1166,7 @@ function Hero({ data, videoSettings, showGlow, showScrollIndicator }) {
                             <a
                                 href={data.ctaPrimaryHref || "#contact"}
                                 className="btn btn-primary"
+                                {...bookingAttrs}
                             >
                                 {data.ctaPrimary}
                             </a>
@@ -1103,7 +1285,7 @@ function VideoShowcase({ data, videoSettings }) {
                         />
                     ) : (
                         <div className="video-empty">
-                            Nahrajte video v panelu vpravo → Video sekce → Video
+                            Add a video in the right panel → Video section → Video
                         </div>
                     )}
                 </div>
@@ -1226,7 +1408,7 @@ function About({ data, videoSettings }) {
     )
 }
 
-function Contact({ data }) {
+function Contact({ data, booking, cal }) {
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -1288,9 +1470,22 @@ function Contact({ data }) {
         }
     }
 
+    // Rozložení řídí zvolený režim, ne to, jestli je vyplněný odkaz –
+    // chybějící odkaz se pozná podle nápovědy místo kalendáře.
+    const mode = booking.mode || "form"
+    const showForm = mode === "form" || mode === "both"
+    const showCalendar = mode === "inline"
+    const showBookingButton = mode === "popup" || mode === "both"
+    const linkMissing = mode !== "form" && !cal.link
+    const fullWidth = showCalendar && booking.fullWidth
+
     return (
         <section id="contact">
-            <div className="container contact-inner">
+            <div
+                className={`container contact-inner ${
+                    fullWidth ? "booking-full" : ""
+                }`.trim()}
+            >
                 <div className="contact-text">
                     {data.eyebrow && (
                         <p className="section-eyebrow">{data.eyebrow}</p>
@@ -1309,6 +1504,38 @@ function Contact({ data }) {
                         </p>
                     </div>
                 </div>
+                <div className="booking-side">
+                    {showBookingButton &&
+                        (linkMissing ? (
+                            <p className="booking-note">{CAL_LINK_HINT}</p>
+                        ) : (
+                            <div className="booking-actions">
+                                <a
+                                    href="#contact"
+                                    className="btn btn-primary"
+                                    {...cal.buttonAttrs}
+                                >
+                                    {booking.buttonText ||
+                                        "Check availability"}
+                                </a>
+                            </div>
+                        ))}
+                    {showCalendar &&
+                        (linkMissing ? (
+                            <div className="cal-embed cal-placeholder">
+                                {CAL_LINK_HINT}
+                            </div>
+                        ) : (
+                            <div
+                                className="cal-embed"
+                                ref={cal.inlineRef}
+                                style={{ minHeight: booking.height }}
+                            />
+                        ))}
+                    {booking.note && showBookingButton && !linkMissing && (
+                        <p className="booking-note">{booking.note}</p>
+                    )}
+                    {showForm && (
                 <form className="contact-form" onSubmit={handleSubmit}>
                     <input
                         type="text"
@@ -1360,6 +1587,8 @@ function Contact({ data }) {
                         </p>
                     )}
                 </form>
+                    )}
+                </div>
             </div>
         </section>
     )
@@ -1490,6 +1719,22 @@ const DEFAULTS = {
         muted: true,
         controls: false,
     },
+    booking: {
+        mode: "form",
+        calLink: "",
+        origin: "https://cal.com",
+        embedJsUrl: "",
+        layout: "month_view",
+        theme: "auto",
+        useAccentColor: true,
+        brandColor: "#ff3d81",
+        hideEventTypeDetails: false,
+        height: 640,
+        fullWidth: false,
+        buttonText: "Check availability",
+        note: "",
+        ctaOpensBooking: true,
+    },
     logo: {
         image: "",
         text: "Hair Salon ",
@@ -1575,6 +1820,13 @@ export default function EllaHairSalonPage(props) {
     )
     const videoSettings = merge(DEFAULTS.videoSettings, props.videoSettings)
     const logo = merge(DEFAULTS.logo, props.logo)
+    const booking = merge(DEFAULTS.booking, props.booking)
+    const cal = useCalBooking(booking, colors.accent)
+    // Tlačítka „Book Now“ otevřou rezervaci, pokud je zapnutá.
+    const ctaBookingAttrs =
+        cal.showsButton && booking.ctaOpensBooking !== false
+            ? cal.buttonAttrs
+            : {}
     const sections = merge(
         {
             services: true,
@@ -1670,6 +1922,7 @@ export default function EllaHairSalonPage(props) {
                 ctaHref={props.ctaHref}
                 navLinks={props.navLinks}
                 showCta={sections.headerCta}
+                bookingAttrs={ctaBookingAttrs}
             />
             <main>
                 <Hero
@@ -1677,6 +1930,7 @@ export default function EllaHairSalonPage(props) {
                     videoSettings={videoSettings}
                     showGlow={effects.heroGlow}
                     showScrollIndicator={effects.scrollIndicator}
+                    bookingAttrs={ctaBookingAttrs}
                 />
                 {sections.services && (
                     <Services
@@ -1707,7 +1961,13 @@ export default function EllaHairSalonPage(props) {
                         videoSettings={videoSettings}
                     />
                 )}
-                {sections.contact && <Contact data={props.contact || {}} />}
+                {sections.contact && (
+                    <Contact
+                        data={props.contact || {}}
+                        booking={booking}
+                        cal={cal}
+                    />
+                )}
             </main>
             {sections.footer && (
                 <Footer
@@ -1738,31 +1998,31 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- BARVY ---------------- */
     colors: {
         type: ControlType.Object,
-        title: "🎨 Barvy",
+        title: "🎨 Colors",
         controls: {
             background: {
                 type: ControlType.Color,
-                title: "Pozadí",
+                title: "Background",
                 defaultValue: DEFAULTS.colors.background,
             },
             backgroundSoft: {
                 type: ControlType.Color,
-                title: "Pozadí 2",
+                title: "Background 2",
                 defaultValue: DEFAULTS.colors.backgroundSoft,
             },
             cardBackground: {
                 type: ControlType.Color,
-                title: "Karty",
+                title: "Cards",
                 defaultValue: DEFAULTS.colors.cardBackground,
             },
             accent: {
                 type: ControlType.Color,
-                title: "Akcent",
+                title: "Accent",
                 defaultValue: DEFAULTS.colors.accent,
             },
             accentSoft: {
                 type: ControlType.Color,
-                title: "Akcent světlý",
+                title: "Accent light",
                 defaultValue: DEFAULTS.colors.accentSoft,
             },
             text: {
@@ -1772,49 +2032,49 @@ addPropertyControls(EllaHairSalonPage, {
             },
             headingColor: {
                 type: ControlType.Color,
-                title: "Nadpisy",
+                title: "Headings",
                 defaultValue: DEFAULTS.colors.headingColor,
             },
             textMuted: {
                 type: ControlType.Color,
-                title: "Text šedý",
+                title: "Muted text",
                 defaultValue: DEFAULTS.colors.textMuted,
             },
             border: {
                 type: ControlType.Color,
-                title: "Rámečky",
+                title: "Borders",
                 defaultValue: DEFAULTS.colors.border,
             },
             headerBackground: {
                 type: ControlType.Color,
-                title: "Hlavička",
+                title: "Header",
                 defaultValue: DEFAULTS.colors.headerBackground,
             },
             mobileMenuBackground: {
                 type: ControlType.Color,
-                title: "Mobilní menu",
+                title: "Mobile menu",
                 defaultValue: DEFAULTS.colors.mobileMenuBackground,
             },
             buttonUseAccent: {
                 type: ControlType.Boolean,
-                title: "Tlačítka = akcent",
+                title: "Buttons use accent",
                 defaultValue: DEFAULTS.colors.buttonUseAccent,
             },
             buttonBackground: {
                 type: ControlType.Color,
-                title: "Tlačítko",
+                title: "Button",
                 defaultValue: DEFAULTS.colors.buttonBackground,
                 hidden: (p) => p.buttonUseAccent !== false,
             },
             buttonBackgroundHover: {
                 type: ControlType.Color,
-                title: "Tlačítko hover",
+                title: "Button hover",
                 defaultValue: DEFAULTS.colors.buttonBackgroundHover,
                 hidden: (p) => p.buttonUseAccent !== false,
             },
             buttonText: {
                 type: ControlType.Color,
-                title: "Text tlačítka",
+                title: "Button text",
                 defaultValue: DEFAULTS.colors.buttonText,
             },
             buttonOutlineText: {
@@ -1824,37 +2084,37 @@ addPropertyControls(EllaHairSalonPage, {
             },
             buttonOutlineBorder: {
                 type: ControlType.Color,
-                title: "Outline rámeček",
+                title: "Outline border",
                 defaultValue: DEFAULTS.colors.buttonOutlineBorder,
             },
             inputBackground: {
                 type: ControlType.Color,
-                title: "Pole formuláře",
+                title: "Input background",
                 defaultValue: DEFAULTS.colors.inputBackground,
             },
             inputBorder: {
                 type: ControlType.Color,
-                title: "Rámeček pole",
+                title: "Input border",
                 defaultValue: DEFAULTS.colors.inputBorder,
             },
             inputText: {
                 type: ControlType.Color,
-                title: "Text pole",
+                title: "Input text",
                 defaultValue: DEFAULTS.colors.inputText,
             },
             footerBackground: {
                 type: ControlType.Color,
-                title: "Patička",
+                title: "Footer",
                 defaultValue: DEFAULTS.colors.footerBackground,
             },
             successColor: {
                 type: ControlType.Color,
-                title: "Úspěch",
+                title: "Success",
                 defaultValue: DEFAULTS.colors.successColor,
             },
             errorColor: {
                 type: ControlType.Color,
-                title: "Chyba",
+                title: "Error",
                 defaultValue: DEFAULTS.colors.errorColor,
             },
         },
@@ -1863,82 +2123,82 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- POLETUJÍCÍ OBRAZCE ---------------- */
     shapes: {
         type: ControlType.Object,
-        title: "✨ Obrazce",
+        title: "✨ Floating shapes",
         controls: {
             enabled: {
                 type: ControlType.Boolean,
-                title: "Zapnout",
+                title: "Enable",
                 defaultValue: DEFAULTS.shapes.enabled,
             },
             scissors: {
                 type: ControlType.Boolean,
-                title: "Nůžky",
+                title: "Scissors",
                 defaultValue: true,
                 hidden: (p) => !p.enabled,
             },
             comb: {
                 type: ControlType.Boolean,
-                title: "Hřeben",
+                title: "Comb",
                 defaultValue: true,
                 hidden: (p) => !p.enabled,
             },
             wave: {
                 type: ControlType.Boolean,
-                title: "Vlna",
+                title: "Wave",
                 defaultValue: true,
                 hidden: (p) => !p.enabled,
             },
             heart: {
                 type: ControlType.Boolean,
-                title: "Srdce",
+                title: "Heart",
                 defaultValue: false,
                 hidden: (p) => !p.enabled,
             },
             star: {
                 type: ControlType.Boolean,
-                title: "Hvězda",
+                title: "Star",
                 defaultValue: false,
                 hidden: (p) => !p.enabled,
             },
             sparkle: {
                 type: ControlType.Boolean,
-                title: "Jiskra",
+                title: "Sparkle",
                 defaultValue: false,
                 hidden: (p) => !p.enabled,
             },
             dot: {
                 type: ControlType.Boolean,
-                title: "Tečka",
+                title: "Dot",
                 defaultValue: false,
                 hidden: (p) => !p.enabled,
             },
             ring: {
                 type: ControlType.Boolean,
-                title: "Kroužek",
+                title: "Ring",
                 defaultValue: false,
                 hidden: (p) => !p.enabled,
             },
             bubble: {
                 type: ControlType.Boolean,
-                title: "Bublina",
+                title: "Bubble",
                 defaultValue: false,
                 hidden: (p) => !p.enabled,
             },
             useAccentColor: {
                 type: ControlType.Boolean,
-                title: "Barva = akcent",
+                title: "Use accent color",
                 defaultValue: true,
                 hidden: (p) => !p.enabled,
             },
             color: {
                 type: ControlType.Color,
-                title: "Vlastní barva",
+                title: "Custom color",
                 defaultValue: DEFAULTS.shapes.color,
                 hidden: (p) => !p.enabled || p.useAccentColor,
             },
             count: {
                 type: ControlType.Number,
-                title: "Počet",
+                title: "Count",
                 min: 0,
                 max: 90,
                 step: 1,
@@ -1947,7 +2207,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             size: {
                 type: ControlType.Number,
-                title: "Velikost",
+                title: "Size",
                 min: 8,
                 max: 90,
                 step: 1,
@@ -1956,7 +2216,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             strokeWidth: {
                 type: ControlType.Number,
-                title: "Tloušťka čar",
+                title: "Stroke width",
                 min: 0.3,
                 max: 4,
                 step: 0.1,
@@ -1965,7 +2225,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             speed: {
                 type: ControlType.Number,
-                title: "Rychlost",
+                title: "Speed",
                 min: 0,
                 max: 3,
                 step: 0.02,
@@ -1974,7 +2234,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             opacity: {
                 type: ControlType.Number,
-                title: "Průhlednost",
+                title: "Opacity",
                 min: 0.05,
                 max: 1,
                 step: 0.05,
@@ -1983,19 +2243,19 @@ addPropertyControls(EllaHairSalonPage, {
             },
             rotation: {
                 type: ControlType.Boolean,
-                title: "Otáčení",
+                title: "Rotation",
                 defaultValue: true,
                 hidden: (p) => !p.enabled,
             },
             interactive: {
                 type: ControlType.Boolean,
-                title: "Reagují na myš",
+                title: "React to mouse",
                 defaultValue: true,
                 hidden: (p) => !p.enabled,
             },
             mouseRadius: {
                 type: ControlType.Number,
-                title: "Dosah myši",
+                title: "Mouse radius",
                 min: 20,
                 max: 400,
                 step: 10,
@@ -2008,19 +2268,19 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- KURZOR ---------------- */
     cursor: {
         type: ControlType.Object,
-        title: "🖱️ Kurzor",
+        title: "🖱️ Cursor",
         controls: {
             mode: {
                 type: ControlType.Enum,
-                title: "Režim",
+                title: "Mode",
                 options: ["Default", "Shape", "Image"],
-                optionTitles: ["Systémový", "Tvar", "Vlastní obrázek"],
+                optionTitles: ["System", "Shape", "Custom image"],
                 displaySegmentedControl: true,
                 defaultValue: DEFAULTS.cursor.mode,
             },
             shape: {
                 type: ControlType.Enum,
-                title: "Tvar",
+                title: "Shape",
                 options: [
                     "Original",
                     "Arrow",
@@ -2033,40 +2293,40 @@ addPropertyControls(EllaHairSalonPage, {
                     "Drop",
                 ],
                 optionTitles: [
-                    "Původní",
-                    "Šipka",
-                    "Tečka",
-                    "Kroužek",
-                    "Nůžky",
-                    "Hřeben",
-                    "Srdce",
-                    "Jiskra",
-                    "Kapka",
+                    "Original",
+                    "Arrow",
+                    "Dot",
+                    "Ring",
+                    "Scissors",
+                    "Comb",
+                    "Heart",
+                    "Sparkle",
+                    "Drop",
                 ],
                 defaultValue: DEFAULTS.cursor.shape,
                 hidden: (p) => p.mode !== "Shape",
             },
             useAccentColor: {
                 type: ControlType.Boolean,
-                title: "Barva = akcent",
+                title: "Use accent color",
                 defaultValue: DEFAULTS.cursor.useAccentColor,
                 hidden: (p) => p.mode !== "Shape",
             },
             fill: {
                 type: ControlType.Color,
-                title: "Barva",
+                title: "Color",
                 defaultValue: DEFAULTS.cursor.fill,
                 hidden: (p) => p.mode !== "Shape" || p.useAccentColor !== false,
             },
             stroke: {
                 type: ControlType.Color,
-                title: "Obrys",
+                title: "Outline",
                 defaultValue: DEFAULTS.cursor.stroke,
                 hidden: (p) => p.mode !== "Shape",
             },
             strokeWidth: {
                 type: ControlType.Number,
-                title: "Tloušťka obrysu",
+                title: "Outline width",
                 min: 0,
                 max: 4,
                 step: 0.1,
@@ -2075,7 +2335,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             size: {
                 type: ControlType.Number,
-                title: "Velikost",
+                title: "Size",
                 min: 12,
                 max: 64,
                 step: 1,
@@ -2084,7 +2344,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             hotspotX: {
                 type: ControlType.Number,
-                title: "Špička X",
+                title: "Hotspot X",
                 min: 0,
                 max: 24,
                 step: 1,
@@ -2093,7 +2353,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             hotspotY: {
                 type: ControlType.Number,
-                title: "Špička Y",
+                title: "Hotspot Y",
                 min: 0,
                 max: 24,
                 step: 1,
@@ -2102,18 +2362,18 @@ addPropertyControls(EllaHairSalonPage, {
             },
             image: {
                 type: ControlType.Image,
-                title: "Obrázek kurzoru",
+                title: "Cursor image",
                 hidden: (p) => p.mode !== "Image",
             },
             separateHover: {
                 type: ControlType.Boolean,
-                title: "Jiný nad odkazy",
+                title: "Different on links",
                 defaultValue: DEFAULTS.cursor.separateHover,
                 hidden: (p) => p.mode !== "Shape",
             },
             hoverShape: {
                 type: ControlType.Enum,
-                title: "Hover tvar",
+                title: "Hover shape",
                 options: [
                     "Dot",
                     "Ring",
@@ -2123,19 +2383,19 @@ addPropertyControls(EllaHairSalonPage, {
                     "Arrow",
                 ],
                 optionTitles: [
-                    "Tečka",
-                    "Kroužek",
-                    "Jiskra",
-                    "Srdce",
-                    "Nůžky",
-                    "Šipka",
+                    "Dot",
+                    "Ring",
+                    "Sparkle",
+                    "Heart",
+                    "Scissors",
+                    "Arrow",
                 ],
                 defaultValue: DEFAULTS.cursor.hoverShape,
                 hidden: (p) => p.mode !== "Shape" || !p.separateHover,
             },
             hoverFill: {
                 type: ControlType.Color,
-                title: "Hover barva",
+                title: "Hover color",
                 defaultValue: DEFAULTS.cursor.hoverFill,
                 hidden: (p) =>
                     p.mode !== "Shape" ||
@@ -2145,12 +2405,122 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
+    /* ---------------- BOOKING (Cal.com) ---------------- */
+    booking: {
+        type: ControlType.Object,
+        title: "📅 Booking",
+        controls: {
+            mode: {
+                type: ControlType.Enum,
+                title: "Mode",
+                options: ["form", "inline", "popup", "both"],
+                optionTitles: [
+                    "Contact form",
+                    "Cal.com calendar",
+                    "Cal.com button",
+                    "Form + Cal.com button",
+                ],
+                defaultValue: DEFAULTS.booking.mode,
+            },
+            calLink: {
+                type: ControlType.String,
+                title: "Cal.com link",
+                defaultValue: DEFAULTS.booking.calLink,
+                placeholder: "username/haircut",
+                hidden: (p) => p.mode === "form",
+            },
+            buttonText: {
+                type: ControlType.String,
+                title: "Button text",
+                defaultValue: DEFAULTS.booking.buttonText,
+                hidden: (p) => p.mode !== "popup" && p.mode !== "both",
+            },
+            note: {
+                type: ControlType.String,
+                title: "Button note",
+                displayTextArea: true,
+                defaultValue: DEFAULTS.booking.note,
+                hidden: (p) => p.mode !== "popup" && p.mode !== "both",
+            },
+            ctaOpensBooking: {
+                type: ControlType.Boolean,
+                title: "CTA opens booking",
+                defaultValue: DEFAULTS.booking.ctaOpensBooking,
+                hidden: (p) => p.mode !== "popup" && p.mode !== "both",
+            },
+            layout: {
+                type: ControlType.Enum,
+                title: "Layout",
+                options: ["month_view", "week_view", "column_view"],
+                optionTitles: ["Month", "Week", "Column"],
+                defaultValue: DEFAULTS.booking.layout,
+                hidden: (p) => p.mode === "form",
+            },
+            theme: {
+                type: ControlType.Enum,
+                title: "Calendar theme",
+                options: ["auto", "dark", "light"],
+                optionTitles: ["Auto", "Dark", "Light"],
+                displaySegmentedControl: true,
+                defaultValue: DEFAULTS.booking.theme,
+                hidden: (p) => p.mode === "form",
+            },
+            useAccentColor: {
+                type: ControlType.Boolean,
+                title: "Brand = accent",
+                defaultValue: DEFAULTS.booking.useAccentColor,
+                hidden: (p) => p.mode === "form",
+            },
+            brandColor: {
+                type: ControlType.Color,
+                title: "Brand color",
+                defaultValue: DEFAULTS.booking.brandColor,
+                hidden: (p) => p.mode === "form" || p.useAccentColor !== false,
+            },
+            height: {
+                type: ControlType.Number,
+                title: "Calendar height",
+                min: 320,
+                max: 1200,
+                step: 20,
+                defaultValue: DEFAULTS.booking.height,
+                hidden: (p) => p.mode !== "inline",
+            },
+            fullWidth: {
+                type: ControlType.Boolean,
+                title: "Full width calendar",
+                defaultValue: DEFAULTS.booking.fullWidth,
+                hidden: (p) => p.mode !== "inline",
+            },
+            hideEventTypeDetails: {
+                type: ControlType.Boolean,
+                title: "Hide event details",
+                defaultValue: DEFAULTS.booking.hideEventTypeDetails,
+                hidden: (p) => p.mode === "form",
+            },
+            origin: {
+                type: ControlType.String,
+                title: "Cal.com origin",
+                defaultValue: DEFAULTS.booking.origin,
+                placeholder: "https://cal.com",
+                hidden: (p) => p.mode === "form",
+            },
+            embedJsUrl: {
+                type: ControlType.String,
+                title: "Embed script URL",
+                defaultValue: DEFAULTS.booking.embedJsUrl,
+                placeholder: "https://app.cal.com/embed/embed.js",
+                hidden: (p) => p.mode === "form",
+            },
+        },
+    },
+
     /* ---------------- LOGO ---------------- */
     logo: {
         type: ControlType.Object,
         title: "🏷️ Logo",
         controls: {
-            image: { type: ControlType.Image, title: "Obrázek loga" },
+            image: { type: ControlType.Image, title: "Logo image" },
             text: {
                 type: ControlType.String,
                 title: "Text",
@@ -2158,12 +2528,12 @@ addPropertyControls(EllaHairSalonPage, {
             },
             accent: {
                 type: ControlType.String,
-                title: "Text (akcent)",
+                title: "Text (accent)",
                 defaultValue: DEFAULTS.logo.accent,
             },
             href: {
                 type: ControlType.String,
-                title: "Odkaz",
+                title: "Link",
                 defaultValue: DEFAULTS.logo.href,
             },
         },
@@ -2172,46 +2542,46 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- SEKCE ZAP/VYP ---------------- */
     sections: {
         type: ControlType.Object,
-        title: "🧩 Sekce",
+        title: "🧩 Sections",
         controls: {
             headerCta: {
                 type: ControlType.Boolean,
-                title: "Tlačítko v menu",
+                title: "Button in menu",
                 defaultValue: true,
             },
             services: {
                 type: ControlType.Boolean,
-                title: "Služby",
+                title: "Services",
                 defaultValue: true,
             },
             gallery: {
                 type: ControlType.Boolean,
-                title: "Galerie",
+                title: "Gallery",
                 defaultValue: true,
             },
             video: {
                 type: ControlType.Boolean,
-                title: "Video sekce",
+                title: "Video section",
                 defaultValue: false,
             },
             pricing: {
                 type: ControlType.Boolean,
-                title: "Ceník",
+                title: "Pricing",
                 defaultValue: true,
             },
             about: {
                 type: ControlType.Boolean,
-                title: "O nás",
+                title: "About",
                 defaultValue: true,
             },
             contact: {
                 type: ControlType.Boolean,
-                title: "Kontakt",
+                title: "Contact",
                 defaultValue: true,
             },
             footer: {
                 type: ControlType.Boolean,
-                title: "Patička",
+                title: "Footer",
                 defaultValue: true,
             },
         },
@@ -2220,11 +2590,11 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- VIDEO NA POZADÍ ---------------- */
     backgroundVideo: {
         type: ControlType.Object,
-        title: "🎬 Video pozadí",
+        title: "🎬 Background video",
         controls: {
             enabled: {
                 type: ControlType.Boolean,
-                title: "Zapnout",
+                title: "Enable",
                 defaultValue: false,
             },
             video: {
@@ -2233,12 +2603,12 @@ addPropertyControls(EllaHairSalonPage, {
             },
             poster: {
                 type: ControlType.Image,
-                title: "Náhled",
+                title: "Poster",
                 hidden: (p) => !p.enabled,
             },
             opacity: {
                 type: ControlType.Number,
-                title: "Průhlednost",
+                title: "Opacity",
                 min: 0,
                 max: 1,
                 step: 0.05,
@@ -2247,7 +2617,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             overlay: {
                 type: ControlType.Color,
-                title: "Překryv",
+                title: "Overlay",
                 defaultValue: DEFAULTS.backgroundVideo.overlay,
                 hidden: (p) => !p.enabled,
             },
@@ -2257,7 +2627,7 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- CHOVÁNÍ VIDEÍ ---------------- */
     videoSettings: {
         type: ControlType.Object,
-        title: "▶️ Videa – chování",
+        title: "▶️ Video behaviour",
         controls: {
             autoplay: {
                 type: ControlType.Boolean,
@@ -2266,17 +2636,17 @@ addPropertyControls(EllaHairSalonPage, {
             },
             loop: {
                 type: ControlType.Boolean,
-                title: "Smyčka",
+                title: "Loop",
                 defaultValue: true,
             },
             muted: {
                 type: ControlType.Boolean,
-                title: "Ztlumit",
+                title: "Muted",
                 defaultValue: true,
             },
             controls: {
                 type: ControlType.Boolean,
-                title: "Ovládání",
+                title: "Controls",
                 defaultValue: false,
             },
         },
@@ -2285,7 +2655,7 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- VZHLED / TYPOGRAFIE ---------------- */
     style: {
         type: ControlType.Object,
-        title: "🖋️ Vzhled",
+        title: "🖋️ Appearance",
         controls: {
             fontFamily: {
                 type: ControlType.String,
@@ -2294,12 +2664,12 @@ addPropertyControls(EllaHairSalonPage, {
             },
             headingFontFamily: {
                 type: ControlType.String,
-                title: "Font nadpisů",
+                title: "Heading font",
                 defaultValue: DEFAULTS.style.headingFontFamily,
             },
             baseSize: {
                 type: ControlType.Number,
-                title: "Velikost textu",
+                title: "Text size",
                 min: 12,
                 max: 22,
                 step: 1,
@@ -2307,7 +2677,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             lineHeight: {
                 type: ControlType.Number,
-                title: "Řádkování",
+                title: "Line height",
                 min: 1.2,
                 max: 2.2,
                 step: 0.05,
@@ -2315,7 +2685,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             heroTitleSize: {
                 type: ControlType.Number,
-                title: "Hero nadpis (rem)",
+                title: "Hero title (rem)",
                 min: 2,
                 max: 6,
                 step: 0.1,
@@ -2323,7 +2693,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             headingSize: {
                 type: ControlType.Number,
-                title: "Nadpisy (rem)",
+                title: "Headings (rem)",
                 min: 1.4,
                 max: 5,
                 step: 0.1,
@@ -2331,7 +2701,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             radius: {
                 type: ControlType.Number,
-                title: "Zaoblení médií",
+                title: "Media radius",
                 min: 0,
                 max: 48,
                 step: 1,
@@ -2339,7 +2709,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             cardRadius: {
                 type: ControlType.Number,
-                title: "Zaoblení karet",
+                title: "Card radius",
                 min: 0,
                 max: 48,
                 step: 1,
@@ -2347,7 +2717,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             buttonRadius: {
                 type: ControlType.Number,
-                title: "Zaoblení tlačítek",
+                title: "Button radius",
                 min: 0,
                 max: 40,
                 step: 1,
@@ -2355,7 +2725,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             contentWidth: {
                 type: ControlType.Number,
-                title: "Šířka obsahu",
+                title: "Content width",
                 min: 800,
                 max: 1800,
                 step: 10,
@@ -2363,7 +2733,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             sectionPadding: {
                 type: ControlType.Number,
-                title: "Mezery sekcí",
+                title: "Section spacing",
                 min: 20,
                 max: 200,
                 step: 5,
@@ -2371,7 +2741,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             headerHeight: {
                 type: ControlType.Number,
-                title: "Výška hlavičky",
+                title: "Header height",
                 min: 56,
                 max: 140,
                 step: 2,
@@ -2379,7 +2749,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             logoHeight: {
                 type: ControlType.Number,
-                title: "Výška loga",
+                title: "Logo height",
                 min: 16,
                 max: 120,
                 step: 1,
@@ -2387,7 +2757,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             heroMinHeight: {
                 type: ControlType.Number,
-                title: "Výška hero (vh)",
+                title: "Hero height (vh)",
                 min: 50,
                 max: 100,
                 step: 1,
@@ -2395,7 +2765,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             heroMediaHeight: {
                 type: ControlType.Number,
-                title: "Hero médium (px)",
+                title: "Hero media (px)",
                 min: 200,
                 max: 900,
                 step: 10,
@@ -2403,7 +2773,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             cardMediaHeight: {
                 type: ControlType.Number,
-                title: "Médium karty (px)",
+                title: "Card media (px)",
                 min: 100,
                 max: 500,
                 step: 10,
@@ -2411,7 +2781,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             galleryMediaHeight: {
                 type: ControlType.Number,
-                title: "Galerie (px)",
+                title: "Gallery media (px)",
                 min: 120,
                 max: 600,
                 step: 10,
@@ -2419,7 +2789,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             aboutMediaHeight: {
                 type: ControlType.Number,
-                title: "O nás médium (px)",
+                title: "About media (px)",
                 min: 200,
                 max: 800,
                 step: 10,
@@ -2427,7 +2797,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             showcaseVideoHeight: {
                 type: ControlType.Number,
-                title: "Video sekce (px)",
+                title: "Video section (px)",
                 min: 200,
                 max: 900,
                 step: 10,
@@ -2435,7 +2805,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             servicesColumns: {
                 type: ControlType.Number,
-                title: "Sloupce služeb",
+                title: "Service columns",
                 min: 1,
                 max: 6,
                 step: 1,
@@ -2444,7 +2814,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             galleryColumns: {
                 type: ControlType.Number,
-                title: "Sloupce galerie",
+                title: "Gallery columns",
                 min: 1,
                 max: 6,
                 step: 1,
@@ -2453,7 +2823,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             transition: {
                 type: ControlType.Number,
-                title: "Rychlost animací",
+                title: "Animation speed",
                 min: 0,
                 max: 1.2,
                 step: 0.05,
@@ -2461,7 +2831,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             bulletIcon: {
                 type: ControlType.String,
-                title: "Odrážka",
+                title: "Bullet icon",
                 defaultValue: DEFAULTS.style.bulletIcon,
             },
         },
@@ -2470,31 +2840,31 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- EFEKTY ---------------- */
     effects: {
         type: ControlType.Object,
-        title: "💫 Efekty",
+        title: "💫 Effects",
         controls: {
             headerBlur: {
                 type: ControlType.Boolean,
-                title: "Rozmazaná hlavička",
+                title: "Blurred header",
                 defaultValue: DEFAULTS.effects.headerBlur,
             },
             heroGlow: {
                 type: ControlType.Boolean,
-                title: "Záře pod hero",
+                title: "Hero glow",
                 defaultValue: DEFAULTS.effects.heroGlow,
             },
             hoverLift: {
                 type: ControlType.Boolean,
-                title: "Zvedání karet",
+                title: "Card hover lift",
                 defaultValue: DEFAULTS.effects.hoverLift,
             },
             pricingGlow: {
                 type: ControlType.Boolean,
-                title: "Záře ceníku",
+                title: "Pricing glow",
                 defaultValue: DEFAULTS.effects.pricingGlow,
             },
             scrollIndicator: {
                 type: ControlType.Boolean,
-                title: "Šipka dolů",
+                title: "Scroll indicator",
                 defaultValue: DEFAULTS.effects.scrollIndicator,
             },
         },
@@ -2508,7 +2878,7 @@ addPropertyControls(EllaHairSalonPage, {
     },
     ctaHref: {
         type: ControlType.String,
-        title: "CTA odkaz",
+        title: "CTA link",
         defaultValue: "#contact",
     },
     navLinks: {
@@ -2517,8 +2887,8 @@ addPropertyControls(EllaHairSalonPage, {
         control: {
             type: ControlType.Object,
             controls: {
-                label: { type: ControlType.String, title: "Název" },
-                href: { type: ControlType.String, title: "Odkaz" },
+                label: { type: ControlType.String, title: "Label" },
+                href: { type: ControlType.String, title: "Link" },
             },
         },
         defaultValue: DEFAULT_NAV_LINKS,
@@ -2558,7 +2928,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             ctaPrimaryHref: {
                 type: ControlType.String,
-                title: "CTA 1 odkaz",
+                title: "CTA 1 link",
                 defaultValue: "#contact",
             },
             ctaSecondary: {
@@ -2568,12 +2938,12 @@ addPropertyControls(EllaHairSalonPage, {
             },
             ctaSecondaryHref: {
                 type: ControlType.String,
-                title: "CTA 2 odkaz",
+                title: "CTA 2 link",
                 defaultValue: "#services",
             },
-            image: { type: ControlType.Image, title: "Obrázek" },
-            video: videoControl("Video (má přednost)"),
-            videoPoster: { type: ControlType.Image, title: "Náhled videa" },
+            image: { type: ControlType.Image, title: "Image" },
+            video: videoControl("Video (takes priority)"),
+            videoPoster: { type: ControlType.Image, title: "Video poster" },
             imageAlt: {
                 type: ControlType.String,
                 title: "Alt text",
@@ -2586,7 +2956,7 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- SLUŽBY ---------------- */
     servicesSection: {
         type: ControlType.Object,
-        title: "Služby",
+        title: "Services",
         controls: {
             eyebrow: {
                 type: ControlType.String,
@@ -2598,21 +2968,21 @@ addPropertyControls(EllaHairSalonPage, {
             },
             items: {
                 type: ControlType.Array,
-                title: "Karty",
+                title: "Cards",
                 control: {
                     type: ControlType.Object,
                     controls: {
-                        title: { type: ControlType.String, title: "Název" },
+                        title: { type: ControlType.String, title: "Label" },
                         desc: {
                             type: ControlType.String,
-                            title: "Popis",
+                            title: "Description",
                             displayTextArea: true,
                         },
-                        image: { type: ControlType.Image, title: "Obrázek" },
+                        image: { type: ControlType.Image, title: "Image" },
                         video: videoControl("Video"),
                         videoPoster: {
                             type: ControlType.Image,
-                            title: "Náhled videa",
+                            title: "Video poster",
                         },
                     },
                 },
@@ -2641,7 +3011,7 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- GALERIE ---------------- */
     gallerySection: {
         type: ControlType.Object,
-        title: "Galerie",
+        title: "Gallery",
         controls: {
             eyebrow: { type: ControlType.String, defaultValue: "Inspiration" },
             heading: {
@@ -2650,15 +3020,15 @@ addPropertyControls(EllaHairSalonPage, {
             },
             images: {
                 type: ControlType.Array,
-                title: "Položky",
+                title: "Items",
                 control: {
                     type: ControlType.Object,
                     controls: {
-                        src: { type: ControlType.Image, title: "Obrázek" },
+                        src: { type: ControlType.Image, title: "Image" },
                         video: videoControl("Video"),
                         videoPoster: {
                             type: ControlType.Image,
-                            title: "Náhled videa",
+                            title: "Video poster",
                         },
                         alt: { type: ControlType.String, title: "Alt text" },
                     },
@@ -2673,7 +3043,7 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- VIDEO SEKCE ---------------- */
     videoSection: {
         type: ControlType.Object,
-        title: "Video sekce",
+        title: "Video section",
         controls: {
             eyebrow: { type: ControlType.String, defaultValue: "Watch" },
             heading: {
@@ -2687,7 +3057,7 @@ addPropertyControls(EllaHairSalonPage, {
                     "A short video tour of the studio, our team and the atmosphere we create for every client.",
             },
             video: videoControl("Video"),
-            poster: { type: ControlType.Image, title: "Náhled" },
+            poster: { type: ControlType.Image, title: "Poster" },
             autoplay: {
                 type: ControlType.Boolean,
                 title: "Autoplay",
@@ -2695,12 +3065,12 @@ addPropertyControls(EllaHairSalonPage, {
             },
             loop: {
                 type: ControlType.Boolean,
-                title: "Smyčka",
+                title: "Loop",
                 defaultValue: true,
             },
             controls: {
                 type: ControlType.Boolean,
-                title: "Ovládání",
+                title: "Controls",
                 defaultValue: true,
             },
         },
@@ -2709,7 +3079,7 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- CENÍK ---------------- */
     pricingSection: {
         type: ControlType.Object,
-        title: "Ceník",
+        title: "Pricing",
         controls: {
             eyebrow: { type: ControlType.String, defaultValue: "Pricing" },
             heading: {
@@ -2724,66 +3094,66 @@ addPropertyControls(EllaHairSalonPage, {
             },
             womenBadge: {
                 type: ControlType.String,
-                title: "Ženy – štítek",
+                title: "Women – badge",
                 defaultValue: "Most popular",
             },
             womenTitle: {
                 type: ControlType.String,
-                title: "Ženy – nadpis",
+                title: "Women – title",
                 defaultValue: "Women's services",
             },
             womenItems: {
                 type: ControlType.Array,
-                title: "Ženy – položky",
+                title: "Women – items",
                 control: {
                     type: ControlType.Object,
                     controls: {
-                        name: { type: ControlType.String, title: "Služba" },
-                        price: { type: ControlType.String, title: "Cena" },
+                        name: { type: ControlType.String, title: "Service" },
+                        price: { type: ControlType.String, title: "Price" },
                     },
                 },
                 defaultValue: DEFAULT_PRICING_ITEMS.women,
             },
             menBadge: {
                 type: ControlType.String,
-                title: "Muži – štítek",
+                title: "Men – badge",
                 defaultValue: "Quick appointments",
             },
             menTitle: {
                 type: ControlType.String,
-                title: "Muži – nadpis",
+                title: "Men – title",
                 defaultValue: "Men's services",
             },
             menItems: {
                 type: ControlType.Array,
-                title: "Muži – položky",
+                title: "Men – items",
                 control: {
                     type: ControlType.Object,
                     controls: {
-                        name: { type: ControlType.String, title: "Služba" },
-                        price: { type: ControlType.String, title: "Cena" },
+                        name: { type: ControlType.String, title: "Service" },
+                        price: { type: ControlType.String, title: "Price" },
                     },
                 },
                 defaultValue: DEFAULT_PRICING_ITEMS.men,
             },
             specialBadge: {
                 type: ControlType.String,
-                title: "Speciál – štítek",
+                title: "Special – badge",
                 defaultValue: "By appointment",
             },
             specialTitle: {
                 type: ControlType.String,
-                title: "Speciál – nadpis",
+                title: "Special – title",
                 defaultValue: "Special services",
             },
             specialItems: {
                 type: ControlType.Array,
-                title: "Speciál – položky",
+                title: "Special – items",
                 control: {
                     type: ControlType.Object,
                     controls: {
-                        name: { type: ControlType.String, title: "Služba" },
-                        price: { type: ControlType.String, title: "Cena" },
+                        name: { type: ControlType.String, title: "Service" },
+                        price: { type: ControlType.String, title: "Price" },
                     },
                 },
                 defaultValue: DEFAULT_PRICING_ITEMS.special,
@@ -2794,7 +3164,7 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- O NÁS ---------------- */
     aboutSection: {
         type: ControlType.Object,
-        title: "O nás",
+        title: "About",
         controls: {
             eyebrow: { type: ControlType.String, defaultValue: "About" },
             heading: {
@@ -2809,7 +3179,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             points: {
                 type: ControlType.Array,
-                title: "Body",
+                title: "Bullet points",
                 control: {
                     type: ControlType.Object,
                     controls: {
@@ -2823,9 +3193,9 @@ addPropertyControls(EllaHairSalonPage, {
                     { text: "Flexible online booking" },
                 ],
             },
-            image: { type: ControlType.Image, title: "Obrázek" },
-            video: videoControl("Video (má přednost)"),
-            videoPoster: { type: ControlType.Image, title: "Náhled videa" },
+            image: { type: ControlType.Image, title: "Image" },
+            video: videoControl("Video (takes priority)"),
+            videoPoster: { type: ControlType.Image, title: "Video poster" },
             imageAlt: {
                 type: ControlType.String,
                 title: "Alt text",
@@ -2837,7 +3207,7 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- KONTAKT ---------------- */
     contact: {
         type: ControlType.Object,
-        title: "Kontakt",
+        title: "Contact",
         controls: {
             eyebrow: { type: ControlType.String, defaultValue: "Contact" },
             heading: {
@@ -2852,7 +3222,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             addressLabel: {
                 type: ControlType.String,
-                title: "Popisek adresy",
+                title: "Address label",
                 defaultValue: "Address:",
             },
             address: {
@@ -2861,7 +3231,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             phoneLabel: {
                 type: ControlType.String,
-                title: "Popisek telefonu",
+                title: "Phone label",
                 defaultValue: "Phone:",
             },
             phone: {
@@ -2870,7 +3240,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             hoursLabel: {
                 type: ControlType.String,
-                title: "Popisek otevírací doby",
+                title: "Hours label",
                 defaultValue: "Open:",
             },
             hours: {
@@ -2879,32 +3249,32 @@ addPropertyControls(EllaHairSalonPage, {
             },
             namePlaceholder: {
                 type: ControlType.String,
-                title: "Placeholder jméno",
+                title: "Name placeholder",
                 defaultValue: "Your name",
             },
             emailPlaceholder: {
                 type: ControlType.String,
-                title: "Placeholder e-mail",
+                title: "Email placeholder",
                 defaultValue: "Your email",
             },
             phonePlaceholder: {
                 type: ControlType.String,
-                title: "Placeholder telefon",
+                title: "Phone placeholder",
                 defaultValue: "Phone",
             },
             messagePlaceholder: {
                 type: ControlType.String,
-                title: "Placeholder zpráva",
+                title: "Message placeholder",
                 defaultValue: "Your message",
             },
             submitText: {
                 type: ControlType.String,
-                title: "Text tlačítka",
+                title: "Button text",
                 defaultValue: "Send message",
             },
             sendingText: {
                 type: ControlType.String,
-                title: "Text při odesílání",
+                title: "Sending text",
                 defaultValue: "Sending...",
             },
             formspreeEndpoint: {
@@ -2915,17 +3285,17 @@ addPropertyControls(EllaHairSalonPage, {
             },
             emailSubject: {
                 type: ControlType.String,
-                title: "Předmět e-mailu",
+                title: "Email subject",
                 defaultValue: "New booking request",
             },
             successMessage: {
                 type: ControlType.String,
-                title: "Zpráva – úspěch",
+                title: "Success message",
                 defaultValue: "Thank you. Your request has been sent.",
             },
             errorMessage: {
                 type: ControlType.String,
-                title: "Zpráva – chyba",
+                title: "Error message",
                 defaultValue:
                     "Sorry, something went wrong. Please try again.",
             },
@@ -2935,12 +3305,12 @@ addPropertyControls(EllaHairSalonPage, {
     /* ---------------- PATIČKA ---------------- */
     footerText: {
         type: ControlType.String,
-        title: "Patička",
+        title: "Footer",
         defaultValue: "Ella V. Hair Salon. All rights reserved.",
     },
     footerShowYear: {
         type: ControlType.Boolean,
-        title: "Zobrazit rok",
+        title: "Show year",
         defaultValue: true,
     },
 })

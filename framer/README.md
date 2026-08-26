@@ -6,12 +6,15 @@ v pravém panelu – v kódu už není potřeba nic přepisovat.
 
 ## Co se dá měnit
 
-### 🎨 Barvy
+> Popisky v panelu Frameru jsou anglicky, návod je česky – názvy v `kódu`
+> odpovídají přesně tomu, co uvidíš v pravém panelu.
+
+### 🎨 Colors – barvy
 Kompletně všechny barvy webu: pozadí, druhé pozadí, karty, akcent, světlý akcent,
 text, nadpisy, šedý text, rámečky, hlavička, mobilní menu, tlačítka (pozadí, hover,
 text, outline), pole formuláře, patička, barva úspěchu a chyby.
 
-Tlačítka mají zapnuté **„Tlačítka = akcent“** – když změníš akcentní barvu, změní se
+Tlačítka mají zapnuté **„Buttons use accent“** – když změníš akcentní barvu, změní se
 s ní i tlačítka, záře a rámečky. Vypni přepínač, pokud chceš tlačítkům dát vlastní barvu.
 
 ### 🎬 Videa
@@ -19,43 +22,70 @@ Video jde přidat všude, kde je obrázek – **video má vždy přednost před 
 
 | Kde | Ovládání |
 |---|---|
-| Hero | `Hero → Video` + `Náhled videa` |
-| Karty služeb | `Služby → Karty → Video` (u každé karty zvlášť) |
-| Galerie | `Galerie → Položky → Video` (lze míchat obrázky a videa) |
-| O nás | `O nás → Video` |
-| Samostatná video sekce | `Sekce → Video sekce` zapnout, pak `Video sekce → Video` |
-| Video na pozadí celé stránky | `Video pozadí → Zapnout` + průhlednost a barva překryvu |
+| Hero | `Hero → Video` + `Video poster` |
+| Karty služeb | `Services → Cards → Video` (u každé karty zvlášť) |
+| Galerie | `Gallery → Items → Video` (lze míchat obrázky a videa) |
+| O nás | `About → Video` |
+| Samostatná video sekce | `Sections → Video section` zapnout, pak `Video section → Video` |
+| Video na pozadí celé stránky | `Background video → Enable` + `Opacity` a `Overlay` |
 
 Chování všech videí (autoplay, smyčka, ztlumení, ovládací prvky) se nastaví jednou
-v `Videa – chování`. Autoplay si vynutí ztlumení – jinak ho prohlížeče blokují.
+v `Video behaviour`. Autoplay si vynutí ztlumení – jinak ho prohlížeče blokují.
 Odkaz na video končící `.mp4` / `.webm` funguje i v poli pro obrázek.
 
 ### 🏷️ Logo
-`Logo → Obrázek loga` (nahraj PNG/SVG) nebo textové logo `Text` + `Text (akcent)`.
-Výšku loga nastavíš ve `Vzhled → Výška loga`, cíl odkazu v `Logo → Odkaz`.
+`Logo → Logo image` (nahraj PNG/SVG) nebo textové logo `Text` + `Text (accent)`.
+Výšku loga nastavíš v `Appearance → Logo height`, cíl odkazu v `Logo → Link`.
 
-### ✨ Poletující obrazce
-`Obrazce → Zapnout` je hlavní vypínač. Dál si vybereš tvary (nůžky, hřeben, vlna,
+### ✨ Floating shapes – poletující obrazce
+`Floating shapes → Enable` je hlavní vypínač. Dál si vybereš tvary (nůžky, hřeben, vlna,
 srdce, hvězda, jiskra, tečka, kroužek, bublina), počet, velikost, tloušťku čar,
 rychlost, průhlednost, otáčení a jestli mají uhýbat myši včetně jejího dosahu.
 Barva je ve výchozím stavu akcentní, dá se přepnout na vlastní.
 
-### 🖱️ Kurzor
-`Kurzor → Režim`:
-- **Systémový** – žádný vlastní kurzor
-- **Tvar** – 9 tvarů (původní růžový, šipka, tečka, kroužek, nůžky, hřeben, srdce,
+### 🖱️ Cursor – kurzor
+`Cursor → Mode`:
+- **System** – žádný vlastní kurzor
+- **Shape** – 9 tvarů (původní růžový, šipka, tečka, kroužek, nůžky, hřeben, srdce,
   jiskra, kapka) + barva, obrys, velikost a pozice špičky
-- **Vlastní obrázek** – nahraj si vlastní PNG/SVG kurzor
+- **Custom image** – nahraj si vlastní PNG/SVG kurzor
 
 Volitelně jde nastavit **jiný kurzor nad odkazy a tlačítky**. Na dotykových
 zařízeních se vlastní kurzor automaticky nepoužije.
 
+### 📅 Booking – rezervace přes Cal.com
+`Booking → Mode` určuje, co je dole v sekci Kontakt:
+
+| Režim | Co se zobrazí |
+|---|---|
+| **Contact form** | jen kontaktní formulář (výchozí, posílá se přes Formspree) |
+| **Cal.com calendar** | kalendář Cal.com přímo ve stránce místo formuláře |
+| **Cal.com button** | tlačítko, které otevře rezervaci v popupu |
+| **Form + Cal.com button** | formulář i rezervační tlačítko zároveň |
+
+Nastavení: do `Cal.com link` vlož svůj odkaz ve tvaru `uzivatel/udalost`
+(např. `ella/strihani`) – zvládne i celou adresu `https://cal.com/ella/strihani`.
+Dokud odkaz nevyplníš, komponenta místo kalendáře ukáže nápovědu.
+
+Dál si nastavíš `Layout` (měsíc / týden / sloupec), `Calendar theme`,
+`Calendar height`, `Full width calendar`, `Hide event details` a text tlačítka
+`Button text` s poznámkou `Button note`. Barva kalendáře přebírá akcentní barvu
+webu (`Brand = accent`), jde ji ale přepnout na vlastní.
+
+Když je zapnutý některý z Cal.com režimů s tlačítkem, `CTA opens booking`
+zajistí, že i tlačítka **Book Now** v hlavičce a v hero sekci otevřou rezervaci.
+
+Pro self-hosted Cal.com vyplň `Cal.com origin` a `Embed script URL`.
+Skript Cal.com se načítá jen tehdy, když je rezervace zapnutá a odkaz vyplněný –
+ve výchozím stavu web nic externího nestahuje. Na plátně Frameru se embed nemusí
+načíst, funguje v Preview a na publikovaném webu.
+
 ### 🧩 Další
-- `Sekce` – zapnutí/vypnutí služeb, galerie, video sekce, ceníku, O nás, kontaktu, patičky
-- `Vzhled` – fonty, velikosti písma, zaoblení, šířka obsahu, mezery, počet sloupců, výšky médií
-- `Efekty` – rozmazaná hlavička, záře pod hero, zvedání karet, záře ceníku, šipka dolů
-- `Ceník` – tři skupiny s libovolným počtem položek (přidávají se tlačítkem +)
-- `Kontakt` – všechny popisky, placeholdery a **Formspree endpoint** pro odesílání formuláře
+- `Sections` – zapnutí/vypnutí služeb, galerie, video sekce, ceníku, O nás, kontaktu, patičky
+- `Appearance` – fonty, velikosti písma, zaoblení, šířka obsahu, mezery, počet sloupců, výšky médií
+- `Effects` – rozmazaná hlavička, záře pod hero, zvedání karet, záře ceníku, šipka dolů
+- `Pricing` – tři skupiny s libovolným počtem položek (přidávají se tlačítkem +)
+- `Contact` – všechny popisky, placeholdery a **Formspree endpoint** pro odesílání formuláře
 
 ## 📐 Responzivita a velikost ve Frameru
 
@@ -80,6 +110,10 @@ takže na publikovaném webu je hero přes celý displej.
 
 ## Poznámky
 - Formulář odesílá přes [Formspree](https://formspree.io) – bez vyplněného endpointu
-  se zobrazí upozornění místo odeslání.
+  se zobrazí upozornění místo odeslání. Pokud používáš jen Cal.com, formulář
+  můžeš nechat vypnutý (`Booking → Mode`).
+- Mobilní menu je v DOM jen když je otevřené. Dřív bylo odsunuté za pravý okraj
+  (`right: -100%`) a na publikovaném webu kvůli tomu stránka po zúžení přetékala
+  do strany – proto je zavřená zásuvka teď úplně odmontovaná.
 - Styly jsou omezené jen na tuto komponentu (`.ella-root`), takže neovlivní zbytek
   Framer projektu. Výjimkou je vlastní kurzor, který má být záměrně na celé stránce.
