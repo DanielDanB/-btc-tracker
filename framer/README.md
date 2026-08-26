@@ -103,7 +103,9 @@ zajistí, že i tlačítka **Book Now** v hlavičce a v hero sekci otevřou reze
 Jakmile zvolíš některý z Cal.com režimů, pole formuláře (včetně `Formspree endpoint`)
 se schovají – Formspree potřebuješ jen pro režimy s formulářem.
 
-Pro self-hosted Cal.com vyplň `Cal.com origin` a `Embed script URL`.
+Pole `Origin (self-hosted only)` a `Embed script (self-hosted only)` **nech prázdná** –
+vyplňují se jen tehdy, když máš Cal.com na vlastním serveru. Prázdná znamenají
+standardní cal.com a skript `https://app.cal.com/embed/embed.js`.
 Skript Cal.com se načítá jen tehdy, když je rezervace zapnutá a odkaz vyplněný –
 ve výchozím stavu web nic externího nestahuje.
 
