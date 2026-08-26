@@ -17,12 +17,6 @@ import { addPropertyControls, ControlType } from "framer"
  *  • Poletující obrazce – zapnout/vypnout, tvary, počet, rychlost, barva
  *  • Kurzor       – vypnout, vybrat tvar, barvu a velikost, nebo vlastní obrázek
  *  • Sekce        – jednotlivé sekce lze skrýt
- *
- * @framerSupportedLayoutWidth any
- * @framerSupportedLayoutHeight any
- * @framerIntrinsicWidth 1200
- * @framerIntrinsicHeight 3200
- * @framerDisableUnlink
  */
 
 /* ------------------------------------------------------------------ */
@@ -243,7 +237,9 @@ function prefixSelector(selector, scope) {
         .join(", ")
 }
 
-function scopeCSS(css, scope) {
+function scopeCSS(input, scope) {
+    // Komentáře pryč – jinak by se jejich text stal součástí selektoru.
+    const css = input.replace(/\/\*[\s\S]*?\*\//g, "")
     let out = ""
     let buffer = ""
     let depth = 0
@@ -308,7 +304,7 @@ const globalCSS = (c, t, fx) => {
     font-size: ${t.baseSize}px;
     overflow-x: hidden;
     width: 100%;
-    min-height: 100vh;
+    height: auto;
     position: relative;
   }
   .ella-root h1, .ella-root h2, .ella-root h3 { font-family: ${t.headingFontFamily}; color: var(--heading); }
@@ -429,30 +425,40 @@ const globalCSS = (c, t, fx) => {
   .form-feedback.error { color: ${c.errorColor}; }
   .footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: center; background: ${c.footerBackground}; }
   .footer p { color: var(--gray); font-size: 14px; }
-  @media (max-width: 992px) {
-    .hero-inner { grid-template-columns: 1fr; text-align: center; }
-    .hero-text { order: 1; } .hero-image { order: 2; }
-    .hero-desc { margin-left: auto; margin-right: auto; }
-    .hero-actions { justify-content: center; }
-    .cards-grid { grid-template-columns: repeat(2, 1fr); }
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    .about-inner, .contact-inner { grid-template-columns: 1fr; }
-    .pricing-grid { grid-template-columns: 1fr; }
-    .about-image-scene { height: 320px; }
-  }
-  @media (max-width: 768px) {
-    .nav-desktop { display: none; }
-    .hamburger { display: flex; }
-    .hero-image img, .hero-image video { height: 360px; }
-    .ella-root section:not(.hero) { padding: ${Math.round(t.sectionPadding * 0.7)}px 0; }
-  }
-  @media (max-width: 480px) {
-    .cards-grid { grid-template-columns: 1fr; }
-    .gallery-grid { grid-template-columns: 1fr; }
-    .hero-actions { flex-direction: column; width: 100%; }
-    .hero-actions .btn { width: 100%; text-align: center; }
-    .contact-form button { width: 100%; text-align: center; }
-  }
+  /* Zlomy reagují na šířku samotné komponenty (třídy w-md/w-sm/w-xs),
+     takže sedí i v úzkém breakpoint rámci na širokém plátně Frameru. */
+  .ella-root.w-md .hero-inner { grid-template-columns: 1fr; text-align: center; }
+  .ella-root.w-md .hero-text { order: 1; }
+  .ella-root.w-md .hero-image { order: 2; }
+  .ella-root.w-md .hero-desc { margin-left: auto; margin-right: auto; }
+  .ella-root.w-md .hero-actions { justify-content: center; }
+  .ella-root.w-md .cards-grid { grid-template-columns: repeat(${Math.min(
+      2,
+      t.servicesColumns
+  )}, 1fr); }
+  .ella-root.w-md .gallery-grid { grid-template-columns: repeat(${Math.min(
+      2,
+      t.galleryColumns
+  )}, 1fr); }
+  .ella-root.w-md .about-inner, .ella-root.w-md .contact-inner { grid-template-columns: 1fr; }
+  .ella-root.w-md .pricing-grid { grid-template-columns: 1fr; }
+  .ella-root.w-md .about-image-scene { height: 320px; }
+  .ella-root.w-sm .nav-desktop { display: none; }
+  .ella-root.w-sm .hamburger { display: flex; }
+  .ella-root.w-sm .hero-image img, .ella-root.w-sm .hero-image video { height: 360px; }
+  .ella-root.w-sm section:not(.hero) { padding: ${Math.round(
+      t.sectionPadding * 0.7
+  )}px 0; }
+  .ella-root.w-sm .video-frame video, .ella-root.w-sm .video-empty { height: ${Math.round(
+      t.showcaseVideoHeight * 0.6
+  )}px; }
+  .ella-root.w-xs .cards-grid { grid-template-columns: 1fr; }
+  .ella-root.w-xs .gallery-grid { grid-template-columns: 1fr; }
+  .ella-root.w-xs .hero-actions { flex-direction: column; width: 100%; }
+  .ella-root.w-xs .hero-actions .btn { width: 100%; text-align: center; }
+  .ella-root.w-xs .contact-form button { width: 100%; text-align: center; }
+  .ella-root.w-xs .hero-inner { padding: 40px 16px; }
+  .ella-root.w-xs .container { padding: 0 16px; }
   @media (prefers-reduced-motion: reduce) {
     .ella-root *, .ella-root *::before, .ella-root *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
   }
@@ -1496,11 +1502,68 @@ const DEFAULTS = {
 const useIsomorphicLayoutEffect =
     typeof document !== "undefined" ? useLayoutEffect : useEffect
 
+/**
+ * Sleduje šířku samotné komponenty a vrací třídy zlomů. Framer může komponentu
+ * vykreslit v libovolně širokém rámci, takže se nedá spoléhat na šířku okna.
+ */
+function useWidthClass(ref) {
+    const [widthClass, setWidthClass] = useState("")
+
+    useIsomorphicLayoutEffect(() => {
+        const el = ref.current
+        if (!el) return
+
+        function apply(width) {
+            if (!width) return
+            const classes = []
+            if (width <= 992) classes.push("w-md")
+            if (width <= 768) classes.push("w-sm")
+            if (width <= 480) classes.push("w-xs")
+            const next = classes.join(" ")
+            setWidthClass((prev) => (prev === next ? prev : next))
+        }
+
+        apply(el.offsetWidth)
+
+        if (typeof ResizeObserver === "undefined") {
+            const onResize = () => apply(el.offsetWidth)
+            window.addEventListener("resize", onResize)
+            return () => window.removeEventListener("resize", onResize)
+        }
+
+        const observer = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                const box = entry.contentBoxSize
+                    ? Array.isArray(entry.contentBoxSize)
+                        ? entry.contentBoxSize[0]
+                        : entry.contentBoxSize
+                    : null
+                apply(box ? box.inlineSize : entry.contentRect.width)
+            }
+        })
+        observer.observe(el)
+        return () => observer.disconnect()
+    }, [ref])
+
+    return widthClass
+}
+
 function merge(defaults, value) {
     return { ...defaults, ...(value || {}) }
 }
 
+/**
+ * Šířka: Fill (jde přepnout i na fixní), výška: Fit content – komponenta se
+ * ve Frameru vždy roztáhne na šířku rámce a vysoká je přesně podle obsahu.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ * @framerIntrinsicWidth 1200
+ * @framerDisableUnlink
+ */
 export default function EllaHairSalonPage(props) {
+    const rootRef = useRef(null)
+    const widthClass = useWidthClass(rootRef)
     const colors = merge(DEFAULTS.colors, props.colors)
     const style = merge(DEFAULTS.style, props.style)
     const effects = merge(DEFAULTS.effects, props.effects)
@@ -1576,7 +1639,11 @@ export default function EllaHairSalonPage(props) {
     }, [effects.pricingGlow])
 
     return (
-        <div className="ella-root">
+        <div
+            className={`ella-root ${widthClass}`.trim()}
+            ref={rootRef}
+            style={props.style}
+        >
             {backgroundVideo.enabled && backgroundVideo.video && (
                 <div className="bg-video-layer" aria-hidden="true">
                     <video

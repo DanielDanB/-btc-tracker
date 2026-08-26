@@ -57,6 +57,27 @@ zařízeních se vlastní kurzor automaticky nepoužije.
 - `Ceník` – tři skupiny s libovolným počtem položek (přidávají se tlačítkem +)
 - `Kontakt` – všechny popisky, placeholdery a **Formspree endpoint** pro odesílání formuláře
 
+## 📐 Responzivita a velikost ve Frameru
+
+Komponenta je nastavená na **šířku Fill** a **výšku Fit content**
+(`@framerSupportedLayoutWidth any`, `@framerSupportedLayoutHeight auto`):
+
+- na šířku se roztáhne na celý rámec (dá se přepnout i na fixní šířku),
+- na výšku se sama dopočítá podle obsahu – žádné ruční dotahování rámce,
+  a když přidáš sekci nebo položku, rámec se zvětší sám.
+
+Zlomy (breakpointy) reagují na **šířku samotné komponenty**, ne na šířku okna
+prohlížeče. Díky tomu vypadá správně i v úzkém breakpoint rámci na širokém plátně:
+
+| Šířka komponenty | Co se stane |
+|---|---|
+| do 992 px | hero na jeden sloupec, karty a galerie na 2 sloupce, ceník pod sebe |
+| do 768 px | menu se schová do hamburgeru, nižší hero i video |
+| do 480 px | vše na jeden sloupec, tlačítka na celou šířku, užší okraje |
+
+Výška hero sekce je v `Vzhled → Výška hero (vh)` – používá výšku obrazovky,
+takže na publikovaném webu je hero přes celý displej.
+
 ## Poznámky
 - Formulář odesílá přes [Formspree](https://formspree.io) – bez vyplněného endpointu
   se zobrazí upozornění místo odeslání.
