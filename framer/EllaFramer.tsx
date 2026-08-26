@@ -137,6 +137,81 @@ function toHex(color, fallback) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Barevná témata – přepnutí celého webu na jedno kliknutí             */
+/* ------------------------------------------------------------------ */
+
+/** Tmavá paleta odvozená ze čtyř základních barev. */
+function darkPalette(background, backgroundSoft, cardBackground, accent, accentSoft, buttonText) {
+    return {
+        background,
+        backgroundSoft,
+        cardBackground,
+        accent,
+        accentSoft,
+        text: "#ffffff",
+        headingColor: "#ffffff",
+        textMuted: "rgba(255, 255, 255, 0.68)",
+        border: "rgba(255, 255, 255, 0.08)",
+        headerBackground: withAlpha(background, 0.85),
+        mobileMenuBackground: backgroundSoft,
+        buttonBackground: accent,
+        buttonBackgroundHover: accentSoft,
+        buttonText: buttonText || "#ffffff",
+        buttonOutlineText: "#ffffff",
+        buttonOutlineBorder: "rgba(255, 255, 255, 0.3)",
+        inputBackground: backgroundSoft,
+        inputBorder: "rgba(255, 255, 255, 0.15)",
+        inputText: "#ffffff",
+        footerBackground: "rgba(0, 0, 0, 0)",
+        successColor: "#7dffb3",
+        errorColor: "#ff9bbd",
+    }
+}
+
+const COLOR_PRESETS = {
+    noir: darkPalette("#0a0a0a", "#121212", "#141414", "#ff3d81", "#ff6fa3"),
+    midnight: darkPalette("#070b14", "#0d1524", "#101a2c", "#3d9bff", "#7dc0ff", "#04101f"),
+    emerald: darkPalette("#050d0a", "#0a1712", "#0d1d17", "#2fd08a", "#6ce3b3", "#04150e"),
+    gold: darkPalette("#0b0906", "#15110a", "#1a150d", "#e8b45c", "#f6d194", "#1a1305"),
+    violet: darkPalette("#0a0714", "#120d22", "#17102b", "#a06bff", "#c4a1ff", "#150a29"),
+    coral: darkPalette("#120806", "#1d0e0a", "#23120d", "#ff6b4a", "#ff9d86", "#230801"),
+    mono: darkPalette("#0b0b0c", "#141416", "#18181b", "#e4e4e7", "#ffffff", "#0b0b0c"),
+    daylight: {
+        background: "#ffffff",
+        backgroundSoft: "#f3f4f6",
+        cardBackground: "#ffffff",
+        accent: "#ff3d81",
+        accentSoft: "#d92e6a",
+        text: "#16161a",
+        headingColor: "#0b0b0f",
+        textMuted: "#5c5f6b",
+        border: "rgba(0, 0, 0, 0.1)",
+        headerBackground: "rgba(255, 255, 255, 0.88)",
+        mobileMenuBackground: "#ffffff",
+        buttonBackground: "#ff3d81",
+        buttonBackgroundHover: "#d92e6a",
+        buttonText: "#ffffff",
+        buttonOutlineText: "#16161a",
+        buttonOutlineBorder: "rgba(0, 0, 0, 0.2)",
+        inputBackground: "#f3f4f6",
+        inputBorder: "rgba(0, 0, 0, 0.15)",
+        inputText: "#16161a",
+        footerBackground: "rgba(0, 0, 0, 0)",
+        successColor: "#0f8a4d",
+        errorColor: "#c62828",
+    },
+}
+
+const COLOR_PRESET_KEYS = ["custom", ...Object.keys(COLOR_PRESETS)]
+
+/** Vrátí finální paletu: buď vlastní barvy, nebo zvolené téma. */
+function resolveColors(colors) {
+    const preset = colors.preset || "custom"
+    if (preset === "custom" || !COLOR_PRESETS[preset]) return colors
+    return { ...colors, ...COLOR_PRESETS[preset] }
+}
+
+/* ------------------------------------------------------------------ */
 /* Kurzor                                                              */
 /* ------------------------------------------------------------------ */
 
@@ -325,7 +400,7 @@ const globalCSS = (c, t, fx) => {
   .logo-image { height: ${t.logoHeight}px; width: auto; object-fit: contain; display: block; }
   .nav-desktop { display: flex; align-items: center; gap: 40px; }
   .nav-desktop ul { display: flex; gap: 32px; list-style: none; }
-  .nav-desktop a { color: var(--white); text-decoration: none; font-size: 15px; font-weight: 500; position: relative; transition: color var(--transition); }
+  .nav-desktop ul a { color: var(--white); text-decoration: none; font-size: 15px; font-weight: 500; position: relative; transition: color var(--transition); }
   .nav-desktop ul a::after { content: ""; position: absolute; left: 0; bottom: -6px; width: 0; height: 2px; background: var(--pink); transition: width var(--transition); }
   .nav-desktop ul a:hover { color: var(--pink-soft); }
   .nav-desktop ul a:hover::after { width: 100%; }
@@ -345,8 +420,8 @@ const globalCSS = (c, t, fx) => {
   .nav-mobile { position: fixed; top: 0; right: 0; width: min(80vw, 340px); max-width: 100%; height: 100vh; background: ${c.mobileMenuBackground}; border-left: 1px solid ${withAlpha(accent, 0.2)}; z-index: 105; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 36px; transform: translateX(100%); transition: transform 0.4s ease; box-shadow: -10px 0 40px rgba(0,0,0,0.6); }
   .nav-mobile.active { transform: translateX(0); }
   .nav-mobile ul { list-style: none; text-align: center; display: flex; flex-direction: column; gap: 28px; }
-  .nav-mobile a { color: var(--white); text-decoration: none; font-size: 20px; font-weight: 600; }
-  .nav-mobile a:hover { color: var(--pink); }
+  .nav-mobile ul a { color: var(--white); text-decoration: none; font-size: 20px; font-weight: 600; }
+  .nav-mobile ul a:hover { color: var(--pink); }
   .hero { min-height: ${t.heroMinHeight}vh; display: flex; align-items: center; position: relative; }
   .hero-inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; padding: 60px 24px; }
   .eyebrow { color: var(--pink-soft); font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; font-size: 13px; margin-bottom: 16px; display: block; }
@@ -1613,6 +1688,7 @@ function Footer({ text, showYear }) {
 
 const DEFAULTS = {
     colors: {
+        preset: "custom",
         background: "#0a0a0a",
         backgroundSoft: "#121212",
         cardBackground: "#141414",
@@ -1809,7 +1885,7 @@ function merge(defaults, value) {
 export default function EllaHairSalonPage(props) {
     const rootRef = useRef(null)
     const widthClass = useWidthClass(rootRef)
-    const colors = merge(DEFAULTS.colors, props.colors)
+    const colors = resolveColors(merge(DEFAULTS.colors, props.colors))
     const style = merge(DEFAULTS.style, props.style)
     const effects = merge(DEFAULTS.effects, props.effects)
     const shapes = merge(DEFAULTS.shapes, props.shapes)
@@ -1988,6 +2064,9 @@ export default function EllaHairSalonPage(props) {
 
 const VIDEO_FILE_TYPES = ["mp4", "webm", "ogv", "mov", "m4v"]
 
+/** Barevné pickery se skrývají, když je zapnuté hotové téma. */
+const usingPreset = (p = {}) => (p?.preset || "custom") !== "custom"
+
 const videoControl = (title = "Video") => ({
     type: ControlType.File,
     title,
@@ -1995,127 +2074,277 @@ const videoControl = (title = "Video") => ({
 })
 
 addPropertyControls(EllaHairSalonPage, {
+    /* ---------------- BOOKING (Cal.com) ---------------- */
+    booking: {
+        type: ControlType.Object,
+        title: "📅 Booking (Cal.com)",
+        controls: {
+            mode: {
+                type: ControlType.Enum,
+                title: "Mode",
+                options: ["form", "inline", "popup", "both"],
+                optionTitles: [
+                    "Contact form",
+                    "Cal.com calendar",
+                    "Cal.com button",
+                    "Form + Cal.com button",
+                ],
+                defaultValue: DEFAULTS.booking.mode,
+            },
+            calLink: {
+                type: ControlType.String,
+                title: "Cal.com link",
+                defaultValue: DEFAULTS.booking.calLink,
+                placeholder: "username/haircut",
+                hidden: (p = {}) => p?.mode === "form",
+            },
+            buttonText: {
+                type: ControlType.String,
+                title: "Button text",
+                defaultValue: DEFAULTS.booking.buttonText,
+                hidden: (p = {}) => p?.mode !== "popup" && p?.mode !== "both",
+            },
+            note: {
+                type: ControlType.String,
+                title: "Button note",
+                displayTextArea: true,
+                defaultValue: DEFAULTS.booking.note,
+                hidden: (p = {}) => p?.mode !== "popup" && p?.mode !== "both",
+            },
+            ctaOpensBooking: {
+                type: ControlType.Boolean,
+                title: "CTA opens booking",
+                defaultValue: DEFAULTS.booking.ctaOpensBooking,
+                hidden: (p = {}) => p?.mode !== "popup" && p?.mode !== "both",
+            },
+            layout: {
+                type: ControlType.Enum,
+                title: "Layout",
+                options: ["month_view", "week_view", "column_view"],
+                optionTitles: ["Month", "Week", "Column"],
+                defaultValue: DEFAULTS.booking.layout,
+                hidden: (p = {}) => p?.mode === "form",
+            },
+            theme: {
+                type: ControlType.Enum,
+                title: "Calendar theme",
+                options: ["auto", "dark", "light"],
+                optionTitles: ["Auto", "Dark", "Light"],
+                displaySegmentedControl: true,
+                defaultValue: DEFAULTS.booking.theme,
+                hidden: (p = {}) => p?.mode === "form",
+            },
+            useAccentColor: {
+                type: ControlType.Boolean,
+                title: "Brand = accent",
+                defaultValue: DEFAULTS.booking.useAccentColor,
+                hidden: (p = {}) => p?.mode === "form",
+            },
+            brandColor: {
+                type: ControlType.Color,
+                title: "Brand color",
+                defaultValue: DEFAULTS.booking.brandColor,
+                hidden: (p = {}) => p?.mode === "form" || p?.useAccentColor !== false,
+            },
+            height: {
+                type: ControlType.Number,
+                title: "Calendar height",
+                min: 320,
+                max: 1200,
+                step: 20,
+                defaultValue: DEFAULTS.booking.height,
+                hidden: (p = {}) => p?.mode !== "inline",
+            },
+            fullWidth: {
+                type: ControlType.Boolean,
+                title: "Full width calendar",
+                defaultValue: DEFAULTS.booking.fullWidth,
+                hidden: (p = {}) => p?.mode !== "inline",
+            },
+            hideEventTypeDetails: {
+                type: ControlType.Boolean,
+                title: "Hide event details",
+                defaultValue: DEFAULTS.booking.hideEventTypeDetails,
+                hidden: (p = {}) => p?.mode === "form",
+            },
+            origin: {
+                type: ControlType.String,
+                title: "Cal.com origin",
+                defaultValue: DEFAULTS.booking.origin,
+                placeholder: "https://cal.com",
+                hidden: (p = {}) => p?.mode === "form",
+            },
+            embedJsUrl: {
+                type: ControlType.String,
+                title: "Embed script URL",
+                defaultValue: DEFAULTS.booking.embedJsUrl,
+                placeholder: "https://app.cal.com/embed/embed.js",
+                hidden: (p = {}) => p?.mode === "form",
+            },
+        },
+    },
+
     /* ---------------- BARVY ---------------- */
     colors: {
         type: ControlType.Object,
         title: "🎨 Colors",
         controls: {
+            preset: {
+                type: ControlType.Enum,
+                title: "Theme",
+                options: COLOR_PRESET_KEYS,
+                optionTitles: [
+                    "Custom colors",
+                    "Pink noir",
+                    "Midnight blue",
+                    "Emerald",
+                    "Gold luxe",
+                    "Violet",
+                    "Sunset coral",
+                    "Graphite mono",
+                    "Daylight (light)",
+                ],
+                defaultValue: DEFAULTS.colors.preset,
+            },
             background: {
                 type: ControlType.Color,
                 title: "Background",
                 defaultValue: DEFAULTS.colors.background,
+                hidden: usingPreset,
             },
             backgroundSoft: {
                 type: ControlType.Color,
                 title: "Background 2",
                 defaultValue: DEFAULTS.colors.backgroundSoft,
+                hidden: usingPreset,
             },
             cardBackground: {
                 type: ControlType.Color,
                 title: "Cards",
                 defaultValue: DEFAULTS.colors.cardBackground,
+                hidden: usingPreset,
             },
             accent: {
                 type: ControlType.Color,
                 title: "Accent",
                 defaultValue: DEFAULTS.colors.accent,
+                hidden: usingPreset,
             },
             accentSoft: {
                 type: ControlType.Color,
                 title: "Accent light",
                 defaultValue: DEFAULTS.colors.accentSoft,
+                hidden: usingPreset,
             },
             text: {
                 type: ControlType.Color,
                 title: "Text",
                 defaultValue: DEFAULTS.colors.text,
+                hidden: usingPreset,
             },
             headingColor: {
                 type: ControlType.Color,
                 title: "Headings",
                 defaultValue: DEFAULTS.colors.headingColor,
+                hidden: usingPreset,
             },
             textMuted: {
                 type: ControlType.Color,
                 title: "Muted text",
                 defaultValue: DEFAULTS.colors.textMuted,
+                hidden: usingPreset,
             },
             border: {
                 type: ControlType.Color,
                 title: "Borders",
                 defaultValue: DEFAULTS.colors.border,
+                hidden: usingPreset,
             },
             headerBackground: {
                 type: ControlType.Color,
                 title: "Header",
                 defaultValue: DEFAULTS.colors.headerBackground,
+                hidden: usingPreset,
             },
             mobileMenuBackground: {
                 type: ControlType.Color,
                 title: "Mobile menu",
                 defaultValue: DEFAULTS.colors.mobileMenuBackground,
+                hidden: usingPreset,
             },
             buttonUseAccent: {
                 type: ControlType.Boolean,
                 title: "Buttons use accent",
                 defaultValue: DEFAULTS.colors.buttonUseAccent,
+                hidden: usingPreset,
             },
             buttonBackground: {
                 type: ControlType.Color,
                 title: "Button",
                 defaultValue: DEFAULTS.colors.buttonBackground,
-                hidden: (p) => p.buttonUseAccent !== false,
+                hidden: (p = {}) =>
+                    usingPreset(p) || p?.buttonUseAccent !== false,
             },
             buttonBackgroundHover: {
                 type: ControlType.Color,
                 title: "Button hover",
                 defaultValue: DEFAULTS.colors.buttonBackgroundHover,
-                hidden: (p) => p.buttonUseAccent !== false,
+                hidden: (p = {}) =>
+                    usingPreset(p) || p?.buttonUseAccent !== false,
             },
             buttonText: {
                 type: ControlType.Color,
                 title: "Button text",
                 defaultValue: DEFAULTS.colors.buttonText,
+                hidden: usingPreset,
             },
             buttonOutlineText: {
                 type: ControlType.Color,
                 title: "Outline text",
                 defaultValue: DEFAULTS.colors.buttonOutlineText,
+                hidden: usingPreset,
             },
             buttonOutlineBorder: {
                 type: ControlType.Color,
                 title: "Outline border",
                 defaultValue: DEFAULTS.colors.buttonOutlineBorder,
+                hidden: usingPreset,
             },
             inputBackground: {
                 type: ControlType.Color,
                 title: "Input background",
                 defaultValue: DEFAULTS.colors.inputBackground,
+                hidden: usingPreset,
             },
             inputBorder: {
                 type: ControlType.Color,
                 title: "Input border",
                 defaultValue: DEFAULTS.colors.inputBorder,
+                hidden: usingPreset,
             },
             inputText: {
                 type: ControlType.Color,
                 title: "Input text",
                 defaultValue: DEFAULTS.colors.inputText,
+                hidden: usingPreset,
             },
             footerBackground: {
                 type: ControlType.Color,
                 title: "Footer",
                 defaultValue: DEFAULTS.colors.footerBackground,
+                hidden: usingPreset,
             },
             successColor: {
                 type: ControlType.Color,
                 title: "Success",
                 defaultValue: DEFAULTS.colors.successColor,
+                hidden: usingPreset,
             },
             errorColor: {
                 type: ControlType.Color,
                 title: "Error",
                 defaultValue: DEFAULTS.colors.errorColor,
+                hidden: usingPreset,
             },
         },
     },
@@ -2134,67 +2363,67 @@ addPropertyControls(EllaHairSalonPage, {
                 type: ControlType.Boolean,
                 title: "Scissors",
                 defaultValue: true,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             comb: {
                 type: ControlType.Boolean,
                 title: "Comb",
                 defaultValue: true,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             wave: {
                 type: ControlType.Boolean,
                 title: "Wave",
                 defaultValue: true,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             heart: {
                 type: ControlType.Boolean,
                 title: "Heart",
                 defaultValue: false,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             star: {
                 type: ControlType.Boolean,
                 title: "Star",
                 defaultValue: false,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             sparkle: {
                 type: ControlType.Boolean,
                 title: "Sparkle",
                 defaultValue: false,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             dot: {
                 type: ControlType.Boolean,
                 title: "Dot",
                 defaultValue: false,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             ring: {
                 type: ControlType.Boolean,
                 title: "Ring",
                 defaultValue: false,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             bubble: {
                 type: ControlType.Boolean,
                 title: "Bubble",
                 defaultValue: false,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             useAccentColor: {
                 type: ControlType.Boolean,
                 title: "Use accent color",
                 defaultValue: true,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             color: {
                 type: ControlType.Color,
                 title: "Custom color",
                 defaultValue: DEFAULTS.shapes.color,
-                hidden: (p) => !p.enabled || p.useAccentColor,
+                hidden: (p = {}) => !p?.enabled || p?.useAccentColor,
             },
             count: {
                 type: ControlType.Number,
@@ -2203,7 +2432,7 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 90,
                 step: 1,
                 defaultValue: DEFAULTS.shapes.count,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             size: {
                 type: ControlType.Number,
@@ -2212,7 +2441,7 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 90,
                 step: 1,
                 defaultValue: DEFAULTS.shapes.size,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             strokeWidth: {
                 type: ControlType.Number,
@@ -2221,7 +2450,7 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 4,
                 step: 0.1,
                 defaultValue: DEFAULTS.shapes.strokeWidth,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             speed: {
                 type: ControlType.Number,
@@ -2230,7 +2459,7 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 3,
                 step: 0.02,
                 defaultValue: DEFAULTS.shapes.speed,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             opacity: {
                 type: ControlType.Number,
@@ -2239,19 +2468,19 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 1,
                 step: 0.05,
                 defaultValue: DEFAULTS.shapes.opacity,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             rotation: {
                 type: ControlType.Boolean,
                 title: "Rotation",
                 defaultValue: true,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             interactive: {
                 type: ControlType.Boolean,
                 title: "React to mouse",
                 defaultValue: true,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             mouseRadius: {
                 type: ControlType.Number,
@@ -2260,7 +2489,7 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 400,
                 step: 10,
                 defaultValue: DEFAULTS.shapes.mouseRadius,
-                hidden: (p) => !p.enabled || !p.interactive,
+                hidden: (p = {}) => !p?.enabled || !p?.interactive,
             },
         },
     },
@@ -2304,25 +2533,25 @@ addPropertyControls(EllaHairSalonPage, {
                     "Drop",
                 ],
                 defaultValue: DEFAULTS.cursor.shape,
-                hidden: (p) => p.mode !== "Shape",
+                hidden: (p = {}) => p?.mode !== "Shape",
             },
             useAccentColor: {
                 type: ControlType.Boolean,
                 title: "Use accent color",
                 defaultValue: DEFAULTS.cursor.useAccentColor,
-                hidden: (p) => p.mode !== "Shape",
+                hidden: (p = {}) => p?.mode !== "Shape",
             },
             fill: {
                 type: ControlType.Color,
                 title: "Color",
                 defaultValue: DEFAULTS.cursor.fill,
-                hidden: (p) => p.mode !== "Shape" || p.useAccentColor !== false,
+                hidden: (p = {}) => p?.mode !== "Shape" || p?.useAccentColor !== false,
             },
             stroke: {
                 type: ControlType.Color,
                 title: "Outline",
                 defaultValue: DEFAULTS.cursor.stroke,
-                hidden: (p) => p.mode !== "Shape",
+                hidden: (p = {}) => p?.mode !== "Shape",
             },
             strokeWidth: {
                 type: ControlType.Number,
@@ -2331,7 +2560,7 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 4,
                 step: 0.1,
                 defaultValue: DEFAULTS.cursor.strokeWidth,
-                hidden: (p) => p.mode !== "Shape",
+                hidden: (p = {}) => p?.mode !== "Shape",
             },
             size: {
                 type: ControlType.Number,
@@ -2340,7 +2569,7 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 64,
                 step: 1,
                 defaultValue: DEFAULTS.cursor.size,
-                hidden: (p) => p.mode === "Default",
+                hidden: (p = {}) => p?.mode === "Default",
             },
             hotspotX: {
                 type: ControlType.Number,
@@ -2349,7 +2578,7 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 24,
                 step: 1,
                 defaultValue: DEFAULTS.cursor.hotspotX,
-                hidden: (p) => p.mode === "Default",
+                hidden: (p = {}) => p?.mode === "Default",
             },
             hotspotY: {
                 type: ControlType.Number,
@@ -2358,18 +2587,18 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 24,
                 step: 1,
                 defaultValue: DEFAULTS.cursor.hotspotY,
-                hidden: (p) => p.mode === "Default",
+                hidden: (p = {}) => p?.mode === "Default",
             },
             image: {
                 type: ControlType.Image,
                 title: "Cursor image",
-                hidden: (p) => p.mode !== "Image",
+                hidden: (p = {}) => p?.mode !== "Image",
             },
             separateHover: {
                 type: ControlType.Boolean,
                 title: "Different on links",
                 defaultValue: DEFAULTS.cursor.separateHover,
-                hidden: (p) => p.mode !== "Shape",
+                hidden: (p = {}) => p?.mode !== "Shape",
             },
             hoverShape: {
                 type: ControlType.Enum,
@@ -2391,126 +2620,16 @@ addPropertyControls(EllaHairSalonPage, {
                     "Arrow",
                 ],
                 defaultValue: DEFAULTS.cursor.hoverShape,
-                hidden: (p) => p.mode !== "Shape" || !p.separateHover,
+                hidden: (p = {}) => p?.mode !== "Shape" || !p?.separateHover,
             },
             hoverFill: {
                 type: ControlType.Color,
                 title: "Hover color",
                 defaultValue: DEFAULTS.cursor.hoverFill,
-                hidden: (p) =>
-                    p.mode !== "Shape" ||
-                    !p.separateHover ||
-                    p.useAccentColor !== false,
-            },
-        },
-    },
-
-    /* ---------------- BOOKING (Cal.com) ---------------- */
-    booking: {
-        type: ControlType.Object,
-        title: "📅 Booking",
-        controls: {
-            mode: {
-                type: ControlType.Enum,
-                title: "Mode",
-                options: ["form", "inline", "popup", "both"],
-                optionTitles: [
-                    "Contact form",
-                    "Cal.com calendar",
-                    "Cal.com button",
-                    "Form + Cal.com button",
-                ],
-                defaultValue: DEFAULTS.booking.mode,
-            },
-            calLink: {
-                type: ControlType.String,
-                title: "Cal.com link",
-                defaultValue: DEFAULTS.booking.calLink,
-                placeholder: "username/haircut",
-                hidden: (p) => p.mode === "form",
-            },
-            buttonText: {
-                type: ControlType.String,
-                title: "Button text",
-                defaultValue: DEFAULTS.booking.buttonText,
-                hidden: (p) => p.mode !== "popup" && p.mode !== "both",
-            },
-            note: {
-                type: ControlType.String,
-                title: "Button note",
-                displayTextArea: true,
-                defaultValue: DEFAULTS.booking.note,
-                hidden: (p) => p.mode !== "popup" && p.mode !== "both",
-            },
-            ctaOpensBooking: {
-                type: ControlType.Boolean,
-                title: "CTA opens booking",
-                defaultValue: DEFAULTS.booking.ctaOpensBooking,
-                hidden: (p) => p.mode !== "popup" && p.mode !== "both",
-            },
-            layout: {
-                type: ControlType.Enum,
-                title: "Layout",
-                options: ["month_view", "week_view", "column_view"],
-                optionTitles: ["Month", "Week", "Column"],
-                defaultValue: DEFAULTS.booking.layout,
-                hidden: (p) => p.mode === "form",
-            },
-            theme: {
-                type: ControlType.Enum,
-                title: "Calendar theme",
-                options: ["auto", "dark", "light"],
-                optionTitles: ["Auto", "Dark", "Light"],
-                displaySegmentedControl: true,
-                defaultValue: DEFAULTS.booking.theme,
-                hidden: (p) => p.mode === "form",
-            },
-            useAccentColor: {
-                type: ControlType.Boolean,
-                title: "Brand = accent",
-                defaultValue: DEFAULTS.booking.useAccentColor,
-                hidden: (p) => p.mode === "form",
-            },
-            brandColor: {
-                type: ControlType.Color,
-                title: "Brand color",
-                defaultValue: DEFAULTS.booking.brandColor,
-                hidden: (p) => p.mode === "form" || p.useAccentColor !== false,
-            },
-            height: {
-                type: ControlType.Number,
-                title: "Calendar height",
-                min: 320,
-                max: 1200,
-                step: 20,
-                defaultValue: DEFAULTS.booking.height,
-                hidden: (p) => p.mode !== "inline",
-            },
-            fullWidth: {
-                type: ControlType.Boolean,
-                title: "Full width calendar",
-                defaultValue: DEFAULTS.booking.fullWidth,
-                hidden: (p) => p.mode !== "inline",
-            },
-            hideEventTypeDetails: {
-                type: ControlType.Boolean,
-                title: "Hide event details",
-                defaultValue: DEFAULTS.booking.hideEventTypeDetails,
-                hidden: (p) => p.mode === "form",
-            },
-            origin: {
-                type: ControlType.String,
-                title: "Cal.com origin",
-                defaultValue: DEFAULTS.booking.origin,
-                placeholder: "https://cal.com",
-                hidden: (p) => p.mode === "form",
-            },
-            embedJsUrl: {
-                type: ControlType.String,
-                title: "Embed script URL",
-                defaultValue: DEFAULTS.booking.embedJsUrl,
-                placeholder: "https://app.cal.com/embed/embed.js",
-                hidden: (p) => p.mode === "form",
+                hidden: (p = {}) =>
+                    p?.mode !== "Shape" ||
+                    !p?.separateHover ||
+                    p?.useAccentColor !== false,
             },
         },
     },
@@ -2599,12 +2718,12 @@ addPropertyControls(EllaHairSalonPage, {
             },
             video: {
                 ...videoControl("Video soubor"),
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             poster: {
                 type: ControlType.Image,
                 title: "Poster",
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             opacity: {
                 type: ControlType.Number,
@@ -2613,13 +2732,13 @@ addPropertyControls(EllaHairSalonPage, {
                 max: 1,
                 step: 0.05,
                 defaultValue: DEFAULTS.backgroundVideo.opacity,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
             overlay: {
                 type: ControlType.Color,
                 title: "Overlay",
                 defaultValue: DEFAULTS.backgroundVideo.overlay,
-                hidden: (p) => !p.enabled,
+                hidden: (p = {}) => !p?.enabled,
             },
         },
     },

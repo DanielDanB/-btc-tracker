@@ -9,7 +9,26 @@ v pravém panelu – v kódu už není potřeba nic přepisovat.
 > Popisky v panelu Frameru jsou anglicky, návod je česky – názvy v `kódu`
 > odpovídají přesně tomu, co uvidíš v pravém panelu.
 
-### 🎨 Colors – barvy
+### 🎨 Colors – téma na jedno kliknutí
+Nahoře ve skupině `Colors` je `Theme` – přepnutí celého webu jedním kliknutím:
+
+| Téma | Vzhled |
+|---|---|
+| **Custom colors** | tvoje vlastní barvy (výchozí – nic ti nepřepíše) |
+| **Pink noir** | původní černo-růžová |
+| **Midnight blue** | tmavě modrá |
+| **Emerald** | tmavá se zelenou |
+| **Gold luxe** | černo-zlatá |
+| **Violet** | tmavě fialová |
+| **Sunset coral** | tmavá s korálovou |
+| **Graphite mono** | černobílá |
+| **Daylight (light)** | světlá varianta webu |
+
+Téma přebarví úplně všechno – pozadí, karty, texty, tlačítka, formulář, poletující
+obrazce i kurzor (ty berou akcentní barvu automaticky). Když necháš `Custom colors`,
+zůstávají všechny jednotlivé barvy k ručnímu nastavení jako dosud; po zvolení tématu
+se pickery schovají, aby bylo jasné, že barvy řídí téma.
+
 Kompletně všechny barvy webu: pozadí, druhé pozadí, karty, akcent, světlý akcent,
 text, nadpisy, šedý text, rámečky, hlavička, mobilní menu, tlačítka (pozadí, hover,
 text, outline), pole formuláře, patička, barva úspěchu a chyby.
@@ -112,6 +131,10 @@ takže na publikovaném webu je hero přes celý displej.
 - Formulář odesílá přes [Formspree](https://formspree.io) – bez vyplněného endpointu
   se zobrazí upozornění místo odeslání. Pokud používáš jen Cal.com, formulář
   můžeš nechat vypnutý (`Booking → Mode`).
+- Kdyby se v panelu Frameru neobjevila nová skupina (třeba `📅 Booking (Cal.com)`),
+  jde o starší verzi souboru – přepiš celý obsah code file. Dřív navíc chyběla
+  pojistka v `hidden()`: u skupiny, kterou instance komponenty ještě neměla uloženou,
+  callback spadl a Framer celou skupinu nevykreslil. To je opravené.
 - Mobilní menu je v DOM jen když je otevřené. Dřív bylo odsunuté za pravý okraj
   (`right: -100%`) a na publikovaném webu kvůli tomu stránka po zúžení přetékala
   do strany – proto je zavřená zásuvka teď úplně odmontovaná.
