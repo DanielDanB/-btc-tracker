@@ -43,7 +43,9 @@ když je rezervace zapnutá a odkaz vyplněný.
 `map.enabled: true` zapne Google mapu v kontaktu. `source: "address"` ji poskládá
 z adresy (`address`, nebo prázdné = adresa z kontaktu) – bez API klíče;
 `source: "embed"` použije odkaz z Google Maps → Sdílet → Vložit mapu.
-Dál `placement` (`"contact"` / `"full"`), `height`, `darkStyle` a `showDirections`.
+Dál `placement` (`"contact"` / `"full"`), `height`, `showDirections` a barvy:
+`style` (`"auto"` = podle akcentu webu, `"brand"`, `"brandDark"`, `"gray"`,
+`"original"`) a `tint` (0–1, síla obarvení).
 
 ### Formulář
 Formulář posílá data na `form.formspreeEndpoint`

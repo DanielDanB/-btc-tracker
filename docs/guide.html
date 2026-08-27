@@ -64,8 +64,8 @@
   <dl>
     <dt>Format</dt><dd>Framer Remix – no code to paste</dd>
     <dt>Booking</dt><dd>Cal.com calendar, contact form, Google map</dd>
-    <dt>Settings</dt><dd>206 options in the Framer properties panel</dd>
-    <dt>Component version</dt><dd>v9 · Map + calendar language</dd>
+    <dt>Settings</dt><dd>207 options in the Framer properties panel</dd>
+    <dt>Component version</dt><dd>v10 · Brand-coloured map</dd>
   </dl>
 </div>
 
@@ -81,7 +81,7 @@
     <li><b>Nine colour themes in one click</b>, or full manual control over every colour on the page.</li>
     <li><b>Real booking.</b> Connect a Cal.com event and visitors book straight from the page – inline calendar or popup, in the language you choose.</li>
     <li><b>Video anywhere an image can go</b>, including a video background for the whole page.</li>
-    <li><b>A Google map in the contact section</b>, from a plain address – no API key, and it can be tinted to match a dark site.</li>
+    <li><b>A Google map in the contact section</b>, from a plain address – no API key, and coloured in your accent so it belongs to the page.</li>
     <li><b>Animated floating shapes</b> and an optional custom cursor, both following your accent colour.</li>
     <li><b>Responsive by component width</b>, not window width – it looks right in every Framer breakpoint.</li>
   </ul>
@@ -309,7 +309,8 @@
     <tr><td class="f">Embed link</td><td>Embed-link mode. Paste the URL, or the whole <code>&lt;iframe&gt;</code> snippet – the template picks the address out of it</td></tr>
     <tr><td class="f">Placement</td><td><b>Under contact details</b> (next to the form or calendar) or <b>Full width</b> below the whole section</td></tr>
     <tr><td class="f">Height</td><td>180–800 px</td></tr>
-    <tr><td class="f">Dark map</td><td>Tints the map to fit a dark site. Leave off for the light theme</td></tr>
+    <tr><td class="f">Map colors</td><td><b>Match site (auto)</b> colours the map in your accent, light or dark according to your background · <b>Brand – light</b> / <b>Brand – dark</b> force one of them · <b>Grayscale</b> · <b>Google original</b> leaves Google's own colours</td></tr>
+    <tr><td class="f">Tint strength</td><td>0 = neutral map, 1 = full brand colour (default)</td></tr>
     <tr><td class="f">Directions button</td><td>Adds a button that opens navigation to your address (address mode)</td></tr>
     <tr><td class="f">Button text</td><td>Label of that button</td></tr>
     <tr><td class="f">Map title (a11y)</td><td>Description of the frame for screen readers</td></tr>
@@ -544,9 +545,16 @@
   <ul>
     <li><b>Placement</b> – under the contact details (map beside the form or calendar) or full width under the whole section.</li>
     <li><b>Height</b> – 300–400 px next to the details, 400–500 px full width.</li>
-    <li><b>Dark map</b> – tints Google's light map so it stops shining out of a dark page. Leave it off with the Daylight theme.</li>
+    <li><b>Map colors</b> – left on <b>Match site (auto)</b> the map takes your accent colour: pink by default, blue if you switch the accent to blue, and it goes dark or light with your background. <b>Google original</b> brings back Google's own colours.</li>
+    <li><b>Tint strength</b> – how strongly the brand colour is applied. Lower it if street names get hard to read.</li>
     <li><b>Directions button</b> – opens navigation to your address in the visitor's maps app.</li>
   </ul>
+
+  <div class="note"><strong>How the colouring works.</strong> Google's map is an
+  external frame whose contents cannot be restyled, so the template neutralises it
+  and lays your accent over it in "color" blend mode – the map keeps its own light
+  and shade but takes your hue. The map stays fully interactive: you can drag and
+  zoom it as usual.</div>
 
   <div class="note"><strong>Privacy.</strong> The map is loaded from Google only when
   <b>Show map</b> is on. If your site has a cookie banner, remember to mention Google
@@ -587,7 +595,7 @@
 
   <h3>The panel does not show a setting described here</h3>
   <p>Check the very first field, <b>Version</b>. This guide documents
-  <b>v9 · Map + calendar language</b>. If your remix predates it, ask for the current remix link.</p>
+  <b>v10 · Brand-coloured map</b>. If your remix predates it, ask for the current remix link.</p>
 
   <h3>The calendar does not appear</h3>
   <ul>
@@ -616,6 +624,11 @@
     <li>Embed mode: the link must come from Google Maps → Share → Embed a map. A normal <code>maps.app.goo.gl</code> share link will not render.</li>
     <li>An empty grey frame with a hint means neither an address nor an embed link is filled in.</li>
   </ul>
+
+  <h3>The map colour does not match the site</h3>
+  <p>Check <b>Map → Map colors</b>. On <b>Google original</b> the map keeps Google's
+  own palette; <b>Match site (auto)</b> follows your accent. If the labels are hard
+  to read, lower <b>Tint strength</b>.</p>
 
   <h3>The page looks cut off at the bottom on a phone</h3>
   <p>The component reports its height correctly, but Framer remembers the height it
@@ -673,7 +686,8 @@
         address: "",        // empty = reuse the contact address
         zoom: 15,
         placement: "contact",  // "contact" | "full"
-        darkStyle: false,
+        style: "auto",      // auto | brand | brandDark | gray | original
+        tint: 1,            // 0 = neutral map, 1 = full brand colour
     },
     form: { formspreeEndpoint: "" },
 }</code></pre>

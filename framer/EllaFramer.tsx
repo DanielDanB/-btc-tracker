@@ -351,10 +351,16 @@ function scopeCSS(input, scope) {
     return out + buffer
 }
 
-const globalCSS = (c, t, fx) => {
+const globalCSS = (c, t, fx, map = {}) => {
     const accent = c.accent
     const accentSoft = c.accentSoft
     const radius = t.radius
+    // Google's map is a cross-origin frame, so its colours cannot be styled
+    // directly: the frame is neutralised with a filter and the accent is laid
+    // over it in "color" blend mode, which keeps the map's own luminance.
+    const mapTint = Number(
+        Math.max(0, Math.min(1, (map.tint === undefined ? 1 : map.tint) * 0.75)).toFixed(2)
+    )
     // Buttons follow the accent color by default; a custom color can override.
     const btnBg = c.buttonUseAccent === false ? c.buttonBackground : accent
     const btnHover =
@@ -501,7 +507,11 @@ const globalCSS = (c, t, fx) => {
   .contact-form button { align-self: flex-start; margin-top: 6px; }
   .contact-map { width: 100%; margin-top: 26px; border-radius: ${t.cardRadius}px; overflow: hidden; border: 1px solid ${withAlpha(accent, 0.2)}; background: var(--black-soft); position: relative; }
   .contact-map iframe { width: 100%; height: 100%; border: 0; display: block; }
-  .contact-map.map-dark iframe { filter: invert(90%) hue-rotate(180deg) saturate(0.7) contrast(0.95); }
+  .contact-map.map-tint, .contact-map.map-tint-dark { isolation: isolate; }
+  .contact-map.map-tint iframe { filter: grayscale(1) contrast(0.94) brightness(1.04); }
+  .contact-map.map-tint-dark iframe { filter: invert(93%) grayscale(1) contrast(0.9) brightness(0.96); }
+  .contact-map.map-tint::after, .contact-map.map-tint-dark::after { content: ""; position: absolute; inset: 0; background: ${accent}; mix-blend-mode: color; opacity: ${mapTint}; pointer-events: none; }
+  .contact-map.map-gray iframe { filter: grayscale(1) contrast(0.96); }
   .map-full { margin-top: 40px; }
   .map-actions { margin-top: 14px; }
   .map-empty { display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; color: var(--gray); font-size: 14.5px; }
@@ -563,7 +573,7 @@ const globalCSS = (c, t, fx) => {
 /* Cal.com – booking calendar                                          */
 /* ------------------------------------------------------------------ */
 
-const COMPONENT_VERSION = "v9 · Map + calendar language"
+const COMPONENT_VERSION = "v10 · Brand-coloured map"
 
 const CAL_DEFAULT_EMBED_JS = "https://app.cal.com/embed/embed.js"
 
@@ -1685,7 +1695,18 @@ function About({ data, videoSettings }) {
     )
 }
 
-function Contact({ data, booking, cal, map }) {
+/** Which tint class the map should get for the chosen style. */
+function mapTintClass(map, siteIsDark) {
+    // "darkStyle" was the old boolean; keep honouring it.
+    const style = map.style || (map.darkStyle ? "brandDark" : "auto")
+    if (style === "original") return ""
+    if (style === "gray") return "map-gray"
+    if (style === "brand") return "map-tint"
+    if (style === "brandDark") return "map-tint-dark"
+    return siteIsDark ? "map-tint-dark" : "map-tint"
+}
+
+function Contact({ data, booking, cal, map, siteIsDark }) {
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -1757,6 +1778,7 @@ function Contact({ data, booking, cal, map }) {
     const fullWidth = showCalendar && booking.fullWidth
 
     const mapUrl = map.enabled ? mapEmbedUrl(map, data.address, map.language) : ""
+    const mapStyleClass = mapTintClass(map, siteIsDark)
     // The directions link needs a real address, so it is address mode only.
     const directions =
         map.enabled && map.showDirections && map.source !== "embed"
@@ -1765,7 +1787,7 @@ function Contact({ data, booking, cal, map }) {
     const mapNode = map.enabled ? (
         <div>
             <div
-                className={`contact-map ${map.darkStyle ? "map-dark" : ""} ${
+                className={`contact-map ${mapStyleClass} ${
                     map.placement === "full" ? "map-full" : ""
                 }`.trim()}
                 style={{ height: map.height }}
@@ -2084,7 +2106,8 @@ const DEFAULTS = {
         language: "en",
         height: 340,
         placement: "contact",
-        darkStyle: false,
+        style: "auto",
+        tint: 1,
         showDirections: true,
         directionsText: "Get directions",
         title: "Where to find us",
@@ -2249,9 +2272,9 @@ export default function EllaHairSalonPage(props) {
 
     const css = useMemo(
         () =>
-            scopeCSS(globalCSS(colors, style, effects), ".ella-root") +
+            scopeCSS(globalCSS(colors, style, effects, map), ".ella-root") +
             cursorCSS(cursor, colors.accent),
-        [colors, style, effects, cursor]
+        [colors, style, effects, cursor, map]
     )
 
     useIsomorphicLayoutEffect(() => {
@@ -2373,6 +2396,7 @@ export default function EllaHairSalonPage(props) {
                         booking={booking}
                         cal={cal}
                         map={map}
+                        siteIsDark={isDarkColor(colors.background, true)}
                     />
                 )}
             </main>
@@ -3892,11 +3916,31 @@ addPropertyControls(EllaHairSalonPage, {
                 defaultValue: DEFAULTS.map.height,
                 hidden: (p = {}) => !p?.enabled,
             },
-            darkStyle: {
-                type: ControlType.Boolean,
-                title: "Dark map",
-                defaultValue: DEFAULTS.map.darkStyle,
+            style: {
+                type: ControlType.Enum,
+                title: "Map colors",
+                options: ["auto", "brand", "brandDark", "gray", "original"],
+                optionTitles: [
+                    "Match site (auto)",
+                    "Brand – light",
+                    "Brand – dark",
+                    "Grayscale",
+                    "Google original",
+                ],
+                defaultValue: DEFAULTS.map.style,
                 hidden: (p = {}) => !p?.enabled,
+            },
+            tint: {
+                type: ControlType.Number,
+                title: "Tint strength",
+                min: 0,
+                max: 1.6,
+                step: 0.05,
+                defaultValue: DEFAULTS.map.tint,
+                hidden: (p = {}) =>
+                    !p?.enabled ||
+                    p?.style === "original" ||
+                    p?.style === "gray",
             },
             showDirections: {
                 type: ControlType.Boolean,

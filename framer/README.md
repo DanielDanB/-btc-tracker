@@ -130,8 +130,11 @@ adresu události – když skript funguje, otevře se popup, když ne, otevře s
 `Map → Show map` zapne Google mapu v kontaktu. Buď z adresy (nic se nikde
 neregistruje – bere adresu z kontaktu, nebo si zadáš vlastní, zoom a jazyk),
 nebo z odkazu, který zkopíruješ v Google Maps → Sdílet → Vložit mapu (zvládne
-i celý `<iframe>`). Dál se dá nastavit umístění (pod kontakty / přes celou šířku),
-výška, ztmavení mapy do tmavého webu a tlačítko pro navigaci.
+i celý `<iframe>`). Mapa se ve výchozím stavu obarví do akcentní barvy webu (`Map colors → Match site`) –
+růžová, a když přepneš akcent třeba na modrou, zmodrá s ním; podle pozadí volí světlou
+nebo tmavou variantu. `Google original` vrátí původní barvy Googlu, `Tint strength`
+řídí sílu obarvení. Dál se nastavuje umístění (pod kontakty / přes celou šířku),
+výška a tlačítko pro navigaci.
 
 ### 🧩 Další
 - `Sections` – zapnutí/vypnutí služeb, galerie, video sekce, ceníku, O nás, kontaktu, patičky
@@ -170,7 +173,7 @@ takže na publikovaném webu je hero přes celý displej.
   komponentu na telefonním breakpointu a nastav jí (a rámci kolem ní) **Fit content**,
   ne pevnou výšku. Výška hero sekce se počítá v `svh`, aby na telefonu s dynamickou
   lištou nevycházela vyšší než na plátně.
-- Úplně první pole v panelu je **`Version`** – musí v něm být `v9 · Map + calendar language`.
+- Úplně první pole v panelu je **`Version`** – musí v něm být `v10 · Brand-coloured map`.
   Když tam není (nebo pole chybí), Framer pořád používá starší kód: otevři code file,
   označ všechno (⌘A) a vlož celý nový obsah. Když má code file červenou chybu,
   Framer si drží poslední funkční verzi a panel se nezmění.
