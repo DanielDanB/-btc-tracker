@@ -92,6 +92,11 @@ jejich generátor); pokud by tvoje instance běžela na starší verzi embedu, k
 si po chvíli sama zkusí i starší tvar API. Vložený kalendář je ve výchozím stavu přes
 celou šířku (`Full width calendar`) – měsíční pohled potřebuje místo.
 
+Kalendář přebírá barvy webu (`Match site colors`) – pozadí, karty, texty, rámečky
+i akcent, takže sedne do stránky. `Calendar theme` na `Auto` znamená „podle webu“
+(tmavý web → tmavý kalendář), ne podle nastavení systému návštěvníka. Výšku si
+kalendář určuje sám podle obsahu, `Calendar min height` je jen minimum.
+
 Dál si nastavíš `Layout` (měsíc / týden / sloupec), `Calendar theme`,
 `Calendar height`, `Full width calendar`, `Hide event details` a text tlačítka
 `Button text` s poznámkou `Button note`. Barva kalendáře přebírá akcentní barvu
@@ -146,6 +151,11 @@ takže na publikovaném webu je hero přes celý displej.
 - Formulář odesílá přes [Formspree](https://formspree.io) – bez vyplněného endpointu
   se zobrazí upozornění místo odeslání. Pokud používáš jen Cal.com, formulář
   můžeš nechat vypnutý (`Booking → Mode`).
+- Kdyby byl na mobilu web dole useknutý: komponenta svoji výšku hlásí správně
+  (ověřeno), ale Framer si u sekce pamatuje výšku změřenou na plátně. Vyber
+  komponentu na telefonním breakpointu a nastav jí (a rámci kolem ní) **Fit content**,
+  ne pevnou výšku. Výška hero sekce se počítá v `svh`, aby na telefonu s dynamickou
+  lištou nevycházela vyšší než na plátně.
 - Úplně první pole v panelu je **`Version`** – musí v něm být `v5 · Cal.com + Themes`.
   Když tam není (nebo pole chybí), Framer pořád používá starší kód: otevři code file,
   označ všechno (⌘A) a vlož celý nový obsah. Když má code file červenou chybu,

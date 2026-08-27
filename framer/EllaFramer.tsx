@@ -377,7 +377,8 @@ const globalCSS = (c, t, fx) => {
     color: var(--white);
     line-height: ${t.lineHeight};
     font-size: ${t.baseSize}px;
-    overflow-x: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
     width: 100%;
     height: auto;
     position: relative;
@@ -417,12 +418,12 @@ const globalCSS = (c, t, fx) => {
   .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--pink); }
   .nav-backdrop { position: fixed; inset: 0; z-index: 104; background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.4s ease; border: 0; padding: 0; }
   .nav-backdrop.active { opacity: 1; }
-  .nav-mobile { position: fixed; top: 0; right: 0; width: min(80vw, 340px); max-width: 100%; height: 100vh; background: ${c.mobileMenuBackground}; border-left: 1px solid ${withAlpha(accent, 0.2)}; z-index: 105; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 36px; transform: translateX(100%); transition: transform 0.4s ease; box-shadow: -10px 0 40px rgba(0,0,0,0.6); }
+  .nav-mobile { position: fixed; top: 0; right: 0; width: min(80vw, 340px); max-width: 100%; height: 100vh; height: 100svh; background: ${c.mobileMenuBackground}; border-left: 1px solid ${withAlpha(accent, 0.2)}; z-index: 105; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 36px; transform: translateX(100%); transition: transform 0.4s ease; box-shadow: -10px 0 40px rgba(0,0,0,0.6); }
   .nav-mobile.active { transform: translateX(0); }
   .nav-mobile ul { list-style: none; text-align: center; display: flex; flex-direction: column; gap: 28px; }
   .nav-mobile ul a { color: var(--white); text-decoration: none; font-size: 20px; font-weight: 600; }
   .nav-mobile ul a:hover { color: var(--pink); }
-  .hero { min-height: ${t.heroMinHeight}vh; display: flex; align-items: center; position: relative; }
+  .hero { min-height: ${t.heroMinHeight}vh; min-height: ${t.heroMinHeight}svh; display: flex; align-items: center; position: relative; }
   .hero-inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; padding: 60px 24px; }
   .eyebrow { color: var(--pink-soft); font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; font-size: 13px; margin-bottom: 16px; display: block; }
   .hero-text h1 { font-size: clamp(2.4rem, 5vw, ${t.heroTitleSize}rem); font-weight: 800; line-height: 1.15; margin-bottom: 24px; }
@@ -500,9 +501,9 @@ const globalCSS = (c, t, fx) => {
   .booking-side { display: flex; flex-direction: column; gap: 16px; }
   .booking-actions { display: flex; gap: 12px; flex-wrap: wrap; }
   .booking-note { color: var(--gray); font-size: 14px; }
-  .cal-embed { width: 100%; min-height: 320px; border-radius: ${t.cardRadius}px; overflow: auto; border: 1px solid ${withAlpha(accent, 0.2)}; background: var(--card); }
-  .cal-embed > * { display: block; width: 100%; height: 100%; min-height: inherit; }
-  .cal-embed iframe { width: 100%; height: 100%; min-height: inherit; border: 0; display: block; }
+  .cal-embed { width: 100%; height: auto; border-radius: ${t.cardRadius}px; overflow: hidden; overflow: clip; overflow-clip-margin: 16px; border: 1px solid ${withAlpha(accent, 0.2)}; background: var(--black); }
+  .cal-embed > * { display: block; width: 100%; }
+  .cal-embed iframe { width: 100%; border: 0; display: block; }
   .cal-placeholder { display: flex; align-items: center; justify-content: center; text-align: center; padding: 32px 24px; color: var(--gray); font-size: 15px; min-height: 320px; }
   .ella-root .contact-inner.booking-full { grid-template-columns: 1fr; }
   .form-feedback { margin-top: 12px; font-size: 14px; }
@@ -605,9 +606,48 @@ function ensureCalLoader(embedJsUrl) {
     return window.Cal
 }
 
-function calConfig(booking) {
+/** Je barva tmavá? Podle toho se volí světlé/tmavé téma kalendáře. */
+function isDarkColor(color, fallback) {
+    const parsed = parseColor(color)
+    if (!parsed) return fallback
+    const channel = (v) => {
+        const x = v / 255
+        return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4)
+    }
+    const luminance =
+        0.2126 * channel(parsed.r) +
+        0.7152 * channel(parsed.g) +
+        0.0722 * channel(parsed.b)
+    return luminance < 0.35
+}
+
+/** Namapuje paletu webu na CSS proměnné Cal.com embedu. */
+function calCssVars(colors, brand) {
+    return {
+        "cal-brand": brand,
+        "cal-brand-emphasis": toHex(colors.accentSoft, brand),
+        "cal-brand-text": toHex(colors.buttonText, "#ffffff"),
+        "cal-bg": colors.background,
+        "cal-bg-emphasis": colors.backgroundSoft,
+        "cal-bg-subtle": colors.cardBackground,
+        "cal-bg-muted": colors.backgroundSoft,
+        "cal-bg-inverted": colors.text,
+        "cal-text": colors.text,
+        "cal-text-emphasis": colors.headingColor,
+        "cal-text-subtle": colors.textMuted,
+        "cal-text-muted": colors.textMuted,
+        "cal-text-inverted": colors.background,
+        "cal-border": colors.border,
+        "cal-border-subtle": colors.border,
+        "cal-border-muted": colors.border,
+        "cal-border-emphasis": withAlpha(colors.accent, 0.45),
+        "cal-border-booker": colors.border,
+    }
+}
+
+function calConfig(booking, theme) {
     const config = { layout: booking.layout || "month_view" }
-    if (booking.theme && booking.theme !== "auto") config.theme = booking.theme
+    if (theme) config.theme = theme
     return config
 }
 
@@ -616,7 +656,7 @@ function calConfig(booking) {
  * vloží kalendář přímo do stránky. Vrací ref pro inline kontejner
  * a atributy pro tlačítka, která mají otevřít rezervaci v popupu.
  */
-function useCalBooking(booking, accent) {
+function useCalBooking(booking, colors) {
     // Cal.com embed očekává selektor jako řetězec, ne DOM uzel.
     const idRef = useRef(null)
     if (!idRef.current) {
@@ -636,9 +676,18 @@ function useCalBooking(booking, accent) {
     const showsButton =
         active && (booking.mode === "popup" || booking.mode === "both")
     const brand = toHex(
-        booking.useAccentColor === false ? booking.brandColor : accent,
+        booking.useAccentColor === false ? booking.brandColor : colors.accent,
         "#ff3d81"
     )
+    // "Auto" znamená: řiď se barvou webu, ne nastavením systému návštěvníka.
+    const siteTheme = isDarkColor(colors.background, true) ? "dark" : "light"
+    const calTheme =
+        booking.theme && booking.theme !== "auto" ? booking.theme : siteTheme
+    const matchColors = booking.matchColors !== false
+    const cssVars = matchColors
+        ? calCssVars(colors, brand)
+        : { "cal-brand": brand }
+    const varsKey = JSON.stringify(cssVars)
     const origin = (booking.origin || "https://cal.com").replace(/\/+$/, "")
     const bookingUrl = link ? `${origin}/${link}` : ""
     // Cal.com dnes generuje embed kód s namespace odvozeným od události.
@@ -655,14 +704,12 @@ function useCalBooking(booking, accent) {
         const Cal = ensureCalLoader(booking.embedJsUrl)
         if (!Cal) return
 
-        const config = calConfig(booking)
+        const config = calConfig(booking, calTheme)
         const uiOptions = {
+            theme: calTheme,
             hideEventTypeDetails: !!booking.hideEventTypeDetails,
             layout: booking.layout || "month_view",
-            cssVarsPerTheme: {
-                light: { "cal-brand": brand },
-                dark: { "cal-brand": brand },
-            },
+            cssVarsPerTheme: { light: cssVars, dark: cssVars },
         }
         const selector = `#${containerId}`
         // Embed vkládá vlastní element (<cal-inline>) se shadow DOM, iframe
@@ -674,7 +721,7 @@ function useCalBooking(booking, accent) {
         const namespacedApi = () =>
             (window.Cal && window.Cal.ns && window.Cal.ns[namespace]) || null
 
-        const key = `${link}|${namespace}|${booking.layout}|${booking.theme}`
+        const key = `${link}|${namespace}|${booking.layout}|${calTheme}`
         const alreadyInited = initedKeyRef.current === key
 
         // Přesně v pořadí, v jakém to vydává generátor Cal.com:
@@ -717,9 +764,10 @@ function useCalBooking(booking, accent) {
         origin,
         booking.embedJsUrl,
         booking.layout,
-        booking.theme,
+        calTheme,
         booking.hideEventTypeDetails,
         brand,
+        varsKey,
     ])
 
     // Když embed nedojede (blokovaný skript, CSP, plátno Frameru), nabídneme
@@ -754,7 +802,7 @@ function useCalBooking(booking, accent) {
         ? {
               "data-cal-link": link,
               "data-cal-namespace": namespace,
-              "data-cal-config": JSON.stringify(calConfig(booking)),
+              "data-cal-config": JSON.stringify(calConfig(booking, calTheme)),
           }
         : {}
 
@@ -1703,10 +1751,7 @@ function Contact({ data, booking, cal }) {
                                 <div
                                     className="cal-embed"
                                     id={cal.containerId}
-                                    style={{
-                                        height: booking.height,
-                                        minHeight: booking.height,
-                                    }}
+                                    style={{ minHeight: booking.height }}
                                 />
                                 {cal.embedBlocked && cal.bookingUrl && (
                                     <div className="booking-actions">
@@ -1921,7 +1966,8 @@ const DEFAULTS = {
         useAccentColor: true,
         brandColor: "#ff3d81",
         hideEventTypeDetails: false,
-        height: 640,
+        matchColors: true,
+        height: 480,
         fullWidth: true,
         buttonText: "Check availability",
         note: "",
@@ -2018,6 +2064,11 @@ function resolveBooking(contact, legacy, accent) {
         ),
         height: pick(c.calHeight, old.height, DEFAULTS.booking.height),
         fullWidth: flag(c.calFullWidth, old.fullWidth, DEFAULTS.booking.fullWidth),
+        matchColors: flag(
+            c.calMatchColors,
+            old.matchColors,
+            DEFAULTS.booking.matchColors
+        ),
         buttonText: pick(
             c.calButtonText,
             old.buttonText,
@@ -2058,7 +2109,7 @@ export default function EllaHairSalonPage(props) {
     // Rezervace se nastavuje ve skupině "Contact & booking"; starší instance
     // komponenty mohly mít hodnoty ještě v samostatné skupině "booking".
     const booking = resolveBooking(props.contact, props.booking, colors.accent)
-    const cal = useCalBooking(booking, colors.accent)
+    const cal = useCalBooking(booking, colors)
     // Tlačítka „Book Now“ otevřou rezervaci, pokud je zapnutá.
     const ctaBookingAttrs =
         cal.showsButton && booking.ctaOpensBooking !== false
@@ -3466,9 +3517,15 @@ addPropertyControls(EllaHairSalonPage, {
                 hidden: (p = {}) =>
                     usesFormOnly(p) || p?.calBrandUseAccent !== false,
             },
+            calMatchColors: {
+                type: ControlType.Boolean,
+                title: "Match site colors",
+                defaultValue: DEFAULTS.booking.matchColors,
+                hidden: usesFormOnly,
+            },
             calHeight: {
                 type: ControlType.Number,
-                title: "Calendar height",
+                title: "Calendar min height",
                 min: 320,
                 max: 1200,
                 step: 20,
