@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Ella V. Hair Salon – návod</title>
+<style>
+  :root {
+    --accent: #ff3d81;
+    --accent-soft: #ffe4ee;
+    --ink: #16161a;
+    --muted: #5c5f6b;
+    --line: #e3e4e8;
+    --code-bg: #f5f5f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "DejaVu Sans", "Liberation Sans", Arial, sans-serif;
+    color: var(--ink);
+    font-size: 10.5pt;
+    line-height: 1.55;
+  }
+  h1, h2, h3, h4 { line-height: 1.25; }
+  code, pre { font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; }
+  code { background: var(--code-bg); padding: 1px 4px; border-radius: 3px; font-size: 9pt; }
+  pre { background: var(--code-bg); border-left: 3px solid var(--accent); padding: 10px 12px; font-size: 8.6pt; line-height: 1.5; overflow-wrap: break-word; white-space: pre-wrap; border-radius: 0 4px 4px 0; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+  a { color: var(--accent); text-decoration: none; }
+
+  /* --- cover --- */
+  .cover { height: 247mm; display: flex; flex-direction: column; justify-content: center; page-break-after: always; }
+  .cover .eyebrow { color: var(--accent); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 9pt; margin-bottom: 14px; }
+  .cover h1 { font-size: 30pt; margin: 0 0 10px; letter-spacing: -0.5px; }
+  .cover .sub { font-size: 13pt; color: var(--muted); margin-bottom: 34px; }
+  .cover .rule { height: 4px; width: 90px; background: var(--accent); border-radius: 2px; margin-bottom: 34px; }
+  .cover dl { display: grid; grid-template-columns: 34mm 1fr; gap: 8px 0; margin: 0; font-size: 10pt; }
+  .cover dt { color: var(--muted); }
+  .cover dd { margin: 0; font-weight: 600; }
+
+  /* --- structure --- */
+  h2 { font-size: 17pt; margin: 0 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); page-break-after: avoid; }
+  h3 { font-size: 12.5pt; margin: 20px 0 8px; page-break-after: avoid; break-inside: avoid; overflow: hidden; }
+  h4 { font-size: 10.5pt; margin: 14px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; font-size: 8.5pt; page-break-after: avoid; }
+  p { margin: 0 0 9px; orphans: 3; widows: 3; }
+  ul, ol { margin: 0 0 10px; padding-left: 18px; }
+  li { margin-bottom: 4px; }
+  section.chapter { page-break-before: always; }
+  .lead { color: var(--muted); font-size: 11pt; margin-bottom: 18px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 14px; font-size: 9.4pt; page-break-inside: avoid; }
+  th { text-align: left; background: var(--accent-soft); color: var(--ink); padding: 7px 9px; border-bottom: 2px solid var(--accent); font-size: 8.8pt; text-transform: uppercase; letter-spacing: 0.4px; }
+  td { padding: 7px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  ul, ol { orphans: 2; widows: 2; }
+  .note { border: 1px solid var(--line); border-left: 3px solid var(--accent); background: #fff7fa; padding: 10px 13px; margin: 12px 0; font-size: 9.6pt; border-radius: 0 4px 4px 0; page-break-inside: avoid; }
+  .note strong:first-child { color: var(--accent); }
+  .steps { counter-reset: step; padding-left: 0; list-style: none; }
+  .steps li { counter-increment: step; position: relative; padding-left: 26px; margin-bottom: 8px; }
+  .steps li::before { content: counter(step); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 8pt; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .toc { columns: 2; column-gap: 22px; font-size: 10pt; }
+  .toc div { break-inside: avoid; margin-bottom: 10px; }
+  .toc b { display: block; color: var(--accent); font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 3px; }
+  .toc span { display: block; color: var(--muted); }
+  .kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; font-size: 8.6pt; background: #fff; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="eyebrow">Návod k obsluze webu</div>
+  <h1>Ella V. Hair Salon</h1>
+  <div class="sub">Framer komponenta &amp; HTML verze webu</div>
+  <div class="rule"></div>
+  <dl>
+    <dt>Verze komponenty</dt><dd>v7 · Cal embed cleanup</dd>
+    <dt>Soubory</dt><dd>framer/EllaFramer.tsx · web/index.html</dd>
+    <dt>Rezervace</dt><dd>Cal.com nebo formulář (Formspree)</dd>
+    <dt>Dokument</dt><dd>27. srpna 2026</dd>
+  </dl>
+</div>
+
+<section>
+  <h2>Co je v balíku</h2>
+  <p class="lead">Web existuje ve dvou podobách. Obě vypadají a chovají se stejně –
+  liší se jen tím, kde je upravuješ.</p>
+
+  <table>
+    <tr><th style="width:34%">Soubor</th><th>K čemu je</th></tr>
+    <tr><td><code>framer/EllaFramer.tsx</code></td><td>Framer code component. Všechno se nastavuje klikáním v pravém panelu Frameru.</td></tr>
+    <tr><td><code>web/index.html</code></td><td>Celý web v jednom HTML souboru. Bez buildu, bez závislostí – nahraješ na hosting a jede.</td></tr>
+  </table>
+
+  <div class="note"><strong>Design se nemůže rozejít.</strong> HTML verze používá
+  stejný generátor stylů, stejná barevná témata i stejnou logiku kalendáře jako
+  Framer komponenta – je z ní vygenerovaná.</div>
+
+  <h3>Obsah</h3>
+  <div class="toc">
+    <div><b>Část 1 – Framer</b><span>Instalace komponenty</span><span>Barevná témata</span><span>Videa a obrázky</span><span>Logo</span><span>Poletující obrazce</span><span>Kurzor</span><span>Rezervace přes Cal.com</span><span>Sekce, vzhled, efekty</span><span>Responzivita</span></div>
+    <div><b>Část 2 – HTML verze</b><span>Spuštění a nahrání</span><span>Blok SITE</span><span>Rezervace a formulář</span><span>Obrázky a texty</span></div>
+    <div><b>Část 3 – Rychlé recepty</b><span>Změna barvy webu</span><span>Zapnutí kalendáře</span><span>Vypnutí obrazců a kurzoru</span><span>Výměna loga</span></div>
+    <div><b>Část 4 – Když něco nefunguje</b><span>Panel neukazuje nové věci</span><span>Kalendář se nezobrazí</span><span>Web je na mobilu useknutý</span></div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2>Část 1 · Framer komponenta</h2>
+
+  <h3>Instalace</h3>
+  <ol class="steps">
+    <li>Ve Frameru otevři <b>Assets → Code → New Code File</b>.</li>
+    <li>Otevři soubor <code>EllaFramer.tsx</code>, označ celý obsah (<span class="kbd">⌘A</span> / <span class="kbd">Ctrl+A</span>) a vlož ho do code file.</li>
+    <li>Komponentu <code>EllaHairSalonPage</code> přetáhni na stránku.</li>
+    <li>V pravém panelu zkontroluj úplně první pole <code>Version</code> – musí být <b>v7 · Cal embed cleanup</b>.</li>
+  </ol>
+
+  <div class="note"><strong>Pole Version je kontrolka.</strong> Když v něm svítí
+  starší verze nebo pole chybí, Framer používá starý kód. Typicky je v code file
+  červená chyba – Framer si pak drží poslední funkční build a panel se nezmění.</div>
+
+  <h3>🎨 Colors – téma na jedno kliknutí</h3>
+  <p>Ve skupině <code>Colors</code> je nahoře <code>Theme</code>. Přepne celý web
+  najednou – pozadí, karty, texty, tlačítka, formulář i poletující obrazce a kurzor
+  (ty berou akcentní barvu automaticky).</p>
+  <table>
+    <tr><th style="width:36%">Téma</th><th>Vzhled</th></tr>
+    <tr><td><b>Custom colors</b></td><td>tvoje vlastní barvy – výchozí, nic ti nepřepíše</td></tr>
+    <tr><td><b>Pink noir</b></td><td>původní černo-růžová</td></tr>
+    <tr><td><b>Midnight blue</b></td><td>tmavě modrá</td></tr>
+    <tr><td><b>Emerald</b></td><td>tmavá se zelenou</td></tr>
+    <tr><td><b>Gold luxe</b></td><td>černo-zlatá</td></tr>
+    <tr><td><b>Violet</b></td><td>tmavě fialová</td></tr>
+    <tr><td><b>Sunset coral</b></td><td>tmavá s korálovou</td></tr>
+    <tr><td><b>Graphite mono</b></td><td>černobílá</td></tr>
+    <tr><td><b>Daylight</b></td><td>světlá varianta webu</td></tr>
+  </table>
+  <p>Když necháš <code>Custom colors</code>, máš k dispozici všechny jednotlivé barvy:
+  pozadí, druhé pozadí, karty, akcent, světlý akcent, text, nadpisy, šedý text,
+  rámečky, hlavičku, mobilní menu, tlačítka (pozadí, hover, text, outline), pole
+  formuláře, patičku a barvy hlášek. Po zvolení tématu se pickery schovají, aby bylo
+  jasné, že barvy řídí téma.</p>
+  <p>Přepínač <b>Buttons use accent</b> je zapnutý – tlačítka, záře i rámečky jdou
+  automaticky s akcentní barvou. Vypni ho, když chceš tlačítkům dát vlastní barvu.</p>
+
+  <h3>🎬 Videa</h3>
+  <p>Video jde přidat všude, kde je obrázek. <b>Video má vždy přednost před obrázkem.</b></p>
+  <table>
+    <tr><th style="width:40%">Kde</th><th>Ovládání</th></tr>
+    <tr><td>Hero</td><td><code>Hero → Video</code> + <code>Video poster</code></td></tr>
+    <tr><td>Karty služeb</td><td><code>Services → Cards → Video</code> (u každé karty zvlášť)</td></tr>
+    <tr><td>Galerie</td><td><code>Gallery → Items → Video</code> (obrázky a videa lze míchat)</td></tr>
+    <tr><td>O nás</td><td><code>About → Video</code></td></tr>
+    <tr><td>Samostatná video sekce</td><td><code>Sections → Video section</code>, pak <code>Video section → Video</code></td></tr>
+    <tr><td>Video na pozadí stránky</td><td><code>Background video → Enable</code> + <code>Opacity</code>, <code>Overlay</code></td></tr>
+  </table>
+  <p>Chování všech videí (autoplay, smyčka, ztlumení, ovládací prvky) se nastaví
+  jednou v <code>Video behaviour</code>. Autoplay si vynutí ztlumení – jinak ho
+  prohlížeče blokují. Odkaz končící <code>.mp4</code> nebo <code>.webm</code>
+  funguje i v poli pro obrázek.</p>
+
+  <h3>🏷️ Logo</h3>
+  <p>Buď <code>Logo → Logo image</code> (PNG/SVG), nebo textové logo
+  <code>Text</code> + <code>Text (accent)</code>. Výška je v
+  <code>Appearance → Logo height</code>, cíl odkazu v <code>Logo → Link</code>.</p>
+
+  <h3>✨ Floating shapes – poletující obrazce</h3>
+  <p><code>Floating shapes → Enable</code> je hlavní vypínač. Dál si vybereš tvary
+  (nůžky, hřeben, vlna, srdce, hvězda, jiskra, tečka, kroužek, bublina), počet,
+  velikost, tloušťku čar, rychlost, průhlednost, otáčení a jestli mají uhýbat myši
+  včetně jejího dosahu. Barva je ve výchozím stavu akcentní.</p>
+
+  <h3>🖱️ Cursor – kurzor</h3>
+  <ul>
+    <li><b>System</b> – žádný vlastní kurzor</li>
+    <li><b>Shape</b> – 9 tvarů (původní, šipka, tečka, kroužek, nůžky, hřeben, srdce, jiskra, kapka) + barva, obrys, velikost a pozice špičky</li>
+    <li><b>Custom image</b> – vlastní PNG/SVG kurzor</li>
+  </ul>
+  <p>Volitelně jde nastavit jiný kurzor nad odkazy a tlačítky. Na dotykových
+  zařízeních se vlastní kurzor nepoužije.</p>
+</section>
+
+<section class="chapter">
+  <h2>Část 1 · Rezervace přes Cal.com</h2>
+  <p class="lead">Nastavení najdeš ve skupině <code>Contact &amp; booking</code> –
+  je to hned první pole <code>📅 Booking</code>, tam, kde je i Formspree.</p>
+
+  <table>
+    <tr><th style="width:38%">Režim</th><th>Co se zobrazí dole v sekci Kontakt</th></tr>
+    <tr><td><b>Contact form</b></td><td>jen kontaktní formulář (výchozí, odesílá přes Formspree)</td></tr>
+    <tr><td><b>Cal.com calendar</b></td><td>kalendář Cal.com přímo ve stránce místo formuláře</td></tr>
+    <tr><td><b>Cal.com button</b></td><td>tlačítko, které otevře rezervaci v popupu</td></tr>
+    <tr><td><b>Form + Cal.com button</b></td><td>formulář i rezervační tlačítko zároveň</td></tr>
+  </table>
+
+  <h4>Co vyplnit</h4>
+  <table>
+    <tr><th style="width:38%">Pole</th><th>Hodnota</th></tr>
+    <tr><td><code>Cal.com link</code></td><td><code>uzivatel/udalost</code> nebo celá adresa <code>https://cal.com/uzivatel/udalost</code></td></tr>
+    <tr><td><code>Origin (self-hosted only)</code></td><td><b>nechat prázdné</b></td></tr>
+    <tr><td><code>Embed script (self-hosted only)</code></td><td><b>nechat prázdné</b></td></tr>
+  </table>
+  <p>Prázdná pole znamenají standardní cal.com a skript
+  <code>https://app.cal.com/embed/embed.js</code>. Vyplňují se jen tehdy, když máš
+  Cal.com na vlastním serveru.</p>
+
+  <h4>Vzhled kalendáře</h4>
+  <p>Kalendář přebírá barvy webu (<code>Match site colors</code>) – pozadí, karty,
+  texty, rámečky i akcent. <code>Calendar theme → Auto</code> znamená „podle webu“
+  (tmavý web → tmavý kalendář), ne podle systému návštěvníka. Výšku si kalendář
+  určuje sám podle obsahu, <code>Calendar min height</code> je jen minimum.
+  Vložený kalendář je ve výchozím stavu přes celou šířku – měsíční pohled potřebuje
+  místo. Dál si nastavíš <code>Layout</code> (měsíc / týden / sloupec),
+  <code>Hide event details</code>, text tlačítka a poznámku pod ním.</p>
+
+  <h4>Tlačítka Book Now</h4>
+  <p>V režimech s tlačítkem zajistí <code>CTA opens booking</code>, že i tlačítka
+  <b>Book Now</b> v hlavičce a v hero sekci otevřou rezervaci.</p>
+
+  <div class="note"><strong>Pojistka.</strong> Kdyby se embed nenačetl (blokovaný
+  skript, přísné CSP, plátno Frameru), zobrazí se místo kalendáře tlačítko s odkazem
+  na tvou stránku na Cal.com – návštěvník se objedná vždycky. Skript Cal.com se
+  navíc načítá jen tehdy, když je rezervace zapnutá a odkaz vyplněný.</div>
+
+  <h3>🧩 Ostatní skupiny v panelu</h3>
+  <table>
+    <tr><th style="width:30%">Skupina</th><th>Obsah</th></tr>
+    <tr><td><code>Sections</code></td><td>zapnutí/vypnutí služeb, galerie, video sekce, ceníku, O nás, kontaktu a patičky</td></tr>
+    <tr><td><code>Appearance</code></td><td>fonty, velikosti písma, zaoblení, šířka obsahu, mezery, počet sloupců, výšky médií</td></tr>
+    <tr><td><code>Effects</code></td><td>rozmazaná hlavička, záře pod hero, zvedání karet, záře ceníku, šipka dolů</td></tr>
+    <tr><td><code>Pricing</code></td><td>tři skupiny s libovolným počtem položek (přidávají se tlačítkem +)</td></tr>
+    <tr><td><code>Contact &amp; booking</code></td><td>rezervace, texty sekce, placeholdery formuláře a Formspree endpoint</td></tr>
+  </table>
+
+  <h3>📐 Responzivita a velikost</h3>
+  <p>Komponenta má <b>šířku Fill</b> a <b>výšku Fit content</b> – na šířku se roztáhne
+  na celý rámec, na výšku se dopočítá podle obsahu. Když přidáš sekci nebo položku,
+  rámec se zvětší sám.</p>
+  <p>Zlomy reagují na <b>šířku samotné komponenty</b>, ne na šířku okna prohlížeče –
+  proto vypadá správně i v úzkém breakpoint rámci na širokém plátně.</p>
+  <table>
+    <tr><th style="width:34%">Šířka komponenty</th><th>Co se stane</th></tr>
+    <tr><td>do 992 px</td><td>hero na jeden sloupec, karty a galerie na 2 sloupce, ceník pod sebe</td></tr>
+    <tr><td>do 768 px</td><td>menu se schová do hamburgeru, nižší hero i video</td></tr>
+    <tr><td>do 480 px</td><td>vše na jeden sloupec, tlačítka na celou šířku, užší okraje</td></tr>
+  </table>
+</section>
+
+<section class="chapter">
+  <h2>Část 2 · HTML verze webu</h2>
+  <p class="lead">Soubor <code>web/index.html</code> je celý web v jednom souboru –
+  bez buildu, bez knihoven, bez CDN. Otevřeš ho dvojklikem nebo nahraješ na jakýkoli
+  hosting (FTP, Netlify, Vercel, GitHub Pages).</p>
+
+  <h3>Kde se co nastavuje</h3>
+  <p>Úplně nahoře ve <code>&lt;script&gt;</code> je blok <code>SITE</code>. Je to
+  obdoba pravého panelu ve Frameru:</p>
+<pre><code>const SITE = {
+    theme: "noir",   // noir | midnight | emerald | gold | violet
+                     // coral | mono | daylight | custom
+    colors: {},      // vlastní barvy, když theme = "custom"
+    style: {},       // fonty, zaoblení, mezery, výšky médií
+    effects: {},     // headerBlur, heroGlow, hoverLift, pricingGlow
+    shapes: {},      // { enabled: false } vypne poletující obrazce
+    cursor: {},      // { mode: "Default" } vypne vlastní kurzor
+
+    booking: { mode: "form", calLink: "" },
+    form: { formspreeEndpoint: "" },
+}</code></pre>
+  <p>Všechny výchozí hodnoty jsou v objektu <code>DEFAULTS</code> hned pod tím –
+  přepisuješ jen to, co chceš změnit.</p>
+
+  <h3>Rezervace</h3>
+  <table>
+    <tr><th style="width:26%">mode</th><th>Co se zobrazí</th></tr>
+    <tr><td><code>"form"</code></td><td>kontaktní formulář</td></tr>
+    <tr><td><code>"inline"</code></td><td>kalendář Cal.com ve stránce</td></tr>
+    <tr><td><code>"popup"</code></td><td>tlačítko, které otevře rezervaci</td></tr>
+    <tr><td><code>"both"</code></td><td>formulář i tlačítko</td></tr>
+  </table>
+<pre><code>booking: {
+    mode: "inline",
+    calLink: "daniel-barton-c18wyl/regenerative-care",
+}</code></pre>
+
+  <h3>Formulář</h3>
+  <p>Formulář odesílá na <code>form.formspreeEndpoint</code> – účet zdarma na
+  formspree.io, endpoint má tvar <code>https://formspree.io/f/xxxxxxxx</code>.
+  Bez vyplněného endpointu se místo odeslání zobrazí upozornění.</p>
+
+  <h3>Obrázky a texty</h3>
+  <p>Texty se mění přímo v HTML. Obrázky se načítají ze složky <code>assets/</code>
+  vedle souboru:</p>
+<pre><code>web/assets/hero-salon.jpg
+web/assets/service-1.jpg … service-4.jpg
+web/assets/gallery-1.jpg … gallery-8.jpg
+web/assets/about-salon.jpg</code></pre>
+  <p>Dokud tam soubory nejsou, zůstanou na jejich místě tmavá pole – nic se nerozbije.
+  Místo obrázku můžeš použít <code>&lt;video&gt;</code> se stejnými třídami.</p>
+</section>
+
+<section class="chapter">
+  <h2>Část 3 · Rychlé recepty</h2>
+
+  <h3>Změnit barvu celého webu</h3>
+  <p><b>Framer:</b> <code>Colors → Theme</code> a vyber téma. Nebo nech
+  <code>Custom colors</code> a přenastav <code>Accent</code>.<br>
+  <b>HTML:</b> uprav řádek <code>theme: "noir"</code>.</p>
+
+  <h3>Zapnout rezervační kalendář</h3>
+  <p><b>Framer:</b> <code>Contact &amp; booking → 📅 Booking → Cal.com calendar</code>,
+  pak vlož odkaz do <code>Cal.com link</code>. Ostatní pole nech být.<br>
+  <b>HTML:</b> <code>booking: { mode: "inline", calLink: "…" }</code>.</p>
+
+  <h3>Vypnout poletující obrazce nebo kurzor</h3>
+  <p><b>Framer:</b> <code>Floating shapes → Enable</code> vypnout,
+  <code>Cursor → Mode → System</code>.<br>
+  <b>HTML:</b> <code>shapes: { enabled: false }</code>,
+  <code>cursor: { mode: "Default" }</code>.</p>
+
+  <h3>Vyměnit logo</h3>
+  <p><b>Framer:</b> <code>Logo → Logo image</code>, velikost v
+  <code>Appearance → Logo height</code>.<br>
+  <b>HTML:</b> v hlavičce nahraď text v odkazu <code>class="logo"</code> značkou
+  <code>&lt;img class="logo-image" src="assets/logo.svg" alt="Logo"&gt;</code>.</p>
+</section>
+
+<section class="chapter">
+  <h2>Část 4 · Když něco nefunguje</h2>
+
+  <h3>V panelu nevidím nové nastavení</h3>
+  <p>Zkontroluj pole <code>Version</code> úplně nahoře. Když v něm není
+  <b>v7 · Cal embed cleanup</b>, Framer jede na starším kódu: otevři code file,
+  označ všechno a vlož nový obsah. Když je v code file červená chyba, Framer si drží
+  poslední funkční build a panel se nezmění, i když text vypadá nově.</p>
+
+  <h3>Kalendář se nezobrazí</h3>
+  <ul>
+    <li>Zkoušej to v <b>Preview</b> nebo na publikovaném webu – plátno Frameru běží v sandboxu a externí skripty tam nemusí projít.</li>
+    <li>Objeví-li se po chvíli tlačítko s odkazem na Cal.com, znamená to, že se embed nenačetl – nejčastěji kvůli blokování skriptů nebo cookies třetích stran v prohlížeči.</li>
+    <li>Zkontroluj, že <code>Cal.com link</code> odpovídá skutečné události a že self-hosted pole jsou prázdná.</li>
+  </ul>
+
+  <h3>Web je na mobilu dole useknutý</h3>
+  <p>Komponenta svoji výšku hlásí správně, ale Framer si u sekce pamatuje výšku
+  změřenou na plátně. Vyber komponentu na telefonním breakpointu a nastav jí
+  i rámci kolem ní <b>Fit content</b>, ne pevnou výšku.</p>
+
+  <h3>Co odsud nejde ovlivnit</h3>
+  <ul>
+    <li><b>Nápis Cal.com pod kalendářem</b> – je uvnitř jejich iframu; skrývá se jen v placeném tarifu Cal.com.</li>
+    <li><b>Odesílání formuláře</b> – běží přes Formspree, limity má jejich účet.</li>
+  </ul>
+</section>
+
+</body>
+</html>

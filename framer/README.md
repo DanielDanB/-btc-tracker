@@ -156,7 +156,7 @@ takže na publikovaném webu je hero přes celý displej.
   komponentu na telefonním breakpointu a nastav jí (a rámci kolem ní) **Fit content**,
   ne pevnou výšku. Výška hero sekce se počítá v `svh`, aby na telefonu s dynamickou
   lištou nevycházela vyšší než na plátně.
-- Úplně první pole v panelu je **`Version`** – musí v něm být `v5 · Cal.com + Themes`.
+- Úplně první pole v panelu je **`Version`** – musí v něm být `v7 · Cal embed cleanup`.
   Když tam není (nebo pole chybí), Framer pořád používá starší kód: otevři code file,
   označ všechno (⌘A) a vlož celý nový obsah. Když má code file červenou chybu,
   Framer si drží poslední funkční verzi a panel se nezmění.
