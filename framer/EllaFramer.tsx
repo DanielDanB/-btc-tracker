@@ -503,7 +503,8 @@ const globalCSS = (c, t, fx) => {
   .booking-actions { display: flex; gap: 12px; flex-wrap: wrap; }
   .booking-note { color: var(--gray); font-size: 14px; }
   .cal-embed { width: 100%; height: auto; border-radius: ${t.cardRadius}px; overflow: hidden; overflow: clip; overflow-clip-margin: 16px; border: 1px solid ${withAlpha(accent, 0.2)}; background: var(--black); }
-  .cal-embed > * { display: block; width: 100%; }
+  .cal-embed > *:not(style):not(script) { display: block; width: 100%; }
+  .cal-embed > style, .cal-embed > script { display: none !important; }
   .cal-embed iframe { width: 100%; border: 0; display: block; }
   .cal-placeholder { display: flex; align-items: center; justify-content: center; text-align: center; padding: 32px 24px; color: var(--gray); font-size: 15px; min-height: 320px; }
   .ella-root .contact-inner.booking-full { grid-template-columns: 1fr; }
@@ -556,7 +557,7 @@ const globalCSS = (c, t, fx) => {
 /* Cal.com – booking calendar                                          */
 /* ------------------------------------------------------------------ */
 
-const COMPONENT_VERSION = "v6 · Cal theme + layout fixes"
+const COMPONENT_VERSION = "v7 · Cal embed cleanup"
 
 const CAL_DEFAULT_EMBED_JS = "https://app.cal.com/embed/embed.js"
 
