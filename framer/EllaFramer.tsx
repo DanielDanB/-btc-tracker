@@ -555,7 +555,7 @@ const globalCSS = (c, t, fx) => {
 /* Cal.com – rezervační kalendář                                       */
 /* ------------------------------------------------------------------ */
 
-const COMPONENT_VERSION = "v5 · Cal.com + Themes"
+const COMPONENT_VERSION = "v6 · Cal theme + layout fixes"
 
 const CAL_DEFAULT_EMBED_JS = "https://app.cal.com/embed/embed.js"
 
