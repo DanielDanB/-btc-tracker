@@ -63,9 +63,9 @@
   <div class="rule"></div>
   <dl>
     <dt>Format</dt><dd>Framer Remix – no code to paste</dd>
-    <dt>Booking</dt><dd>Cal.com calendar or contact form</dd>
-    <dt>Settings</dt><dd>193 options in the Framer properties panel</dd>
-    <dt>Component version</dt><dd>v8 · Remix ready</dd>
+    <dt>Booking</dt><dd>Cal.com calendar, contact form, Google map</dd>
+    <dt>Settings</dt><dd>206 options in the Framer properties panel</dd>
+    <dt>Component version</dt><dd>v9 · Map + calendar language</dd>
   </dl>
 </div>
 
@@ -79,8 +79,9 @@
   <h3>What makes it different</h3>
   <ul>
     <li><b>Nine colour themes in one click</b>, or full manual control over every colour on the page.</li>
-    <li><b>Real booking.</b> Connect a Cal.com event and visitors book straight from the page – inline calendar or popup.</li>
+    <li><b>Real booking.</b> Connect a Cal.com event and visitors book straight from the page – inline calendar or popup, in the language you choose.</li>
     <li><b>Video anywhere an image can go</b>, including a video background for the whole page.</li>
+    <li><b>A Google map in the contact section</b>, from a plain address – no API key, and it can be tinted to match a dark site.</li>
     <li><b>Animated floating shapes</b> and an optional custom cursor, both following your accent colour.</li>
     <li><b>Responsive by component width</b>, not window width – it looks right in every Framer breakpoint.</li>
   </ul>
@@ -91,7 +92,7 @@
     <div><b>2 · Settings reference</b><span>Colours and themes</span><span>Floating shapes</span><span>Cursor</span><span>Logo, menu, sections</span><span>Appearance and effects</span><span>Videos</span></div>
     <div><b>3 · Content</b><span>Hero, services, gallery</span><span>Pricing, about</span><span>Video section</span></div>
     <div><b>4 · Booking with Cal.com</b><span>Setting up on cal.com</span><span>Connecting it in Framer</span><span>Appearance and testing</span></div>
-    <div><b>5 · Contact form</b><span>Formspree in five minutes</span></div>
+    <div><b>5 · Contact form &amp; map</b><span>Formspree in five minutes</span><span>Google map</span></div>
     <div><b>6 · Layout and responsiveness</b><span>Sizing, breakpoints</span></div>
     <div><b>7 · Troubleshooting</b><span>Common questions</span></div>
     <div><b>Appendix</b><span>Standalone HTML version</span></div>
@@ -132,6 +133,7 @@
     <tr><td><b>CTA text / CTA link / Menu</b></td><td>Header button and navigation items</td></tr>
     <tr><td><b>Hero … Footer</b></td><td>The content of each section</td></tr>
     <tr><td><b>Contact &amp; booking</b></td><td>Booking mode, Cal.com, contact details, form</td></tr>
+    <tr><td><b>🗺️ Map</b></td><td>Google map in the contact section</td></tr>
   </table>
 
   <h3>Publishing</h3>
@@ -149,6 +151,7 @@
     <tr><td>Rewrite services and prices</td><td>Services, Pricing</td></tr>
     <tr><td>Set address, phone, opening hours</td><td>Contact &amp; booking</td></tr>
     <tr><td>Connect booking or the form</td><td>Contact &amp; booking (chapters 4 and 5)</td></tr>
+    <tr><td>Turn on the map</td><td>🗺️ Map (chapter 5)</td></tr>
     <tr><td>Set page title, favicon, social preview</td><td>Framer's own page settings</td></tr>
   </table>
 </section>
@@ -292,6 +295,25 @@
     <tr><td class="f">Pricing glow</td><td>Price cards light up as they reach the middle of the screen</td></tr>
     <tr><td class="f">Scroll indicator</td><td>The animated mouse hint at the bottom of the hero</td></tr>
   </table>
+
+  <h3>🗺️ Map</h3>
+  <p>A Google map inside the contact section. Off by default; see chapter 5 for the
+  step-by-step setup.</p>
+  <table class="compact">
+    <tr><th style="width:34%">Field</th><th>Meaning</th></tr>
+    <tr><td class="f">Show map</td><td>Master switch. While off, nothing from Google is loaded</td></tr>
+    <tr><td class="f">Source</td><td><b>Address</b> builds the map from a plain address · <b>Embed link</b> uses a link you copy from Google Maps</td></tr>
+    <tr><td class="f">Address</td><td>Address mode. Leave empty to reuse the address from Contact &amp; booking</td></tr>
+    <tr><td class="f">Zoom</td><td>1 (world) – 21 (building). 15–17 suits a shop front</td></tr>
+    <tr><td class="f">Map language</td><td>Language of the map labels, e.g. <code>en</code>, <code>cs</code>, <code>de</code></td></tr>
+    <tr><td class="f">Embed link</td><td>Embed-link mode. Paste the URL, or the whole <code>&lt;iframe&gt;</code> snippet – the template picks the address out of it</td></tr>
+    <tr><td class="f">Placement</td><td><b>Under contact details</b> (next to the form or calendar) or <b>Full width</b> below the whole section</td></tr>
+    <tr><td class="f">Height</td><td>180–800 px</td></tr>
+    <tr><td class="f">Dark map</td><td>Tints the map to fit a dark site. Leave off for the light theme</td></tr>
+    <tr><td class="f">Directions button</td><td>Adds a button that opens navigation to your address (address mode)</td></tr>
+    <tr><td class="f">Button text</td><td>Label of that button</td></tr>
+    <tr><td class="f">Map title (a11y)</td><td>Description of the frame for screen readers</td></tr>
+  </table>
 </section>
 <section class="chapter">
   <h2>3 · Content of each section</h2>
@@ -430,6 +452,7 @@
     <tr><td class="f">Booking note</td><td>Small line under that button, e.g. “Free 15-minute consultation”</td></tr>
     <tr><td class="f">CTA opens booking</td><td>Makes the header and hero <b>Book Now</b> buttons open booking as well</td></tr>
     <tr><td class="f">Calendar layout</td><td><b>Month</b> (grid), <b>Week</b> or <b>Column</b> (compact list)</td></tr>
+    <tr><td class="f">Calendar language</td><td>Language of the calendar itself – month names, weekdays, buttons. <code>en</code> by default; use <code>cs</code>, <code>de</code>, <code>es</code> … or <code>auto</code> to follow the visitor's browser</td></tr>
     <tr><td class="f">Calendar theme</td><td><b>Auto</b> follows your site – a dark site gets a dark calendar. Or force Dark / Light</td></tr>
     <tr><td class="f">Brand = accent</td><td>Calendar highlights use your accent colour. Off: pick <b>Brand color</b></td></tr>
     <tr><td class="f">Match site colors</td><td>Passes your whole palette to the calendar – background, cards, text, borders. Off leaves Cal.com's default look</td></tr>
@@ -438,6 +461,13 @@
     <tr><td class="f">Hide event details</td><td>Hides the left panel with the service name and duration</td></tr>
     <tr><td class="f">Origin / Embed script</td><td><b>Leave empty.</b> Only for a self-hosted Cal.com instance</td></tr>
   </table>
+
+  <div class="note"><strong>About the calendar language.</strong> Left to itself, the
+  Cal.com widget follows the visitor's browser, so a Czech visitor sees Czech month
+  names even on an English site. <b>Calendar language</b> pins it – the setting is
+  passed to the embed and to the fallback link, so both open in the same language.
+  Texts you wrote yourself on cal.com (event title, description) are shown as you
+  wrote them; only the interface is translated.</div>
 
   <h3>Step D · Test</h3>
   <ol class="steps">
@@ -461,7 +491,7 @@
 </section>
 
 <section class="chapter">
-  <h2>5 · Contact form</h2>
+  <h2>5 · Contact form and map</h2>
   <p class="lead">The form posts to <a href="https://formspree.io">Formspree</a>,
   which forwards submissions to your inbox. No server needed.</p>
   <ol class="steps">
@@ -483,6 +513,44 @@
   visitor never gets a silent failure. If you only take bookings through Cal.com,
   switch the mode to <b>Cal.com calendar</b> or <b>Cal.com button</b> and the form
   (and its fields) disappear.</p>
+
+  <h3>Google map</h3>
+  <p class="lead">The map lives in the <b>🗺️ Map</b> group. There are two ways to
+  fill it – pick whichever you find easier.</p>
+
+  <h4>The quick way – just an address</h4>
+  <ol class="steps">
+    <li>Turn on <b>Show map</b>.</li>
+    <li>Leave <b>Source</b> on <b>Address</b>. The map uses the address from
+        <b>Contact &amp; booking</b>, so if that is filled in you are already done.</li>
+    <li>To show a different spot – a parking entrance, a back door – type it into
+        <b>Address</b> in the Map group.</li>
+    <li>Set <b>Zoom</b> (15–17 works well for a salon) and <b>Map language</b>.</li>
+  </ol>
+  <p>No Google account and no API key are needed for this mode.</p>
+
+  <h4>The precise way – an embed link from Google Maps</h4>
+  <ol class="steps">
+    <li>Open <b>google.com/maps</b> and find your salon. If you have a business
+        profile, search for it by name so the pin carries your opening hours.</li>
+    <li>Click <b>Share</b> → <b>Embed a map</b>, choose a size and press
+        <b>Copy HTML</b>.</li>
+    <li>In Framer set <b>Source</b> to <b>Embed link</b> and paste it into
+        <b>Embed link</b>. You can paste the whole <code>&lt;iframe …&gt;</code>
+        snippet – the address inside it is picked out automatically.</li>
+  </ol>
+
+  <h4>Fitting it into the design</h4>
+  <ul>
+    <li><b>Placement</b> – under the contact details (map beside the form or calendar) or full width under the whole section.</li>
+    <li><b>Height</b> – 300–400 px next to the details, 400–500 px full width.</li>
+    <li><b>Dark map</b> – tints Google's light map so it stops shining out of a dark page. Leave it off with the Daylight theme.</li>
+    <li><b>Directions button</b> – opens navigation to your address in the visitor's maps app.</li>
+  </ul>
+
+  <div class="note"><strong>Privacy.</strong> The map is loaded from Google only when
+  <b>Show map</b> is on. If your site has a cookie banner, remember to mention Google
+  Maps there.</div>
 </section>
 <section class="chapter">
   <h2>6 · Layout and responsiveness</h2>
@@ -519,7 +587,7 @@
 
   <h3>The panel does not show a setting described here</h3>
   <p>Check the very first field, <b>Version</b>. This guide documents
-  <b>v8 · Remix ready</b>. If your remix predates it, ask for the current remix link.</p>
+  <b>v9 · Map + calendar language</b>. If your remix predates it, ask for the current remix link.</p>
 
   <h3>The calendar does not appear</h3>
   <ul>
@@ -534,6 +602,19 @@
     <li>Is <b>Formspree endpoint</b> filled in and does it start with <code>https://formspree.io/f/</code>?</li>
     <li>Did you confirm the first submission in the e-mail Formspree sent you? Until then messages are held.</li>
     <li>Test on the published site, not on the canvas.</li>
+  </ul>
+
+  <h3>The calendar is in the wrong language</h3>
+  <p>Set <b>Contact &amp; booking → Calendar language</b> to a language code such as
+  <code>en</code> or <code>cs</code>. On <code>auto</code> the widget follows each
+  visitor's browser, which is why it can look Czech to you and English to someone
+  else.</p>
+
+  <h3>The map is empty or shows the wrong place</h3>
+  <ul>
+    <li>Address mode: check the address in <b>Contact &amp; booking</b>, or type a more precise one into <b>Map → Address</b>. Adding the city and country helps.</li>
+    <li>Embed mode: the link must come from Google Maps → Share → Embed a map. A normal <code>maps.app.goo.gl</code> share link will not render.</li>
+    <li>An empty grey frame with a hint means neither an address nor an embed link is filled in.</li>
   </ul>
 
   <h3>The page looks cut off at the bottom on a phone</h3>
@@ -581,7 +662,19 @@
     shapes: {},      // { enabled: false } turns the shapes off
     cursor: {},      // { mode: "Default" } turns the custom cursor off
 
-    booking: { mode: "form", calLink: "" },   // form | inline | popup | both
+    booking: {
+        mode: "form",       // form | inline | popup | both
+        calLink: "",        // "your-name/haircut"
+        locale: "en",       // calendar language, or "auto"
+    },
+    map: {
+        enabled: false,     // Google map in the contact section
+        source: "address",  // "address" | "embed"
+        address: "",        // empty = reuse the contact address
+        zoom: 15,
+        placement: "contact",  // "contact" | "full"
+        darkStyle: false,
+    },
     form: { formspreeEndpoint: "" },
 }</code></pre>
   <p>Defaults for every value are in the <code>DEFAULTS</code> object right below –

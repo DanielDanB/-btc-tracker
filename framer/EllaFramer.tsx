@@ -499,6 +499,12 @@ const globalCSS = (c, t, fx) => {
   .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--gray); }
   .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px ${withAlpha(accent, 0.15)}; }
   .contact-form button { align-self: flex-start; margin-top: 6px; }
+  .contact-map { width: 100%; margin-top: 26px; border-radius: ${t.cardRadius}px; overflow: hidden; border: 1px solid ${withAlpha(accent, 0.2)}; background: var(--black-soft); position: relative; }
+  .contact-map iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .contact-map.map-dark iframe { filter: invert(90%) hue-rotate(180deg) saturate(0.7) contrast(0.95); }
+  .map-full { margin-top: 40px; }
+  .map-actions { margin-top: 14px; }
+  .map-empty { display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; color: var(--gray); font-size: 14.5px; }
   .booking-side { display: flex; flex-direction: column; gap: 16px; }
   .booking-actions { display: flex; gap: 12px; flex-wrap: wrap; }
   .booking-note { color: var(--gray); font-size: 14px; }
@@ -557,9 +563,12 @@ const globalCSS = (c, t, fx) => {
 /* Cal.com – booking calendar                                          */
 /* ------------------------------------------------------------------ */
 
-const COMPONENT_VERSION = "v8 · Remix ready"
+const COMPONENT_VERSION = "v9 · Map + calendar language"
 
 const CAL_DEFAULT_EMBED_JS = "https://app.cal.com/embed/embed.js"
+
+const MAP_HINT =
+    "Add an address in Map → Address, or paste an embed link from Google Maps."
 
 const CAL_LINK_HINT =
     "Add your Cal.com link in Booking → Cal.com link (for example ella/haircut)."
@@ -650,6 +659,9 @@ function calCssVars(colors, brand) {
 function calConfig(booking, theme) {
     const config = { layout: booking.layout || "month_view" }
     if (theme) config.theme = theme
+    // Without a locale the embed follows the visitor's browser language.
+    const locale = (booking.locale || "").trim()
+    if (locale && locale !== "auto") config.locale = locale
     return config
 }
 
@@ -691,7 +703,14 @@ function useCalBooking(booking, colors) {
         : { "cal-brand": brand }
     const varsKey = JSON.stringify(cssVars)
     const origin = (booking.origin || "https://cal.com").replace(/\/+$/, "")
-    const bookingUrl = link ? `${origin}/${link}` : ""
+    const bookingLocale = (booking.locale || "").trim()
+    const bookingUrl = link
+        ? `${origin}/${link}${
+              bookingLocale && bookingLocale !== "auto"
+                  ? `?locale=${encodeURIComponent(bookingLocale)}`
+                  : ""
+          }`
+        : ""
     // Cal.com now generates embed code with a namespace per event type.
     const namespace =
         (link.split("/").pop() || "booking")
@@ -723,7 +742,7 @@ function useCalBooking(booking, colors) {
         const namespacedApi = () =>
             (window.Cal && window.Cal.ns && window.Cal.ns[namespace]) || null
 
-        const key = `${link}|${namespace}|${booking.layout}|${calTheme}`
+        const key = `${link}|${namespace}|${booking.layout}|${calTheme}|${booking.locale}`
         const alreadyInited = initedKeyRef.current === key
 
         // Exactly the order Cal.com's own embed generator emits:
@@ -766,6 +785,7 @@ function useCalBooking(booking, colors) {
         origin,
         booking.embedJsUrl,
         booking.layout,
+        booking.locale,
         calTheme,
         booking.hideEventTypeDetails,
         brand,
@@ -819,6 +839,40 @@ function useCalBooking(booking, colors) {
         embedBlocked,
         namespace,
     }
+}
+
+/* ------------------------------------------------------------------ */
+/* Google map                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Builds the map embed URL. "Address" mode uses Google's keyless embed, so
+ * nothing has to be registered; "Embed link" takes the src you copy from
+ * Google Maps → Share → Embed a map.
+ */
+function mapEmbedUrl(map, fallbackAddress, language) {
+    if (map.source === "embed") {
+        const raw = (map.embedUrl || "").trim()
+        if (!raw) return ""
+        // Accept either the bare URL or the whole <iframe …> snippet.
+        const fromIframe = raw.match(/src="([^"]+)"/i)
+        return fromIframe ? fromIframe[1] : raw
+    }
+    const query = (map.address || fallbackAddress || "").trim()
+    if (!query) return ""
+    const zoom = Math.max(1, Math.min(21, map.zoom || 15))
+    const hl = (language || "en").trim() || "en"
+    return `https://www.google.com/maps?q=${encodeURIComponent(
+        query
+    )}&z=${zoom}&hl=${encodeURIComponent(hl)}&output=embed`
+}
+
+function directionsUrl(map, fallbackAddress) {
+    const query = (map.address || fallbackAddress || "").trim()
+    if (!query) return ""
+    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+        query
+    )}`
 }
 
 /* ------------------------------------------------------------------ */
@@ -1631,7 +1685,7 @@ function About({ data, videoSettings }) {
     )
 }
 
-function Contact({ data, booking, cal }) {
+function Contact({ data, booking, cal, map }) {
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -1702,6 +1756,47 @@ function Contact({ data, booking, cal }) {
     const linkMissing = mode !== "form" && !cal.link
     const fullWidth = showCalendar && booking.fullWidth
 
+    const mapUrl = map.enabled ? mapEmbedUrl(map, data.address, map.language) : ""
+    // The directions link needs a real address, so it is address mode only.
+    const directions =
+        map.enabled && map.showDirections && map.source !== "embed"
+            ? directionsUrl(map, data.address)
+            : ""
+    const mapNode = map.enabled ? (
+        <div>
+            <div
+                className={`contact-map ${map.darkStyle ? "map-dark" : ""} ${
+                    map.placement === "full" ? "map-full" : ""
+                }`.trim()}
+                style={{ height: map.height }}
+            >
+                {mapUrl ? (
+                    <iframe
+                        title={map.title || "Map"}
+                        src={mapUrl}
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                    />
+                ) : (
+                    <div className="map-empty">{MAP_HINT}</div>
+                )}
+            </div>
+            {directions && (
+                <div className="map-actions">
+                    <a
+                        className="btn btn-outline"
+                        href={directions}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {map.directionsText || "Get directions"}
+                    </a>
+                </div>
+            )}
+        </div>
+    ) : null
+
     return (
         <section id="contact">
             <div
@@ -1726,6 +1821,7 @@ function Contact({ data, booking, cal }) {
                             <strong>{data.hoursLabel}</strong> {data.hours}
                         </p>
                     </div>
+                    {mapNode && map.placement !== "full" && mapNode}
                 </div>
                 <div className="booking-side">
                     {showBookingButton &&
@@ -1828,6 +1924,9 @@ function Contact({ data, booking, cal }) {
                     )}
                 </div>
             </div>
+            {mapNode && map.placement === "full" && (
+                <div className="container">{mapNode}</div>
+            )}
         </section>
     )
 }
@@ -1964,6 +2063,7 @@ const DEFAULTS = {
         origin: "https://cal.com",
         embedJsUrl: "",
         layout: "month_view",
+        locale: "en",
         theme: "auto",
         useAccentColor: true,
         brandColor: "#ff3d81",
@@ -1974,6 +2074,20 @@ const DEFAULTS = {
         buttonText: "Check availability",
         note: "",
         ctaOpensBooking: true,
+    },
+    map: {
+        enabled: false,
+        source: "address",
+        address: "",
+        embedUrl: "",
+        zoom: 15,
+        language: "en",
+        height: 340,
+        placement: "contact",
+        darkStyle: false,
+        showDirections: true,
+        directionsText: "Get directions",
+        title: "Where to find us",
     },
     logo: {
         image: "",
@@ -2056,6 +2170,7 @@ function resolveBooking(contact, legacy, accent) {
         origin: pick(c.calOrigin, old.origin, DEFAULTS.booking.origin),
         embedJsUrl: pick(c.calEmbedJsUrl, old.embedJsUrl, ""),
         layout: pick(c.calLayout, old.layout, DEFAULTS.booking.layout),
+        locale: pick(c.calLocale, old.locale, DEFAULTS.booking.locale),
         theme: pick(c.calTheme, old.theme, DEFAULTS.booking.theme),
         useAccentColor: flag(c.calBrandUseAccent, old.useAccentColor, true),
         brandColor: pick(c.calBrandColor, old.brandColor, accent),
@@ -2111,6 +2226,7 @@ export default function EllaHairSalonPage(props) {
     // Booking is configured in the "Contact & booking" group; older instances
     // may still carry values in the standalone "booking" group.
     const booking = resolveBooking(props.contact, props.booking, colors.accent)
+    const map = merge(DEFAULTS.map, props.map)
     const cal = useCalBooking(booking, colors)
     // "Book Now" buttons open the booking popup when it is enabled.
     const ctaBookingAttrs =
@@ -2256,6 +2372,7 @@ export default function EllaHairSalonPage(props) {
                         data={props.contact || {}}
                         booking={booking}
                         cal={cal}
+                        map={map}
                     />
                 )}
             </main>
@@ -3527,6 +3644,13 @@ addPropertyControls(EllaHairSalonPage, {
                 defaultValue: DEFAULTS.booking.layout,
                 hidden: usesFormOnly,
             },
+            calLocale: {
+                type: ControlType.String,
+                title: "Calendar language",
+                defaultValue: DEFAULTS.booking.locale,
+                placeholder: "en, cs, de … or auto",
+                hidden: usesFormOnly,
+            },
             calTheme: {
                 type: ControlType.Enum,
                 title: "Calendar theme",
@@ -3698,6 +3822,100 @@ addPropertyControls(EllaHairSalonPage, {
                 hidden: hidesForm,
                 defaultValue:
                     "Sorry, something went wrong. Please try again.",
+            },
+        },
+    },
+
+    /* ---------------- MAP ---------------- */
+    map: {
+        type: ControlType.Object,
+        title: "🗺️ Map",
+        controls: {
+            enabled: {
+                type: ControlType.Boolean,
+                title: "Show map",
+                defaultValue: DEFAULTS.map.enabled,
+            },
+            source: {
+                type: ControlType.Enum,
+                title: "Source",
+                options: ["address", "embed"],
+                optionTitles: ["Address", "Embed link"],
+                displaySegmentedControl: true,
+                defaultValue: DEFAULTS.map.source,
+                hidden: (p = {}) => !p?.enabled,
+            },
+            address: {
+                type: ControlType.String,
+                title: "Address",
+                defaultValue: DEFAULTS.map.address,
+                placeholder: "leave empty to use the contact address",
+                hidden: (p = {}) => !p?.enabled || p?.source === "embed",
+            },
+            zoom: {
+                type: ControlType.Number,
+                title: "Zoom",
+                min: 1,
+                max: 21,
+                step: 1,
+                defaultValue: DEFAULTS.map.zoom,
+                hidden: (p = {}) => !p?.enabled || p?.source === "embed",
+            },
+            language: {
+                type: ControlType.String,
+                title: "Map language",
+                defaultValue: DEFAULTS.map.language,
+                placeholder: "en, cs, de …",
+                hidden: (p = {}) => !p?.enabled || p?.source === "embed",
+            },
+            embedUrl: {
+                type: ControlType.String,
+                title: "Embed link",
+                defaultValue: DEFAULTS.map.embedUrl,
+                placeholder: "paste from Google Maps → Share → Embed a map",
+                hidden: (p = {}) => !p?.enabled || p?.source !== "embed",
+            },
+            placement: {
+                type: ControlType.Enum,
+                title: "Placement",
+                options: ["contact", "full"],
+                optionTitles: ["Under contact details", "Full width"],
+                defaultValue: DEFAULTS.map.placement,
+                hidden: (p = {}) => !p?.enabled,
+            },
+            height: {
+                type: ControlType.Number,
+                title: "Height",
+                min: 180,
+                max: 800,
+                step: 10,
+                defaultValue: DEFAULTS.map.height,
+                hidden: (p = {}) => !p?.enabled,
+            },
+            darkStyle: {
+                type: ControlType.Boolean,
+                title: "Dark map",
+                defaultValue: DEFAULTS.map.darkStyle,
+                hidden: (p = {}) => !p?.enabled,
+            },
+            showDirections: {
+                type: ControlType.Boolean,
+                title: "Directions button",
+                defaultValue: DEFAULTS.map.showDirections,
+                hidden: (p = {}) => !p?.enabled || p?.source === "embed",
+            },
+            directionsText: {
+                type: ControlType.String,
+                title: "Button text",
+                defaultValue: DEFAULTS.map.directionsText,
+                hidden: (p = {}) =>
+                    !p?.enabled || p?.source === "embed" || !p?.showDirections,
+            },
+            title: {
+                type: ControlType.String,
+                title: "Map title (a11y)",
+                defaultValue: DEFAULTS.map.title,
+                hidden: (p = {}) => !p?.enabled,
             },
         },
     },

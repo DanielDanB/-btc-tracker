@@ -101,6 +101,9 @@ i akcent, takže sedne do stránky. `Calendar theme` na `Auto` znamená „podle
 (tmavý web → tmavý kalendář), ne podle nastavení systému návštěvníka. Výšku si
 kalendář určuje sám podle obsahu, `Calendar min height` je jen minimum.
 
+`Calendar language` určuje jazyk widgetu (`en`, `cs`, … nebo `auto` podle prohlížeče
+návštěvníka) – propíše se i do záložního odkazu na Cal.com.
+
 Dál si nastavíš `Layout` (měsíc / týden / sloupec), `Calendar theme`,
 `Calendar height`, `Full width calendar`, `Hide event details` a text tlačítka
 `Button text` s poznámkou `Button note`. Barva kalendáře přebírá akcentní barvu
@@ -122,6 +125,13 @@ Kdyby se embed nenačetl (blokovaný skript, přísné CSP, plátno Frameru), zo
 místo kalendáře tlačítko s odkazem na tvou stránku na Cal.com, takže se návštěvník
 objedná vždycky. Stejně tak tlačítko v režimu *Cal.com button* má v `href` přímo
 adresu události – když skript funguje, otevře se popup, když ne, otevře se Cal.com.
+
+### 🗺️ Mapa
+`Map → Show map` zapne Google mapu v kontaktu. Buď z adresy (nic se nikde
+neregistruje – bere adresu z kontaktu, nebo si zadáš vlastní, zoom a jazyk),
+nebo z odkazu, který zkopíruješ v Google Maps → Sdílet → Vložit mapu (zvládne
+i celý `<iframe>`). Dál se dá nastavit umístění (pod kontakty / přes celou šířku),
+výška, ztmavení mapy do tmavého webu a tlačítko pro navigaci.
 
 ### 🧩 Další
 - `Sections` – zapnutí/vypnutí služeb, galerie, video sekce, ceníku, O nás, kontaktu, patičky
@@ -160,7 +170,7 @@ takže na publikovaném webu je hero přes celý displej.
   komponentu na telefonním breakpointu a nastav jí (a rámci kolem ní) **Fit content**,
   ne pevnou výšku. Výška hero sekce se počítá v `svh`, aby na telefonu s dynamickou
   lištou nevycházela vyšší než na plátně.
-- Úplně první pole v panelu je **`Version`** – musí v něm být `v8 · Remix ready`.
+- Úplně první pole v panelu je **`Version`** – musí v něm být `v9 · Map + calendar language`.
   Když tam není (nebo pole chybí), Framer pořád používá starší kód: otevři code file,
   označ všechno (⌘A) a vlož celý nový obsah. Když má code file červenou chybu,
   Framer si drží poslední funkční verzi a panel se nezmění.

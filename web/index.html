@@ -35,6 +35,21 @@
           // "form" | "inline" (Cal.com calendar) | "popup" (button) | "both"
           mode: "form",
           calLink: "",     // e.g. "your-name/haircut"
+          locale: "en",    // calendar language: en, cs, de … or "auto"
+      },
+
+      map: {
+          enabled: false,          // Google map in the contact section
+          source: "address",       // "address" | "embed"
+          address: "",             // leave empty to reuse the address below
+          embedUrl: "",            // Google Maps → Share → Embed a map
+          zoom: 15,
+          language: "en",
+          height: 340,
+          placement: "contact",    // "contact" (under the details) | "full"
+          darkStyle: false,        // tint the map to match a dark site
+          showDirections: true,
+          directionsText: "Get directions",
       },
 
       form: {
@@ -163,6 +178,7 @@ const DEFAULTS = {
         origin: "https://cal.com",
         embedJsUrl: "",
         layout: "month_view",
+        locale: "en",
         theme: "auto",
         useAccentColor: true,
         brandColor: "#ff3d81",
@@ -173,6 +189,20 @@ const DEFAULTS = {
         buttonText: "Check availability",
         note: "",
         ctaOpensBooking: true,
+    },
+    map: {
+        enabled: false,
+        source: "address",
+        address: "",
+        embedUrl: "",
+        zoom: 15,
+        language: "en",
+        height: 340,
+        placement: "contact",
+        darkStyle: false,
+        showDirections: true,
+        directionsText: "Get directions",
+        title: "Where to find us",
     },
     logo: {
         image: "",
@@ -634,6 +664,12 @@ const globalCSS = (c, t, fx) => {
   .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--gray); }
   .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px ${withAlpha(accent, 0.15)}; }
   .contact-form button { align-self: flex-start; margin-top: 6px; }
+  .contact-map { width: 100%; margin-top: 26px; border-radius: ${t.cardRadius}px; overflow: hidden; border: 1px solid ${withAlpha(accent, 0.2)}; background: var(--black-soft); position: relative; }
+  .contact-map iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .contact-map.map-dark iframe { filter: invert(90%) hue-rotate(180deg) saturate(0.7) contrast(0.95); }
+  .map-full { margin-top: 40px; }
+  .map-actions { margin-top: 14px; }
+  .map-empty { display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; color: var(--gray); font-size: 14.5px; }
   .booking-side { display: flex; flex-direction: column; gap: 16px; }
   .booking-actions { display: flex; gap: 12px; flex-wrap: wrap; }
   .booking-note { color: var(--gray); font-size: 14px; }
@@ -776,7 +812,40 @@ function ensureCalLoader(embedJsUrl) {
 function calConfig(booking, theme) {
     const config = { layout: booking.layout || "month_view" }
     if (theme) config.theme = theme
+    // Without a locale the embed follows the visitor's browser language.
+    const locale = (booking.locale || "").trim()
+    if (locale && locale !== "auto") config.locale = locale
     return config
+}
+
+/**
+ * Builds the map embed URL. "Address" mode uses Google's keyless embed, so
+ * nothing has to be registered; "Embed link" takes the src you copy from
+ * Google Maps → Share → Embed a map.
+ */
+function mapEmbedUrl(map, fallbackAddress, language) {
+    if (map.source === "embed") {
+        const raw = (map.embedUrl || "").trim()
+        if (!raw) return ""
+        // Accept either the bare URL or the whole <iframe …> snippet.
+        const fromIframe = raw.match(/src="([^"]+)"/i)
+        return fromIframe ? fromIframe[1] : raw
+    }
+    const query = (map.address || fallbackAddress || "").trim()
+    if (!query) return ""
+    const zoom = Math.max(1, Math.min(21, map.zoom || 15))
+    const hl = (language || "en").trim() || "en"
+    return `https://www.google.com/maps?q=${encodeURIComponent(
+        query
+    )}&z=${zoom}&hl=${encodeURIComponent(hl)}&output=embed`
+}
+
+function directionsUrl(map, fallbackAddress) {
+    const query = (map.address || fallbackAddress || "").trim()
+    if (!query) return ""
+    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+        query
+    )}`
 }
 
 const SHAPE_DRAWERS = {
@@ -936,6 +1005,7 @@ const effects = merge(DEFAULTS.effects, SITE.effects)
 const shapes = merge(DEFAULTS.shapes, SITE.shapes)
 const cursor = merge(DEFAULTS.cursor, SITE.cursor)
 const booking = merge(DEFAULTS.booking, SITE.booking)
+const map = merge(DEFAULTS.map, SITE.map)
 const form = merge(
     {
         formspreeEndpoint: "",
@@ -1246,7 +1316,14 @@ const calLink = (booking.calLink || "")
     .replace(/^https?:\/\/(app\.)?cal\.com\//i, "")
     .replace(/^\/+|\/+$/g, "")
 const calOrigin = (booking.origin || "https://cal.com").replace(/\/+$/, "")
-const bookingUrl = calLink ? `${calOrigin}/${calLink}` : ""
+const calLocale = (booking.locale || "").trim()
+const bookingUrl = calLink
+    ? `${calOrigin}/${calLink}${
+          calLocale && calLocale !== "auto"
+              ? `?locale=${encodeURIComponent(calLocale)}`
+              : ""
+      }`
+    : ""
 const showForm = mode === "form" || mode === "both"
 const showCalendar = mode === "inline" && !!calLink
 const showButton = (mode === "popup" || mode === "both") && !!calLink
@@ -1351,13 +1428,57 @@ if ((showCalendar || showButton) && calLink) {
     }
 }
 
-/* --- images that are not there yet stay as neutral placeholders ---- */
-document.querySelectorAll("img").forEach((img) => {
-    img.addEventListener("error", () => {
-        img.style.visibility = "hidden"
-    })
-    if (img.complete && img.naturalWidth === 0) img.style.visibility = "hidden"
-})
+
+/* --- google map --------------------------------------------------- */
+if (map.enabled) {
+    const url = mapEmbedUrl(map, document.querySelector(".contact-info p")?.textContent?.replace(/^[^:]*:\s*/, "") || "", map.language)
+    const wrap = document.createElement("div")
+
+    const frame = document.createElement("div")
+    frame.className = "contact-map" + (map.darkStyle ? " map-dark" : "") + (map.placement === "full" ? " map-full" : "")
+    frame.style.height = map.height + "px"
+    if (url) {
+        const iframe = document.createElement("iframe")
+        iframe.title = map.title || "Map"
+        iframe.src = url
+        iframe.loading = "lazy"
+        iframe.allowFullscreen = true
+        iframe.referrerPolicy = "no-referrer-when-downgrade"
+        frame.appendChild(iframe)
+    } else {
+        const hint = document.createElement("div")
+        hint.className = "map-empty"
+        hint.textContent = "Add an address in SITE.map.address, or paste an embed link."
+        frame.appendChild(hint)
+    }
+    wrap.appendChild(frame)
+
+    if (map.showDirections && map.source !== "embed") {
+        const dir = directionsUrl(map, "")
+        if (dir) {
+            const actions = document.createElement("div")
+            actions.className = "map-actions"
+            const link = document.createElement("a")
+            link.className = "btn btn-outline"
+            link.href = dir
+            link.target = "_blank"
+            link.rel = "noopener noreferrer"
+            link.textContent = map.directionsText || "Get directions"
+            actions.appendChild(link)
+            wrap.appendChild(actions)
+        }
+    }
+
+    if (map.placement === "full") {
+        const section = document.querySelector("#contact")
+        const holder = document.createElement("div")
+        holder.className = "container"
+        holder.appendChild(wrap)
+        section.appendChild(holder)
+    } else {
+        document.querySelector(".contact-text").appendChild(wrap)
+    }
+}
 
 /* --- contact form ------------------------------------------------- */
 if (contactForm) {

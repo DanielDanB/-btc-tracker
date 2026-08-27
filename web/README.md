@@ -33,9 +33,17 @@ stačí přepsat jen to, co chceš změnit.
 - `mode: "popup"` – tlačítko, které otevře rezervaci v popupu
 - `mode: "both"` – formulář i tlačítko
 
+`booking.locale` nastaví jazyk kalendáře (`"en"`, `"cs"`, … nebo `"auto"`).
+
 Do `calLink` patří `uzivatel/udalost` nebo rovnou celá adresa
 `https://cal.com/uzivatel/udalost`. Skript Cal.com se načítá jen tehdy,
 když je rezervace zapnutá a odkaz vyplněný.
+
+### Mapa
+`map.enabled: true` zapne Google mapu v kontaktu. `source: "address"` ji poskládá
+z adresy (`address`, nebo prázdné = adresa z kontaktu) – bez API klíče;
+`source: "embed"` použije odkaz z Google Maps → Sdílet → Vložit mapu.
+Dál `placement` (`"contact"` / `"full"`), `height`, `darkStyle` a `showDirections`.
 
 ### Formulář
 Formulář posílá data na `form.formspreeEndpoint`
