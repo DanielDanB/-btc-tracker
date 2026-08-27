@@ -557,7 +557,7 @@ const globalCSS = (c, t, fx) => {
 /* Cal.com – booking calendar                                          */
 /* ------------------------------------------------------------------ */
 
-const COMPONENT_VERSION = "v7 · Cal embed cleanup"
+const COMPONENT_VERSION = "v8 · Remix ready"
 
 const CAL_DEFAULT_EMBED_JS = "https://app.cal.com/embed/embed.js"
 
@@ -2837,7 +2837,7 @@ addPropertyControls(EllaHairSalonPage, {
                 defaultValue: false,
             },
             video: {
-                ...videoControl("Video soubor"),
+                ...videoControl("Video file"),
                 hidden: (p = {}) => !p?.enabled,
             },
             poster: {
@@ -3140,22 +3140,27 @@ addPropertyControls(EllaHairSalonPage, {
         controls: {
             eyebrow: {
                 type: ControlType.String,
+                title: "Eyebrow",
                 defaultValue: "Premium hair salon in Prague",
             },
             titleBefore: {
                 type: ControlType.String,
+                title: "Title line 1",
                 defaultValue: "A style that",
             },
             titleAccent: {
                 type: ControlType.String,
+                title: "Title accent",
                 defaultValue: "stands out",
             },
             titleAfter: {
                 type: ControlType.String,
+                title: "Title line 2",
                 defaultValue: "Care that shows.",
             },
             description: {
                 type: ControlType.String,
+                title: "Description",
                 displayTextArea: true,
                 defaultValue:
                     "Modern haircuts, coloring and hair care by experienced stylists. We create a look that suits you perfectly – from classic to the latest trends.",
@@ -3199,10 +3204,12 @@ addPropertyControls(EllaHairSalonPage, {
         controls: {
             eyebrow: {
                 type: ControlType.String,
+                title: "Eyebrow",
                 defaultValue: "What we offer",
             },
             heading: {
                 type: ControlType.String,
+                title: "Heading",
                 defaultValue: "Our services",
             },
             items: {
@@ -3252,9 +3259,14 @@ addPropertyControls(EllaHairSalonPage, {
         type: ControlType.Object,
         title: "Gallery",
         controls: {
-            eyebrow: { type: ControlType.String, defaultValue: "Inspiration" },
+            eyebrow: {
+                type: ControlType.String,
+                title: "Eyebrow",
+                defaultValue: "Inspiration",
+            },
             heading: {
                 type: ControlType.String,
+                title: "Heading",
                 defaultValue: "Gallery of work",
             },
             images: {
@@ -3284,13 +3296,19 @@ addPropertyControls(EllaHairSalonPage, {
         type: ControlType.Object,
         title: "Video section",
         controls: {
-            eyebrow: { type: ControlType.String, defaultValue: "Watch" },
+            eyebrow: {
+                type: ControlType.String,
+                title: "Eyebrow",
+                defaultValue: "Watch",
+            },
             heading: {
                 type: ControlType.String,
+                title: "Heading",
                 defaultValue: "Take a look inside our salon",
             },
             description: {
                 type: ControlType.String,
+                title: "Description",
                 displayTextArea: true,
                 defaultValue:
                     "A short video tour of the studio, our team and the atmosphere we create for every client.",
@@ -3320,13 +3338,19 @@ addPropertyControls(EllaHairSalonPage, {
         type: ControlType.Object,
         title: "Pricing",
         controls: {
-            eyebrow: { type: ControlType.String, defaultValue: "Pricing" },
+            eyebrow: {
+                type: ControlType.String,
+                title: "Eyebrow",
+                defaultValue: "Pricing",
+            },
             heading: {
                 type: ControlType.String,
+                title: "Heading",
                 defaultValue: "Service price list",
             },
             note: {
                 type: ControlType.String,
+                title: "Note",
                 displayTextArea: true,
                 defaultValue:
                     "The exact price depends on hair length and thickness. We'll gladly confirm the final price during a consultation.",
@@ -3405,13 +3429,19 @@ addPropertyControls(EllaHairSalonPage, {
         type: ControlType.Object,
         title: "About",
         controls: {
-            eyebrow: { type: ControlType.String, defaultValue: "About" },
+            eyebrow: {
+                type: ControlType.String,
+                title: "Eyebrow",
+                defaultValue: "About",
+            },
             heading: {
                 type: ControlType.String,
+                title: "Heading",
                 defaultValue: "Your hair salon in the heart of Prague",
             },
             description: {
                 type: ControlType.String,
+                title: "Description",
                 displayTextArea: true,
                 defaultValue:
                     "For more than 10 years we've been creating hairstyles that make our clients feel great. Our team of certified stylists follows the latest trends and uses only premium products.",
@@ -3560,13 +3590,19 @@ addPropertyControls(EllaHairSalonPage, {
                 placeholder: "leave empty for cal.com",
                 hidden: usesFormOnly,
             },
-            eyebrow: { type: ControlType.String, defaultValue: "Contact" },
+            eyebrow: {
+                type: ControlType.String,
+                title: "Eyebrow",
+                defaultValue: "Contact",
+            },
             heading: {
                 type: ControlType.String,
+                title: "Heading",
                 defaultValue: "Book your appointment today",
             },
             description: {
                 type: ControlType.String,
+                title: "Description",
                 displayTextArea: true,
                 defaultValue:
                     "We're happy to help you find a new style. Call, write or fill out the form and we'll get back to you.",
@@ -3578,6 +3614,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             address: {
                 type: ControlType.String,
+                title: "Address",
                 defaultValue: "Wenceslas Square 12, Prague 1",
             },
             phoneLabel: {
@@ -3587,6 +3624,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             phone: {
                 type: ControlType.String,
+                title: "Phone",
                 defaultValue: "+420 777 123 456",
             },
             hoursLabel: {
@@ -3596,6 +3634,7 @@ addPropertyControls(EllaHairSalonPage, {
             },
             hours: {
                 type: ControlType.String,
+                title: "Opening hours",
                 defaultValue: "Mon–Sat 9:00–19:00",
             },
             namePlaceholder: {

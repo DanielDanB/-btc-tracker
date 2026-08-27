@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ella V. Hair Salon – Template Guide</title>
+<style>
+  :root { --accent: #ff3d81; --accent-soft: #ffe4ee; --ink: #16161a; --muted: #5c5f6b; --line: #e3e4e8; --code-bg: #f5f5f7; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "DejaVu Sans", "Liberation Sans", Arial, sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.55; }
+  h1, h2, h3, h4 { line-height: 1.25; }
+  code, pre { font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; }
+  code { background: var(--code-bg); padding: 1px 4px; border-radius: 3px; font-size: 8.8pt; }
+  pre { background: var(--code-bg); border-left: 3px solid var(--accent); padding: 10px 12px; font-size: 8.4pt; line-height: 1.5; white-space: pre-wrap; border-radius: 0 4px 4px 0; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+  a { color: var(--accent); text-decoration: none; }
+
+  .cover { height: 247mm; display: flex; flex-direction: column; justify-content: center; page-break-after: always; }
+  .cover .eyebrow { color: var(--accent); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 9pt; margin-bottom: 14px; }
+  .cover h1 { font-size: 30pt; margin: 0 0 10px; letter-spacing: -0.5px; }
+  .cover .sub { font-size: 13pt; color: var(--muted); margin-bottom: 34px; }
+  .cover .rule { height: 4px; width: 90px; background: var(--accent); border-radius: 2px; margin-bottom: 34px; }
+  .cover dl { display: grid; grid-template-columns: 40mm 1fr; gap: 8px 0; margin: 0; font-size: 10pt; }
+  .cover dt { color: var(--muted); }
+  .cover dd { margin: 0; font-weight: 600; }
+
+  h2 { font-size: 17pt; margin: 0 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); page-break-after: avoid; }
+  h3 { font-size: 12.5pt; margin: 20px 0 8px; page-break-after: avoid; break-inside: avoid; overflow: hidden; }
+  h4 { margin: 14px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; font-size: 8.5pt; page-break-after: avoid; }
+  p { margin: 0 0 9px; orphans: 3; widows: 3; }
+  ul, ol { margin: 0 0 10px; padding-left: 18px; orphans: 2; widows: 2; }
+  li { margin-bottom: 4px; }
+  section.chapter { page-break-before: always; }
+  .lead { color: var(--muted); font-size: 11pt; margin-bottom: 18px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 14px; font-size: 9.2pt; page-break-inside: avoid; }
+  th { text-align: left; background: var(--accent-soft); padding: 7px 9px; border-bottom: 2px solid var(--accent); font-size: 8.6pt; text-transform: uppercase; letter-spacing: 0.4px; }
+  td { padding: 6px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  table.compact td, table.compact th { padding: 4.5px 9px; }
+  td.f { white-space: nowrap; font-family: "DejaVu Sans Mono", monospace; font-size: 8.4pt; }
+
+  .note { border: 1px solid var(--line); border-left: 3px solid var(--accent); background: #fff7fa; padding: 10px 13px; margin: 12px 0; font-size: 9.5pt; border-radius: 0 4px 4px 0; page-break-inside: avoid; }
+  .note strong:first-child { color: var(--accent); }
+  .steps { counter-reset: step; padding-left: 0; list-style: none; }
+  .steps > li { counter-increment: step; position: relative; padding-left: 26px; margin-bottom: 8px; }
+  .steps > li::before { content: counter(step); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 8pt; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .steps ul { list-style: disc; padding-left: 18px; margin-top: 6px; }
+  .steps ul li { padding-left: 0; margin-bottom: 3px; }
+  .steps ul li::before { content: none; }
+  .toc { columns: 2; column-gap: 22px; font-size: 9.6pt; }
+  .toc div { break-inside: avoid; margin-bottom: 10px; }
+  .toc b { display: block; color: var(--accent); font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 3px; }
+  .toc span { display: block; color: var(--muted); }
+  .kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; font-size: 8.4pt; background: #fff; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="eyebrow">Template guide</div>
+  <h1>Ella V. Hair Salon</h1>
+  <div class="sub">A Framer template for hair salons, barbershops and studios</div>
+  <div class="rule"></div>
+  <dl>
+    <dt>Format</dt><dd>Framer Remix – no code to paste</dd>
+    <dt>Booking</dt><dd>Cal.com calendar or contact form</dd>
+    <dt>Settings</dt><dd>193 options in the Framer properties panel</dd>
+    <dt>Component version</dt><dd>v8 · Remix ready</dd>
+  </dl>
+</div>
+
+<section>
+  <h2>Welcome</h2>
+  <p class="lead">This template is a single Framer code component that renders the
+  whole one-page site: header, hero, services, gallery, optional video section,
+  pricing, about, booking and footer. You never edit code – everything is set from
+  the properties panel on the right.</p>
+
+  <h3>What makes it different</h3>
+  <ul>
+    <li><b>Nine colour themes in one click</b>, or full manual control over every colour on the page.</li>
+    <li><b>Real booking.</b> Connect a Cal.com event and visitors book straight from the page – inline calendar or popup.</li>
+    <li><b>Video anywhere an image can go</b>, including a video background for the whole page.</li>
+    <li><b>Animated floating shapes</b> and an optional custom cursor, both following your accent colour.</li>
+    <li><b>Responsive by component width</b>, not window width – it looks right in every Framer breakpoint.</li>
+  </ul>
+
+  <h3>How to read this guide</h3>
+  <div class="toc">
+    <div><b>1 · Getting started</b><span>Opening your remix</span><span>The properties panel</span><span>Publishing</span></div>
+    <div><b>2 · Settings reference</b><span>Colours and themes</span><span>Floating shapes</span><span>Cursor</span><span>Logo, menu, sections</span><span>Appearance and effects</span><span>Videos</span></div>
+    <div><b>3 · Content</b><span>Hero, services, gallery</span><span>Pricing, about</span><span>Video section</span></div>
+    <div><b>4 · Booking with Cal.com</b><span>Setting up on cal.com</span><span>Connecting it in Framer</span><span>Appearance and testing</span></div>
+    <div><b>5 · Contact form</b><span>Formspree in five minutes</span></div>
+    <div><b>6 · Layout and responsiveness</b><span>Sizing, breakpoints</span></div>
+    <div><b>7 · Troubleshooting</b><span>Common questions</span></div>
+    <div><b>Appendix</b><span>Standalone HTML version</span></div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2>1 · Getting started</h2>
+
+  <h3>Opening your remix</h3>
+  <p>You received the template as a <b>Framer Remix link</b>. There is no code to copy
+  and no file to install.</p>
+  <ol class="steps">
+    <li>Open the remix link. Framer asks where to place the project – choose your workspace.</li>
+    <li>Click <b>Remix</b>. Framer creates your own copy; the original stays untouched.</li>
+    <li>Rename the project (top left) to your salon's name.</li>
+    <li>On the canvas, click the page once. In the layers panel select the component named <b>Ella Hair Salon Page</b>.</li>
+    <li>The properties panel on the right now lists every setting described in this guide.</li>
+  </ol>
+
+  <div class="note"><strong>Everything lives in one component.</strong> You will not
+  find separate layers for the hero, pricing or footer – they are all rendered by the
+  component, which is why one panel controls the whole page.</div>
+
+  <h3>The properties panel at a glance</h3>
+  <table class="compact">
+    <tr><th style="width:38%">Group</th><th>What it controls</th></tr>
+    <tr><td><b>Version</b></td><td>Read-only marker of the template version</td></tr>
+    <tr><td><b>🎨 Colors</b></td><td>Theme picker and every individual colour</td></tr>
+    <tr><td><b>✨ Floating shapes</b></td><td>The animated background shapes</td></tr>
+    <tr><td><b>🖱️ Cursor</b></td><td>Custom mouse cursor</td></tr>
+    <tr><td><b>🏷️ Logo</b></td><td>Image or text logo and its link</td></tr>
+    <tr><td><b>🧩 Sections</b></td><td>Show or hide whole sections</td></tr>
+    <tr><td><b>🎬 Background video</b></td><td>Video behind the entire page</td></tr>
+    <tr><td><b>▶️ Video behaviour</b></td><td>Autoplay, loop, mute, controls for all videos</td></tr>
+    <tr><td><b>🖋️ Appearance</b></td><td>Fonts, sizes, spacing, radii, column counts</td></tr>
+    <tr><td><b>💫 Effects</b></td><td>Glows, hover lift, blurred header, scroll indicator</td></tr>
+    <tr><td><b>CTA text / CTA link / Menu</b></td><td>Header button and navigation items</td></tr>
+    <tr><td><b>Hero … Footer</b></td><td>The content of each section</td></tr>
+    <tr><td><b>Contact &amp; booking</b></td><td>Booking mode, Cal.com, contact details, form</td></tr>
+  </table>
+
+  <h3>Publishing</h3>
+  <ol class="steps">
+    <li>Click <b>Preview</b> (play icon) to test the real page – booking and the contact form only work here and on the published site, not on the canvas.</li>
+    <li>Open <b>Publish</b>, pick the free <code>.framer.website</code> address or connect your own domain.</li>
+    <li>Publish again after any change – edits are not live until you do.</li>
+  </ol>
+
+  <h3>Before you go live</h3>
+  <table class="compact">
+    <tr><th style="width:44%">Task</th><th>Where</th></tr>
+    <tr><td>Replace logo and salon name</td><td>🏷️ Logo</td></tr>
+    <tr><td>Replace every photo</td><td>Hero, Services, Gallery, About</td></tr>
+    <tr><td>Rewrite services and prices</td><td>Services, Pricing</td></tr>
+    <tr><td>Set address, phone, opening hours</td><td>Contact &amp; booking</td></tr>
+    <tr><td>Connect booking or the form</td><td>Contact &amp; booking (chapters 4 and 5)</td></tr>
+    <tr><td>Set page title, favicon, social preview</td><td>Framer's own page settings</td></tr>
+  </table>
+</section>
+<section class="chapter">
+  <h2>2 · Settings reference</h2>
+  <p class="lead">Every field in the panel, grouped exactly as you see it in Framer.</p>
+
+  <h3>🎨 Colors</h3>
+  <p><b>Theme</b> repaints the entire site in one click – background, cards, text,
+  buttons, form, floating shapes and the cursor.</p>
+  <table class="compact">
+    <tr><th style="width:30%">Theme</th><th>Look</th></tr>
+    <tr><td><b>Custom colors</b></td><td>Your own palette from the fields below (default)</td></tr>
+    <tr><td><b>Pink noir</b></td><td>Black and pink – the original look</td></tr>
+    <tr><td><b>Midnight blue</b></td><td>Deep navy with a bright blue accent</td></tr>
+    <tr><td><b>Emerald</b></td><td>Near-black with green</td></tr>
+    <tr><td><b>Gold luxe</b></td><td>Black and gold</td></tr>
+    <tr><td><b>Violet</b></td><td>Dark purple</td></tr>
+    <tr><td><b>Sunset coral</b></td><td>Warm dark with coral</td></tr>
+    <tr><td><b>Graphite mono</b></td><td>Black and white, no colour accent</td></tr>
+    <tr><td><b>Daylight</b></td><td>Light version of the site</td></tr>
+  </table>
+  <p>Pick a theme and the individual colour pickers hide, because the theme drives
+  them. Choose <b>Custom colors</b> to get them back:</p>
+  <table class="compact">
+    <tr><th style="width:34%">Field</th><th>Used for</th></tr>
+    <tr><td class="f">Background</td><td>Page background</td></tr>
+    <tr><td class="f">Background 2</td><td>Second surface: inputs, mobile menu, price gradient</td></tr>
+    <tr><td class="f">Cards</td><td>Service cards and price cards</td></tr>
+    <tr><td class="f">Accent</td><td>The brand colour – links, glows, shapes, cursor, buttons</td></tr>
+    <tr><td class="f">Accent light</td><td>Hover state of the accent</td></tr>
+    <tr><td class="f">Text</td><td>Body text</td></tr>
+    <tr><td class="f">Headings</td><td>H1–H3 colour</td></tr>
+    <tr><td class="f">Muted text</td><td>Descriptions and secondary lines</td></tr>
+    <tr><td class="f">Borders</td><td>Hairlines between cards, rows and sections</td></tr>
+    <tr><td class="f">Header</td><td>Header background – use transparency for a glassy bar</td></tr>
+    <tr><td class="f">Mobile menu</td><td>Background of the slide-in menu</td></tr>
+    <tr><td class="f">Buttons use accent</td><td>On: buttons follow the accent. Off: the two fields below apply</td></tr>
+    <tr><td class="f">Button / Button hover</td><td>Primary button colours when the switch above is off</td></tr>
+    <tr><td class="f">Button text</td><td>Label colour on the primary button</td></tr>
+    <tr><td class="f">Outline text / border</td><td>The secondary (outlined) button</td></tr>
+    <tr><td class="f">Input background / border / text</td><td>Contact form fields</td></tr>
+    <tr><td class="f">Footer</td><td>Footer background (transparent by default)</td></tr>
+    <tr><td class="f">Success / Error</td><td>Colour of the form's confirmation and error message</td></tr>
+  </table>
+  <div class="note"><strong>Tip.</strong> To rebrand quickly, keep <b>Custom colors</b>
+  and change only <b>Accent</b>. Buttons, glows, shapes and the cursor follow it
+  automatically.</div>
+
+  <h3>✨ Floating shapes</h3>
+  <p>Animated shapes drifting behind the content, drawn on a canvas.</p>
+  <table class="compact">
+    <tr><th style="width:34%">Field</th><th>Meaning</th></tr>
+    <tr><td class="f">Enable</td><td>Master switch. Off means nothing is drawn at all</td></tr>
+    <tr><td class="f">Scissors, Comb, Wave,<br>Heart, Star, Sparkle,<br>Dot, Ring, Bubble</td><td>Which shapes appear. Scissors, comb and wave are on by default; mix freely</td></tr>
+    <tr><td class="f">Use accent color</td><td>On: shapes take the accent. Off: use <b>Custom color</b></td></tr>
+    <tr><td class="f">Count</td><td>0–90 shapes. On phones the count is automatically reduced</td></tr>
+    <tr><td class="f">Size</td><td>8–90 px base size</td></tr>
+    <tr><td class="f">Stroke width</td><td>0.3–4 – how heavy the outlines look</td></tr>
+    <tr><td class="f">Speed</td><td>0 = frozen, 0.22 default, 3 = fast drift</td></tr>
+    <tr><td class="f">Opacity</td><td>0.05–1</td></tr>
+    <tr><td class="f">Rotation</td><td>Slow spin while drifting</td></tr>
+    <tr><td class="f">React to mouse</td><td>Shapes dodge the pointer</td></tr>
+    <tr><td class="f">Mouse radius</td><td>20–400 px – how far that influence reaches</td></tr>
+  </table>
+
+  <h3>🖱️ Cursor</h3>
+  <table class="compact">
+    <tr><th style="width:34%">Field</th><th>Meaning</th></tr>
+    <tr><td class="f">Mode</td><td><b>System</b> = normal cursor · <b>Shape</b> = built-in shape · <b>Custom image</b> = your own PNG/SVG</td></tr>
+    <tr><td class="f">Shape</td><td>Original, Arrow, Dot, Ring, Scissors, Comb, Heart, Sparkle, Drop</td></tr>
+    <tr><td class="f">Use accent color</td><td>On: cursor follows the accent. Off: pick <b>Color</b></td></tr>
+    <tr><td class="f">Outline / Outline width</td><td>Outline colour and thickness – keeps the cursor visible on any background</td></tr>
+    <tr><td class="f">Size</td><td>12–64 px</td></tr>
+    <tr><td class="f">Hotspot X / Y</td><td>Which point of the drawing actually clicks. For a pointed shape keep it near 0,0; for a dot or ring use the centre (12,12)</td></tr>
+    <tr><td class="f">Cursor image</td><td>Custom image mode – 32×32 px works well</td></tr>
+    <tr><td class="f">Different on links</td><td>A second cursor over links and buttons</td></tr>
+    <tr><td class="f">Hover shape / Hover color</td><td>That second cursor's look</td></tr>
+  </table>
+  <p>Touch devices never get a custom cursor – the setting is ignored there.</p>
+
+  <h3>🏷️ Logo</h3>
+  <table class="compact">
+    <tr><th style="width:34%">Field</th><th>Meaning</th></tr>
+    <tr><td class="f">Logo image</td><td>PNG or SVG. When set, it replaces the text logo</td></tr>
+    <tr><td class="f">Text / Text (accent)</td><td>Text logo split in two parts – the second one is in the accent colour</td></tr>
+    <tr><td class="f">Link</td><td>Where the logo points, <code>#hero</code> by default</td></tr>
+  </table>
+  <p>Logo height is in <b>🖋️ Appearance → Logo height</b>.</p>
+
+  <h3>🧩 Sections</h3>
+  <p>Switches for whole sections: <b>Button in menu</b>, <b>Services</b>,
+  <b>Gallery</b>, <b>Video section</b> (off by default), <b>Pricing</b>,
+  <b>About</b>, <b>Contact</b>, <b>Footer</b>. Hidden sections are not rendered at
+  all, and their menu links can be removed under <b>Menu</b>.</p>
+
+  <h3>🎬 Background video &amp; ▶️ Video behaviour</h3>
+  <table class="compact">
+    <tr><th style="width:34%">Field</th><th>Meaning</th></tr>
+    <tr><td class="f">Enable</td><td>Turns on a video layer behind the whole page</td></tr>
+    <tr><td class="f">Video file</td><td>MP4, WebM, OGV, MOV or M4V</td></tr>
+    <tr><td class="f">Poster</td><td>Still shown until the video starts</td></tr>
+    <tr><td class="f">Opacity</td><td>0–1 – keep it low so text stays readable</td></tr>
+    <tr><td class="f">Overlay</td><td>Colour laid over the video, usually a dark transparent tone</td></tr>
+    <tr><td class="f">Autoplay / Loop / Muted / Controls</td><td>Applies to every video on the page. Autoplay forces mute – browsers block sound otherwise</td></tr>
+  </table>
+
+  <h3>🖋️ Appearance</h3>
+  <table class="compact">
+    <tr><th style="width:38%">Field</th><th>Range / default</th></tr>
+    <tr><td class="f">Font / Heading font</td><td>Any CSS font stack, e.g. <code>Inter, sans-serif</code></td></tr>
+    <tr><td class="f">Text size</td><td>12–22 px (16)</td></tr>
+    <tr><td class="f">Line height</td><td>1.2–2.2 (1.6)</td></tr>
+    <tr><td class="f">Hero title (rem)</td><td>2–6 (3.6) – maximum size, scales down on small screens</td></tr>
+    <tr><td class="f">Headings (rem)</td><td>1.4–5 (2.6)</td></tr>
+    <tr><td class="f">Media radius</td><td>0–48 px (20) – hero, about, video</td></tr>
+    <tr><td class="f">Card radius</td><td>0–48 px (16) – cards, gallery, calendar</td></tr>
+    <tr><td class="f">Button radius</td><td>0–40 px (30) – 0 gives square buttons</td></tr>
+    <tr><td class="f">Content width</td><td>800–1800 px (1200)</td></tr>
+    <tr><td class="f">Section spacing</td><td>20–200 px (100) – vertical rhythm</td></tr>
+    <tr><td class="f">Header height</td><td>56–140 px (76)</td></tr>
+    <tr><td class="f">Logo height</td><td>16–120 px (40)</td></tr>
+    <tr><td class="f">Hero height (vh)</td><td>50–100 (100) – share of the screen height</td></tr>
+    <tr><td class="f">Hero media (px)</td><td>200–900 (520)</td></tr>
+    <tr><td class="f">Card media (px)</td><td>100–500 (200)</td></tr>
+    <tr><td class="f">Gallery media (px)</td><td>120–600 (260)</td></tr>
+    <tr><td class="f">About media (px)</td><td>200–800 (440)</td></tr>
+    <tr><td class="f">Video section (px)</td><td>200–900 (520)</td></tr>
+    <tr><td class="f">Service columns</td><td>1–6 (4) – drops to 2 and then 1 on smaller screens</td></tr>
+    <tr><td class="f">Gallery columns</td><td>1–6 (4)</td></tr>
+    <tr><td class="f">Animation speed</td><td>0–1.2 s (0.3) – all hovers and transitions</td></tr>
+    <tr><td class="f">Bullet icon</td><td>The character in the About list, ✓ by default</td></tr>
+  </table>
+
+  <h3>💫 Effects</h3>
+  <table class="compact">
+    <tr><th style="width:34%">Field</th><th>Meaning</th></tr>
+    <tr><td class="f">Blurred header</td><td>Frosted-glass header. Pair it with a semi-transparent Header colour</td></tr>
+    <tr><td class="f">Hero glow</td><td>Soft accent glow under the hero image</td></tr>
+    <tr><td class="f">Card hover lift</td><td>Cards rise on hover</td></tr>
+    <tr><td class="f">Pricing glow</td><td>Price cards light up as they reach the middle of the screen</td></tr>
+    <tr><td class="f">Scroll indicator</td><td>The animated mouse hint at the bottom of the hero</td></tr>
+  </table>
+</section>
+<section class="chapter">
+  <h2>3 · Content of each section</h2>
+
+  <h3>Header: CTA and menu</h3>
+  <table class="compact">
+    <tr><th style="width:30%">Field</th><th>Meaning</th></tr>
+    <tr><td class="f">CTA text / CTA link</td><td>The button in the header. Hide it under 🧩 Sections → Button in menu</td></tr>
+    <tr><td class="f">Menu</td><td>A list of items, each with <b>Label</b> and <b>Link</b>. Use <code>#hero</code>, <code>#services</code>, <code>#gallery</code>, <code>#video</code>, <code>#pricing</code>, <code>#about</code>, <code>#contact</code> – or any external URL. Add and reorder with the + and drag handles</td></tr>
+  </table>
+
+  <h3>Hero</h3>
+  <table class="compact">
+    <tr><th style="width:34%">Field</th><th>Meaning</th></tr>
+    <tr><td class="f">Eyebrow</td><td>Small line above the title</td></tr>
+    <tr><td class="f">Title line 1 / Title accent / Title line 2</td><td>The headline is assembled as: <i>line 1</i> <b>accent</b>. <i>line 2</i></td></tr>
+    <tr><td class="f">Description</td><td>Paragraph under the title</td></tr>
+    <tr><td class="f">CTA 1 / CTA 1 link</td><td>Primary button (this one can open booking – chapter 4)</td></tr>
+    <tr><td class="f">CTA 2 / CTA 2 link</td><td>Secondary outlined button</td></tr>
+    <tr><td class="f">Image</td><td>Hero photo</td></tr>
+    <tr><td class="f">Video (takes priority)</td><td>When set, the video replaces the image</td></tr>
+    <tr><td class="f">Video poster</td><td>Still frame before the video plays</td></tr>
+    <tr><td class="f">Alt text</td><td>Description for screen readers and SEO</td></tr>
+  </table>
+
+  <h3>Services</h3>
+  <p><b>Eyebrow</b>, <b>Heading</b> and a list of <b>Cards</b>. Each card has
+  <b>Title</b>, <b>Description</b>, <b>Image</b>, <b>Video</b> and <b>Video poster</b>.
+  Add cards with +, drag to reorder, and set how many fit per row in
+  <b>🖋️ Appearance → Service columns</b>.</p>
+
+  <h3>Gallery</h3>
+  <p><b>Eyebrow</b>, <b>Heading</b> and <b>Items</b>. Each item takes an
+  <b>Image</b> or a <b>Video</b> plus <b>Alt text</b> – images and videos can be
+  mixed in the same grid. Height and columns are in Appearance.</p>
+
+  <h3>Video section</h3>
+  <p>Off by default; switch it on in <b>🧩 Sections → Video section</b>. It shows a
+  full-width video with its own <b>Eyebrow</b>, <b>Heading</b> and <b>Description</b>,
+  plus its own <b>Autoplay</b>, <b>Loop</b> and <b>Controls</b> (handy for a salon
+  tour where visitors should press play themselves).</p>
+
+  <h3>Pricing</h3>
+  <p>Three groups – women, men and special services. Each has a <b>badge</b>, a
+  <b>title</b> and a list of <b>items</b> with <b>Service</b> and <b>Price</b>.
+  The lists have no length limit; the price is free text, so
+  <code>from $35</code>, <code>35 €</code> or <code>on request</code> all work.
+  <b>Note</b> is the small centred paragraph under the cards.</p>
+
+  <h3>About</h3>
+  <p><b>Eyebrow</b>, <b>Heading</b>, <b>Description</b>, a list of
+  <b>Bullet points</b>, and an <b>Image</b> or <b>Video</b> with <b>Alt text</b>.
+  The bullet character is <b>Appearance → Bullet icon</b>.</p>
+
+  <h3>Contact details and footer</h3>
+  <p>In <b>Contact &amp; booking</b> you set <b>Eyebrow</b>, <b>Heading</b>,
+  <b>Description</b>, and three label/value pairs: <b>Address label</b> +
+  <b>Address</b>, <b>Phone label</b> + <b>Phone</b>, <b>Hours label</b> +
+  <b>Opening hours</b>. The labels are separate fields so you can translate them.</p>
+  <p><b>Footer</b> is a single line of text; <b>Show year</b> puts the current year
+  in front of it automatically.</p>
+
+  <h3>Images and video – practical notes</h3>
+  <ul>
+    <li>Upload images through the panel; Framer optimises and serves them for you.</li>
+    <li>Suggested sizes: hero ≈ 1200×1000 px, service card ≈ 800×600 px,
+        gallery ≈ 700×700 px, about ≈ 1000×1200 px.</li>
+    <li>Video files: MP4 (H.264) is the safest. Keep them short and under ~10 MB –
+        they are a background element, not a film.</li>
+    <li>A link ending in <code>.mp4</code> or <code>.webm</code> also works in an
+        image field – the template detects it and renders a video.</li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <h2>4 · Booking with Cal.com</h2>
+  <p class="lead">Cal.com is a free scheduling service. Clients pick a slot, both of
+  you get a confirmation and the appointment lands in your calendar. This chapter
+  covers the setup on cal.com first, then connecting it to the template.</p>
+
+  <h3>Step A · Set up your booking page on cal.com</h3>
+  <ol class="steps">
+    <li><b>Create an account</b> at cal.com. Pick a username you are happy to show –
+        it becomes part of every booking link, e.g. <code>cal.com/ella-salon</code>.</li>
+    <li><b>Set your availability.</b> Under <b>Availability</b>, create a schedule
+        matching your opening hours (for example Mon–Sat 9:00–19:00) and set the
+        correct time zone. You can add several schedules, e.g. a shorter Saturday.</li>
+    <li><b>Create an event type</b> – one per service you want bookable.
+        Under <b>Event types → New</b> set:
+        <ul>
+          <li><b>Title</b> – what the client sees, e.g. “Women's haircut”.</li>
+          <li><b>URL</b> – the slug, e.g. <code>womens-haircut</code>. Together with
+              your username this is the link you will paste into Framer.</li>
+          <li><b>Description</b> – shown next to the calendar.</li>
+          <li><b>Duration</b> – e.g. 60 minutes. You can offer multiple durations.</li>
+        </ul></li>
+    <li><b>Set the location</b> in the event's <b>Location</b> field – for a salon
+        choose <i>In person</i> and enter the address, or <i>Attendee address</i> for
+        home visits.</li>
+    <li><b>Connect your calendar</b> under <b>Apps → Calendar</b> (Google, Outlook,
+        Apple). Cal.com then blocks slots you are already busy in and writes new
+        bookings into that calendar.</li>
+    <li><b>Tune the limits</b> in the event's <b>Limits</b> tab: minimum notice
+        (e.g. 2 hours), buffers before and after, how far ahead people can book, and
+        a daily maximum.</li>
+    <li><b>Adjust the questions</b> in <b>Advanced → Booking questions</b>. Name and
+        email are always there; add a phone number or a “which service” dropdown.
+        You can also require confirmation before a booking is final.</li>
+    <li><b>Test it</b> – open <code>cal.com/your-name/your-event</code> in a private
+        window and make a booking. Check that the confirmation e-mail arrives and the
+        event appears in your calendar.</li>
+  </ol>
+
+  <div class="note"><strong>Which link do I need?</strong> Everything after
+  <code>cal.com/</code> – that is <code>username/event-slug</code>, for example
+  <code>ella-salon/womens-haircut</code>. Pasting the whole address works too; the
+  template shortens it for you.</div>
+
+  <h3>Step B · Connect it in Framer</h3>
+  <p>Open <b>Contact &amp; booking</b>. The first field, <b>📅 Booking</b>, decides
+  what appears at the bottom of the page:</p>
+  <table class="compact">
+    <tr><th style="width:36%">Mode</th><th>Result</th></tr>
+    <tr><td><b>Contact form</b></td><td>Only the contact form (default). Needs Formspree – chapter 5</td></tr>
+    <tr><td><b>Cal.com calendar</b></td><td>The booking calendar embedded in the page, no form</td></tr>
+    <tr><td><b>Cal.com button</b></td><td>A button that opens booking in a popup, no form</td></tr>
+    <tr><td><b>Form + Cal.com button</b></td><td>Both – people choose how to reach you</td></tr>
+  </table>
+  <p>Then fill in <b>Cal.com link</b> with <code>username/event-slug</code>. Until you
+  do, the section shows a short hint instead of a calendar.</p>
+
+  <h3>Step C · Appearance and behaviour</h3>
+  <table class="compact">
+    <tr><th style="width:36%">Field</th><th>Meaning</th></tr>
+    <tr><td class="f">Booking button</td><td>Label of the booking button (popup modes)</td></tr>
+    <tr><td class="f">Booking note</td><td>Small line under that button, e.g. “Free 15-minute consultation”</td></tr>
+    <tr><td class="f">CTA opens booking</td><td>Makes the header and hero <b>Book Now</b> buttons open booking as well</td></tr>
+    <tr><td class="f">Calendar layout</td><td><b>Month</b> (grid), <b>Week</b> or <b>Column</b> (compact list)</td></tr>
+    <tr><td class="f">Calendar theme</td><td><b>Auto</b> follows your site – a dark site gets a dark calendar. Or force Dark / Light</td></tr>
+    <tr><td class="f">Brand = accent</td><td>Calendar highlights use your accent colour. Off: pick <b>Brand color</b></td></tr>
+    <tr><td class="f">Match site colors</td><td>Passes your whole palette to the calendar – background, cards, text, borders. Off leaves Cal.com's default look</td></tr>
+    <tr><td class="f">Calendar min height</td><td>320–1200 px. Only a minimum – the calendar grows with its content</td></tr>
+    <tr><td class="f">Full width calendar</td><td>On: calendar spans the section under the text (recommended for Month view)</td></tr>
+    <tr><td class="f">Hide event details</td><td>Hides the left panel with the service name and duration</td></tr>
+    <tr><td class="f">Origin / Embed script</td><td><b>Leave empty.</b> Only for a self-hosted Cal.com instance</td></tr>
+  </table>
+
+  <h3>Step D · Test</h3>
+  <ol class="steps">
+    <li>Open <b>Preview</b> – the calendar does not load on the Framer canvas, because the canvas blocks external scripts.</li>
+    <li>Pick a slot and complete a test booking.</li>
+    <li>Publish and repeat once on the live site.</li>
+  </ol>
+
+  <div class="note"><strong>Built-in safety net.</strong> If the Cal.com script is
+  blocked (ad blockers, strict privacy settings), the page shows a button linking to
+  your Cal.com page instead, so visitors can always book. The script is only loaded
+  when booking is switched on and a link is filled in – otherwise the site loads
+  nothing external at all.</div>
+
+  <h4>Good to know</h4>
+  <ul>
+    <li>The small “Cal.com” credit under the calendar belongs to their free plan and can only be removed in a paid Cal.com plan.</li>
+    <li>One event type per link. To offer several services, either point the button at your main event, or add more buttons through Framer's own layers.</li>
+    <li>Prices, deposits and payments are configured on cal.com, not here.</li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <h2>5 · Contact form</h2>
+  <p class="lead">The form posts to <a href="https://formspree.io">Formspree</a>,
+  which forwards submissions to your inbox. No server needed.</p>
+  <ol class="steps">
+    <li>Create a free account at formspree.io and confirm your e-mail.</li>
+    <li>Create a new form and copy its endpoint – it looks like
+        <code>https://formspree.io/f/abcdwxyz</code>.</li>
+    <li>Paste it into <b>Contact &amp; booking → Formspree endpoint</b>.</li>
+    <li>Publish, send a test message and confirm the first submission in the e-mail Formspree sends you.</li>
+  </ol>
+  <table class="compact">
+    <tr><th style="width:36%">Field</th><th>Meaning</th></tr>
+    <tr><td class="f">Name / Email / Phone / Message placeholder</td><td>Placeholder text in the four inputs</td></tr>
+    <tr><td class="f">Button text / Sending text</td><td>Label before and during submission</td></tr>
+    <tr><td class="f">Email subject</td><td>Subject line of the e-mail you receive</td></tr>
+    <tr><td class="f">Success message</td><td>Shown after a successful send</td></tr>
+    <tr><td class="f">Error message</td><td>Shown if the send fails</td></tr>
+  </table>
+  <p>Without an endpoint the form politely reports that it is not connected yet, so a
+  visitor never gets a silent failure. If you only take bookings through Cal.com,
+  switch the mode to <b>Cal.com calendar</b> or <b>Cal.com button</b> and the form
+  (and its fields) disappear.</p>
+</section>
+<section class="chapter">
+  <h2>6 · Layout and responsiveness</h2>
+
+  <h3>How the component is sized</h3>
+  <p>The component is set to <b>Fill width</b> and <b>Fit content height</b>: it
+  spans the width of its frame and is exactly as tall as its content. Add a service
+  card or a pricing row and the frame grows by itself – you never drag it to fit.</p>
+
+  <h3>Breakpoints</h3>
+  <p>Layout changes follow the <b>width of the component</b>, not the width of the
+  browser window. That is why the page looks correct inside a narrow phone
+  breakpoint even while you are editing on a wide canvas.</p>
+  <table class="compact">
+    <tr><th style="width:32%">Component width</th><th>What changes</th></tr>
+    <tr><td>up to 992 px</td><td>Hero becomes one column and centres, service cards and gallery drop to 2 columns, price cards stack</td></tr>
+    <tr><td>up to 768 px</td><td>Menu collapses into the hamburger, hero media and video section get shorter</td></tr>
+    <tr><td>up to 480 px</td><td>Everything is one column, buttons go full width, page padding tightens</td></tr>
+  </table>
+
+  <h3>The mobile menu</h3>
+  <p>The slide-in menu is built from your <b>Menu</b> items plus the CTA button. It
+  only exists while open, and closes on a link, on the backdrop or with
+  <span class="kbd">Esc</span>.</p>
+
+  <h3>Hero height</h3>
+  <p><b>Appearance → Hero height (vh)</b> is a share of the screen height: 100 means
+  a full-screen hero. It is measured in small-viewport units, so a phone with a
+  dynamic address bar gets the same result as your canvas.</p>
+</section>
+
+<section class="chapter">
+  <h2>7 · Troubleshooting</h2>
+
+  <h3>The panel does not show a setting described here</h3>
+  <p>Check the very first field, <b>Version</b>. This guide documents
+  <b>v8 · Remix ready</b>. If your remix predates it, ask for the current remix link.</p>
+
+  <h3>The calendar does not appear</h3>
+  <ul>
+    <li>Test in <b>Preview</b> or on the published site – the Framer canvas runs in a sandbox that blocks external scripts.</li>
+    <li>Check that <b>Cal.com link</b> is <code>username/event-slug</code> and that the same address opens in a browser.</li>
+    <li><b>Origin</b> and <b>Embed script</b> must stay empty unless you self-host Cal.com.</li>
+    <li>If a button linking to Cal.com shows up instead of the calendar, the embed was blocked in that browser – usually an ad blocker or strict third-party-cookie settings. Booking still works through the button.</li>
+  </ul>
+
+  <h3>The form does not send</h3>
+  <ul>
+    <li>Is <b>Formspree endpoint</b> filled in and does it start with <code>https://formspree.io/f/</code>?</li>
+    <li>Did you confirm the first submission in the e-mail Formspree sent you? Until then messages are held.</li>
+    <li>Test on the published site, not on the canvas.</li>
+  </ul>
+
+  <h3>The page looks cut off at the bottom on a phone</h3>
+  <p>The component reports its height correctly, but Framer remembers the height it
+  measured on the canvas. Select the component on the phone breakpoint and set it –
+  and the frame around it – to <b>Fit content</b> rather than a fixed height.</p>
+
+  <h3>Colours changed but a button did not</h3>
+  <p>Check <b>🎨 Colors → Buttons use accent</b>. When it is off, buttons take
+  <b>Button</b> and <b>Button hover</b> instead of the accent.</p>
+
+  <h3>Shapes or the cursor feel distracting</h3>
+  <p>Lower <b>Count</b>, <b>Speed</b> and <b>Opacity</b>, or switch
+  <b>Floating shapes → Enable</b> off. For the cursor use <b>Cursor → Mode →
+  System</b>. Visitors who ask their system to reduce motion automatically get a
+  calmer page.</p>
+
+  <h3>What cannot be changed from here</h3>
+  <ul>
+    <li>The “Cal.com” credit under the calendar – a Cal.com plan setting.</li>
+    <li>Formspree's own limits and spam filtering – your Formspree plan.</li>
+    <li>Page title, favicon, social preview, domain and SEO – Framer's own page and site settings.</li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <h2>Appendix · Standalone HTML version</h2>
+  <p class="lead">Besides the Framer template there is a single-file HTML build of
+  the same site, for hosting outside Framer. Skip this appendix if you are staying
+  in Framer.</p>
+
+  <p><code>index.html</code> contains the markup, styles and scripts in one file –
+  no build step, no dependencies, no CDN. Upload it anywhere (FTP, Netlify, Vercel,
+  GitHub Pages) or open it locally by double-clicking.</p>
+
+  <h3>Where the settings live</h3>
+  <p>At the top of the <code>&lt;script&gt;</code> block there is a <code>SITE</code>
+  object – the equivalent of Framer's panel:</p>
+<pre><code>const SITE = {
+    theme: "noir",   // noir | midnight | emerald | gold | violet
+                     // coral | mono | daylight | custom
+    colors: {},      // your own colours when theme = "custom"
+    style: {},       // fonts, radii, spacing, media heights
+    effects: {},     // headerBlur, heroGlow, hoverLift, pricingGlow
+    shapes: {},      // { enabled: false } turns the shapes off
+    cursor: {},      // { mode: "Default" } turns the custom cursor off
+
+    booking: { mode: "form", calLink: "" },   // form | inline | popup | both
+    form: { formspreeEndpoint: "" },
+}</code></pre>
+  <p>Defaults for every value are in the <code>DEFAULTS</code> object right below –
+  you only override what you want to change. Booking and the form behave exactly as
+  described in chapters 4 and 5.</p>
+
+  <h3>Texts and images</h3>
+  <p>Texts are edited directly in the HTML. Images are loaded from an
+  <code>assets/</code> folder next to the file:</p>
+<pre><code>assets/hero-salon.jpg
+assets/service-1.jpg … service-4.jpg
+assets/gallery-1.jpg … gallery-8.jpg
+assets/about-salon.jpg</code></pre>
+  <p>Until those files exist the page shows neutral dark placeholders – nothing
+  breaks. A <code>&lt;video&gt;</code> tag with the same classes can replace any
+  image.</p>
+
+  <h3>Which version should I use?</h3>
+  <table class="compact">
+    <tr><th style="width:30%"></th><th>Framer template</th><th>HTML file</th></tr>
+    <tr><td><b>Editing</b></td><td>Visual panel, no code</td><td>Text editor</td></tr>
+    <tr><td><b>Hosting</b></td><td>Framer</td><td>Anywhere</td></tr>
+    <tr><td><b>Ongoing cost</b></td><td>Framer plan</td><td>Hosting only</td></tr>
+    <tr><td><b>Best for</b></td><td>Editing the site yourself</td><td>A developer-maintained static site</td></tr>
+  </table>
+</section>
+
+</body>
+</html>

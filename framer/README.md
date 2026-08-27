@@ -1,8 +1,12 @@
 # Ella Hair Salon – Framer code component
 
-Soubor `EllaFramer.tsx` vlož ve Frameru do **Assets → Code → New Code File**
-a přetáhni komponentu `EllaHairSalonPage` na stránku. Vše ostatní se nastavuje
-v pravém panelu – v kódu už není potřeba nic přepisovat.
+**Kupující dostávají Framer Remix** – ti nic nevkládají, jen si projekt remixnou
+a nastavují komponentu v pravém panelu. Anglický návod pro ně je v
+`docs/Ella-Hair-Salon-Template-Guide.pdf`.
+
+Tenhle soubor je zdroj komponenty. Do Frameru se vkládá jen když zakládáš nový
+projekt nebo aktualizuješ kód: **Assets → Code → New Code File**, vložit celý obsah
+a přetáhnout `EllaHairSalonPage` na stránku. Vše ostatní se nastavuje v panelu.
 
 ## Co se dá měnit
 
@@ -156,7 +160,7 @@ takže na publikovaném webu je hero přes celý displej.
   komponentu na telefonním breakpointu a nastav jí (a rámci kolem ní) **Fit content**,
   ne pevnou výšku. Výška hero sekce se počítá v `svh`, aby na telefonu s dynamickou
   lištou nevycházela vyšší než na plátně.
-- Úplně první pole v panelu je **`Version`** – musí v něm být `v7 · Cal embed cleanup`.
+- Úplně první pole v panelu je **`Version`** – musí v něm být `v8 · Remix ready`.
   Když tam není (nebo pole chybí), Framer pořád používá starší kód: otevři code file,
   označ všechno (⌘A) a vlož celý nový obsah. Když má code file červenou chybu,
   Framer si drží poslední funkční verzi a panel se nezmění.
