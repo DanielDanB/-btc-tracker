@@ -8,20 +8,21 @@ import React, {
 import { addPropertyControls, ControlType } from "framer"
 
 /**
- * Ella Hair Salon – plně nastavitelná Framer code component.
+ * Ella Hair Salon – a fully configurable Framer code component.
  *
- * Vše se ovládá v pravém panelu Frameru:
- *  • Barvy        – každá barva webu (pozadí, akcent, texty, rámečky, tlačítka…)
- *  • Videa        – hero, about, karty služeb, galerie, video sekce i video na pozadí
- *  • Logo         – obrázek nebo text + velikost
- *  • Poletující obrazce – zapnout/vypnout, tvary, počet, rychlost, barva
- *  • Kurzor       – vypnout, vybrat tvar, barvu a velikost, nebo vlastní obrázek
- *  • Sekce        – jednotlivé sekce lze skrýt
+ * Everything is set from Framer's properties panel:
+ *  • Colors   – a ready-made theme or every single color of the site
+ *  • Videos   – hero, about, service cards, gallery, video section, background
+ *  • Logo     – image or text, with size and link
+ *  • Shapes   – floating shapes on/off, type, count, speed, color
+ *  • Cursor   – off, a built-in shape with colors, or a custom image
+ *  • Booking  – contact form and/or a Cal.com calendar
+ *  • Sections – individual sections can be hidden
  */
 
 /* ------------------------------------------------------------------ */
-/* Barevné utility – umožňují odvodit průhledné odstíny z libovolné    */
-/* barvy zvolené ve Frameru (hex, rgb(a), hsl(a) i CSS proměnná).      */
+/* Color helpers – derive translucent shades from any color picked in  */
+/* Framer (hex, rgb(a), hsl(a) or a CSS variable).                     */
 /* ------------------------------------------------------------------ */
 
 function parseColor(input) {
@@ -106,11 +107,11 @@ function parseColor(input) {
     return null
 }
 
-/** Vrátí barvu s upravenou průhledností. Funguje pro každou barvu z Frameru. */
+/** Returns the color with adjusted alpha. Works for any Framer color. */
 function withAlpha(color, alpha) {
     const parsed = parseColor(color)
     if (!parsed) {
-        // Framer color token / neznámý formát – necháme to na prohlížeči.
+        // Framer color token or unknown format – let the browser resolve it.
         return `color-mix(in srgb, ${color} ${Math.round(alpha * 100)}%, transparent)`
     }
     const a = Math.max(0, Math.min(1, parsed.a * alpha))
@@ -119,7 +120,7 @@ function withAlpha(color, alpha) {
     )}, ${Number(a.toFixed(3))})`
 }
 
-/** Plná (neprůhledná) verze barvy – pro canvas a data URI kurzoru. */
+/** Opaque version of a color – for the canvas and the cursor data URI. */
 function toSolid(color, fallback) {
     const parsed = parseColor(color)
     if (!parsed) return fallback
@@ -137,10 +138,10 @@ function toHex(color, fallback) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Barevná témata – přepnutí celého webu na jedno kliknutí             */
+/* Color themes – repaint the whole site in one click                  */
 /* ------------------------------------------------------------------ */
 
-/** Tmavá paleta odvozená ze čtyř základních barev. */
+/** A dark palette derived from a few base colors. */
 function darkPalette(background, backgroundSoft, cardBackground, accent, accentSoft, buttonText) {
     return {
         background,
@@ -204,7 +205,7 @@ const COLOR_PRESETS = {
 
 const COLOR_PRESET_KEYS = ["custom", ...Object.keys(COLOR_PRESETS)]
 
-/** Vrátí finální paletu: buď vlastní barvy, nebo zvolené téma. */
+/** Final palette: either the custom colors or the selected theme. */
 function resolveColors(colors) {
     const preset = colors.preset || "custom"
     if (preset === "custom" || !COLOR_PRESETS[preset]) return colors
@@ -296,10 +297,10 @@ function cursorCSS(cursor, accent) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Globální CSS                                                        */
+/* Global CSS                                                          */
 /* ------------------------------------------------------------------ */
 
-/** Prefixuje všechny selektory, aby styly neovlivnily zbytek Framer projektu. */
+/** Prefixes every selector so styles cannot leak into the Framer project. */
 function prefixSelector(selector, scope) {
     return selector
         .split(",")
@@ -313,7 +314,7 @@ function prefixSelector(selector, scope) {
 }
 
 function scopeCSS(input, scope) {
-    // Komentáře pryč – jinak by se jejich text stal součástí selektoru.
+    // Strip comments – otherwise their text becomes part of a selector.
     const css = input.replace(/\/\*[\s\S]*?\*\//g, "")
     let out = ""
     let buffer = ""
@@ -354,7 +355,7 @@ const globalCSS = (c, t, fx) => {
     const accent = c.accent
     const accentSoft = c.accentSoft
     const radius = t.radius
-    // Tlačítka standardně kopírují akcentní barvu; lze je přebít vlastní barvou.
+    // Buttons follow the accent color by default; a custom color can override.
     const btnBg = c.buttonUseAccent === false ? c.buttonBackground : accent
     const btnHover =
         c.buttonUseAccent === false ? c.buttonBackgroundHover : accentSoft
@@ -511,8 +512,8 @@ const globalCSS = (c, t, fx) => {
   .form-feedback.error { color: ${c.errorColor}; }
   .footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: center; background: ${c.footerBackground}; }
   .footer p { color: var(--gray); font-size: 14px; }
-  /* Zlomy reagují na šířku samotné komponenty (třídy w-md/w-sm/w-xs),
-     takže sedí i v úzkém breakpoint rámci na širokém plátně Frameru. */
+  /* Breakpoints follow the component's own width (w-md/w-sm/w-xs classes),
+     so they fit a narrow breakpoint frame on a wide Framer canvas too. */
   .ella-root.w-md .hero-inner { grid-template-columns: 1fr; text-align: center; }
   .ella-root.w-md .hero-text { order: 1; }
   .ella-root.w-md .hero-image { order: 2; }
@@ -552,7 +553,7 @@ const globalCSS = (c, t, fx) => {
 }
 
 /* ------------------------------------------------------------------ */
-/* Cal.com – rezervační kalendář                                       */
+/* Cal.com – booking calendar                                          */
 /* ------------------------------------------------------------------ */
 
 const COMPONENT_VERSION = "v6 · Cal theme + layout fixes"
@@ -562,7 +563,7 @@ const CAL_DEFAULT_EMBED_JS = "https://app.cal.com/embed/embed.js"
 const CAL_LINK_HINT =
     "Add your Cal.com link in Booking → Cal.com link (for example ella/haircut)."
 
-/** Oficiální Cal.com embed loader – doplní window.Cal a načte embed.js. */
+/** The official Cal.com embed loader – defines window.Cal, loads embed.js. */
 function ensureCalLoader(embedJsUrl) {
     if (typeof window === "undefined" || typeof document === "undefined") {
         return null
@@ -606,7 +607,7 @@ function ensureCalLoader(embedJsUrl) {
     return window.Cal
 }
 
-/** Je barva tmavá? Podle toho se volí světlé/tmavé téma kalendáře. */
+/** Is the color dark? Decides the calendar's light/dark theme. */
 function isDarkColor(color, fallback) {
     const parsed = parseColor(color)
     if (!parsed) return fallback
@@ -621,7 +622,7 @@ function isDarkColor(color, fallback) {
     return luminance < 0.35
 }
 
-/** Namapuje paletu webu na CSS proměnné Cal.com embedu. */
+/** Maps the site palette onto the Cal.com embed's CSS variables. */
 function calCssVars(colors, brand) {
     return {
         "cal-brand": brand,
@@ -652,19 +653,19 @@ function calConfig(booking, theme) {
 }
 
 /**
- * Připraví Cal.com embed: načte skript, nastaví branding a případně
- * vloží kalendář přímo do stránky. Vrací ref pro inline kontejner
- * a atributy pro tlačítka, která mají otevřít rezervaci v popupu.
+ * Sets up the Cal.com embed: loads the script, applies branding and, in the
+ * inline mode, mounts the calendar into the page. Returns the container id and
+ * the attributes for buttons that should open the booking popup.
  */
 function useCalBooking(booking, colors) {
-    // Cal.com embed očekává selektor jako řetězec, ne DOM uzel.
+    // The Cal.com embed expects a string selector, not a DOM node.
     const idRef = useRef(null)
     if (!idRef.current) {
         idRef.current = `cal-embed-${Math.random().toString(36).slice(2, 10)}`
     }
     const containerId = idRef.current
-    // Embed se smí vložit jen jednou; opakované volání pro stejný kontejner
-    // knihovna ignoruje a mazání jejího obsahu by ho zabilo natrvalo.
+    // The embed may be mounted only once: the library ignores a repeat call for
+    // the same container, and clearing its content kills it for good.
     const initedKeyRef = useRef(null)
 
     const link = (booking.calLink || "")
@@ -679,7 +680,7 @@ function useCalBooking(booking, colors) {
         booking.useAccentColor === false ? booking.brandColor : colors.accent,
         "#ff3d81"
     )
-    // "Auto" znamená: řiď se barvou webu, ne nastavením systému návštěvníka.
+    // "Auto" means follow the site background, not the visitor OS setting.
     const siteTheme = isDarkColor(colors.background, true) ? "dark" : "light"
     const calTheme =
         booking.theme && booking.theme !== "auto" ? booking.theme : siteTheme
@@ -690,7 +691,7 @@ function useCalBooking(booking, colors) {
     const varsKey = JSON.stringify(cssVars)
     const origin = (booking.origin || "https://cal.com").replace(/\/+$/, "")
     const bookingUrl = link ? `${origin}/${link}` : ""
-    // Cal.com dnes generuje embed kód s namespace odvozeným od události.
+    // Cal.com now generates embed code with a namespace per event type.
     const namespace =
         (link.split("/").pop() || "booking")
             .toLowerCase()
@@ -712,8 +713,8 @@ function useCalBooking(booking, colors) {
             cssVarsPerTheme: { light: cssVars, dark: cssVars },
         }
         const selector = `#${containerId}`
-        // Embed vkládá vlastní element (<cal-inline>) se shadow DOM, iframe
-        // uvnitř tedy nemusí být vidět – stačí nám, že kontejner není prázdný.
+        // The embed mounts its own <cal-inline> element with a shadow root, so
+        // the iframe inside is invisible from here – a child element is enough.
         const isEmpty = () => {
             const el = document.getElementById(containerId)
             return !el || el.childElementCount === 0
@@ -724,7 +725,7 @@ function useCalBooking(booking, colors) {
         const key = `${link}|${namespace}|${booking.layout}|${calTheme}`
         const alreadyInited = initedKeyRef.current === key
 
-        // Přesně v pořadí, v jakém to vydává generátor Cal.com:
+        // Exactly the order Cal.com's own embed generator emits:
         // init(namespace) → inline → ui.
         Cal("init", namespace, { origin })
         const api = namespacedApi() || Cal
@@ -732,14 +733,14 @@ function useCalBooking(booking, colors) {
         if (showsInline && !alreadyInited) {
             initedKeyRef.current = key
             const el = document.getElementById(containerId)
-            // Vyčistit jen při přepnutí na jinou událost, ne při každém běhu.
+            // Clear only when switching to another event, not on every run.
             if (el && el.childElementCount > 0) el.innerHTML = ""
             api("inline", { elementOrSelector: selector, calLink: link, config })
         }
         api("ui", uiOptions)
 
-        // Starší verze embed.js namespace neznají – když je kontejner pořád
-        // prázdný, zkusíme ještě API bez namespace.
+        // Older embed.js builds do not know namespaces – if the container is
+        // still empty, try the namespace-less API as well.
         let retry
         if (showsInline && !alreadyInited) {
             retry = setTimeout(() => {
@@ -770,9 +771,9 @@ function useCalBooking(booking, colors) {
         varsKey,
     ])
 
-    // Když embed nedojede (blokovaný skript, CSP, plátno Frameru), nabídneme
-    // aspoň odkaz na stránku události, aby se šlo objednat vždycky. Jakmile se
-    // kalendář objeví (klidně později), nabídku zase schováme.
+    // If the embed never arrives (blocked script, strict CSP, Framer canvas),
+    // offer a link to the event page so booking always works. As soon as the
+    // calendar shows up – even late – the fallback is hidden again.
     useEffect(() => {
         if (!showsInline) {
             setEmbedBlocked(false)
@@ -820,7 +821,7 @@ function useCalBooking(booking, colors) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Media – obrázek NEBO video (video má přednost)                      */
+/* Media – image OR video (video wins)                                 */
 /* ------------------------------------------------------------------ */
 
 function isVideoSrc(src) {
@@ -857,7 +858,7 @@ function Media({ image, video, poster, alt, className, settings, style }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Poletující obrazce (canvas)                                         */
+/* Floating shapes (canvas)                                            */
 /* ------------------------------------------------------------------ */
 
 const SHAPE_DRAWERS = {
@@ -1158,8 +1159,8 @@ function BackgroundShapes({ options, accent }) {
         }
 
         /**
-         * Plátno se přizpůsobuje i tehdy, když se stránka teprve doměřuje
-         * (styly se vkládají až po prvním renderu) nebo když naroste obsah.
+         * Keeps the canvas in sync while the page is still being measured
+         * (styles land after the first render) and when the content grows.
          */
         function handleResize() {
             const prevW = width
@@ -1247,8 +1248,8 @@ const DEFAULT_NAV_LINKS = [
 
 function Header({ logo, ctaText, ctaHref, navLinks, showCta, bookingAttrs }) {
     const [menuOpen, setMenuOpen] = useState(false)
-    // Zavřená zásuvka se vůbec nevykresluje – jinak by zvětšovala šířku
-    // publikované stránky (fixed prvky neořízne overflow ancestora).
+    // A closed drawer is not rendered at all – otherwise it widens the
+    // published page (an ancestor overflow does not clip fixed elements).
     const [menuMounted, setMenuMounted] = useState(false)
     const [menuSlidIn, setMenuSlidIn] = useState(false)
 
@@ -1691,8 +1692,8 @@ function Contact({ data, booking, cal }) {
         }
     }
 
-    // Rozložení řídí zvolený režim, ne to, jestli je vyplněný odkaz –
-    // chybějící odkaz se pozná podle nápovědy místo kalendáře.
+    // The layout follows the selected mode, not whether a link is filled in –
+    // a missing link shows a hint in place of the calendar.
     const mode = booking.mode || "form"
     const showForm = mode === "form" || mode === "both"
     const showCalendar = mode === "inline"
@@ -1844,7 +1845,7 @@ function Footer({ text, showYear }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Výchozí hodnoty + hlavní komponenta                                 */
+/* Defaults + main component                                           */
 /* ------------------------------------------------------------------ */
 
 const DEFAULTS = {
@@ -1981,13 +1982,13 @@ const DEFAULTS = {
     },
 }
 
-/** useLayoutEffect v prohlížeči, useEffect při serverovém renderu. */
+/** useLayoutEffect in the browser, useEffect during server rendering. */
 const useIsomorphicLayoutEffect =
     typeof document !== "undefined" ? useLayoutEffect : useEffect
 
 /**
- * Sleduje šířku samotné komponenty a vrací třídy zlomů. Framer může komponentu
- * vykreslit v libovolně širokém rámci, takže se nedá spoléhat na šířku okna.
+ * Tracks the component's own width and returns breakpoint classes. Framer can
+ * render it in a frame of any width, so the window width cannot be trusted.
  */
 function useWidthClass(ref) {
     const [widthClass, setWidthClass] = useState("")
@@ -2032,8 +2033,8 @@ function useWidthClass(ref) {
 }
 
 /**
- * Poskládá nastavení rezervace z polí sekce Contact (a z dřívější samostatné
- * skupiny booking, aby staré instance komponenty nepřestaly fungovat).
+ * Builds the booking settings from the Contact fields (and from the earlier
+ * standalone booking group, so older instances keep working).
  */
 function resolveBooking(contact, legacy, accent) {
     const c = contact || {}
@@ -2084,8 +2085,8 @@ function merge(defaults, value) {
 }
 
 /**
- * Šířka: Fill (jde přepnout i na fixní), výška: Fit content – komponenta se
- * ve Frameru vždy roztáhne na šířku rámce a vysoká je přesně podle obsahu.
+ * Width: Fill (can be switched to fixed), height: Fit content – the component
+ * spans the frame width and is exactly as tall as its content.
  *
  * @framerSupportedLayoutWidth any
  * @framerSupportedLayoutHeight auto
@@ -2106,11 +2107,11 @@ export default function EllaHairSalonPage(props) {
     )
     const videoSettings = merge(DEFAULTS.videoSettings, props.videoSettings)
     const logo = merge(DEFAULTS.logo, props.logo)
-    // Rezervace se nastavuje ve skupině "Contact & booking"; starší instance
-    // komponenty mohly mít hodnoty ještě v samostatné skupině "booking".
+    // Booking is configured in the "Contact & booking" group; older instances
+    // may still carry values in the standalone "booking" group.
     const booking = resolveBooking(props.contact, props.booking, colors.accent)
     const cal = useCalBooking(booking, colors)
-    // Tlačítka „Book Now“ otevřou rezervaci, pokud je zapnutá.
+    // "Book Now" buttons open the booking popup when it is enabled.
     const ctaBookingAttrs =
         cal.showsButton && booking.ctaOpensBooking !== false
             ? cal.buttonAttrs
@@ -2271,21 +2272,21 @@ export default function EllaHairSalonPage(props) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Property controls – vše nastavitelné v panelu Frameru               */
+/* Property controls – everything configurable from Framer's panel     */
 /* ------------------------------------------------------------------ */
 
 const VIDEO_FILE_TYPES = ["mp4", "webm", "ogv", "mov", "m4v"]
 
-/** Cal.com pole dávají smysl jen mimo čistý formulářový režim. */
+/** Cal.com fields only make sense outside the plain form mode. */
 const usesFormOnly = (p = {}) => (p?.bookingMode || "form") === "form"
 
-/** Pole formuláře se schovají, když web sbírá rezervace jen přes Cal.com. */
+/** Form fields hide when bookings are collected through Cal.com only. */
 const hidesForm = (p = {}) => {
     const mode = p?.bookingMode || "form"
     return mode !== "form" && mode !== "both"
 }
 
-/** Barevné pickery se skrývají, když je zapnuté hotové téma. */
+/** Color pickers hide while a ready-made theme is active. */
 const usingPreset = (p = {}) => (p?.preset || "custom") !== "custom"
 
 const videoControl = (title = "Video") => ({
@@ -2295,14 +2296,14 @@ const videoControl = (title = "Video") => ({
 })
 
 addPropertyControls(EllaHairSalonPage, {
-    /* Podle tohohle pole poznáš, jestli Framer načetl tuhle verzi kódu. */
+    /* Tells you whether Framer actually loaded this version of the code. */
     version: {
         type: ControlType.String,
         title: "Version",
         defaultValue: COMPONENT_VERSION,
     },
 
-    /* ---------------- BARVY ---------------- */
+    /* ---------------- COLORS ---------------- */
     colors: {
         type: ControlType.Object,
         title: "🎨 Colors",
@@ -2467,7 +2468,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- POLETUJÍCÍ OBRAZCE ---------------- */
+    /* ---------------- FLOATING SHAPES ---------------- */
     shapes: {
         type: ControlType.Object,
         title: "✨ Floating shapes",
@@ -2612,7 +2613,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- KURZOR ---------------- */
+    /* ---------------- CURSOR ---------------- */
     cursor: {
         type: ControlType.Object,
         title: "🖱️ Cursor",
@@ -2776,7 +2777,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- SEKCE ZAP/VYP ---------------- */
+    /* ---------------- SECTION TOGGLES ---------------- */
     sections: {
         type: ControlType.Object,
         title: "🧩 Sections",
@@ -2824,7 +2825,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- VIDEO NA POZADÍ ---------------- */
+    /* ---------------- BACKGROUND VIDEO ---------------- */
     backgroundVideo: {
         type: ControlType.Object,
         title: "🎬 Background video",
@@ -2861,7 +2862,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- CHOVÁNÍ VIDEÍ ---------------- */
+    /* ---------------- VIDEO BEHAVIOUR ---------------- */
     videoSettings: {
         type: ControlType.Object,
         title: "▶️ Video behaviour",
@@ -2889,7 +2890,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- VZHLED / TYPOGRAFIE ---------------- */
+    /* ---------------- APPEARANCE / TYPOGRAPHY ---------------- */
     style: {
         type: ControlType.Object,
         title: "🖋️ Appearance",
@@ -3074,7 +3075,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- EFEKTY ---------------- */
+    /* ---------------- EFFECTS ---------------- */
     effects: {
         type: ControlType.Object,
         title: "💫 Effects",
@@ -3190,7 +3191,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- SLUŽBY ---------------- */
+    /* ---------------- SERVICES ---------------- */
     servicesSection: {
         type: ControlType.Object,
         title: "Services",
@@ -3245,7 +3246,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- GALERIE ---------------- */
+    /* ---------------- GALLERY ---------------- */
     gallerySection: {
         type: ControlType.Object,
         title: "Gallery",
@@ -3277,7 +3278,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- VIDEO SEKCE ---------------- */
+    /* ---------------- VIDEO SECTION ---------------- */
     videoSection: {
         type: ControlType.Object,
         title: "Video section",
@@ -3313,7 +3314,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- CENÍK ---------------- */
+    /* ---------------- PRICING ---------------- */
     pricingSection: {
         type: ControlType.Object,
         title: "Pricing",
@@ -3398,7 +3399,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- O NÁS ---------------- */
+    /* ---------------- ABOUT ---------------- */
     aboutSection: {
         type: ControlType.Object,
         title: "About",
@@ -3441,7 +3442,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- KONTAKT ---------------- */
+    /* ---------------- CONTACT ---------------- */
     contact: {
         type: ControlType.Object,
         title: "Contact & booking",
@@ -3661,7 +3662,7 @@ addPropertyControls(EllaHairSalonPage, {
         },
     },
 
-    /* ---------------- PATIČKA ---------------- */
+    /* ---------------- FOOTER ---------------- */
     footerText: {
         type: ControlType.String,
         title: "Footer",
